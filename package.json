@@ -18,7 +18,8 @@
     "dev": "run-p dev:client dev:server",
     "dev:client": "cd client && npm run dev",
     "dev:server": "cd server && npm run dev",
-    "validate": "run-p check:format lint test build"
+    "validate": "run-p check:format lint test build",
+    "postinstall": "(cd client && npm install); (cd server && npm install)"
   },
   "repository": {
     "type": "git",
