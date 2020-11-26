@@ -32,6 +32,8 @@
   },
   "homepage": "https://github.com/otanriverdi/investory#readme",
   "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "^4.8.2",
     "cz-conventional-changelog": "^3.3.0",
@@ -53,7 +55,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run check:types && lint-staged && npm run test && npm run build"
+      "pre-commit": "npm run check:types && lint-staged && npm run test && npm run build",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
