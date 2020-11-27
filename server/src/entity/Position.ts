@@ -27,7 +27,7 @@ export class Position {
   @Column('varchar', {length: 3, default: 'EUR'})
   currency: string;
 
-  @Column({type: 'money', default: 0})
+  @Column('decimal', {precision: 19, scale: 4, default: 0})
   commission: number;
 
   @Column({type: 'enum', enum: PositionState, default: PositionState.OPEN})
