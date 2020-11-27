@@ -9,7 +9,7 @@
   "scripts": {
     "start": "cd server && npm run start",
     "lint": "eslint --ignore-path .gitignore --ext .ts,.tsx",
-    "prettier": "prettier --ignore-path .gitignore \"**/*.(js|ts|tsx|json)\"",
+    "prettier": "prettier --ignore-path .gitignore \"**/*.(ts|tsx|json)\"",
     "check:format": "npm run prettier -- --list-different",
     "check:types": "run-p check:types:server check:types:client",
     "check:types:server": "cd server && npm run check:types",
