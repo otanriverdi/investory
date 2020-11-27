@@ -1,6 +1,6 @@
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 
-enum InstrumentType {
+export enum InstrumentType {
   CRYPTO = 'crypto',
   FX = 'fx',
   STOCK = 'stock',
