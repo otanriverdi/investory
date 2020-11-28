@@ -14,5 +14,26 @@ export const typeDefs = gql`
   }
   type Query {
     hello: String
+    positions: [Position]
+  }
+  enum PositionState {
+    open
+    closed
+    deleted
+  }
+  enum PositionType {
+    sell
+    buy
+  }
+  type Position {
+    id: ID!
+    amount: Float!
+    price: Float!
+    currency: String!
+    commission: Float!
+    state: PositionState!
+    date: String!
+    type: PositionType!
+    instrument: Instrument!
   }
 `;
