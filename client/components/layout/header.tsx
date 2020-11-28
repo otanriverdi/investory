@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Divider,
   Flex,
   IconButton,
   Link,
@@ -11,8 +12,8 @@ import React from 'react';
 
 const Header: React.FC = () => (
   <header>
-    <Flex py={10} align="center" borderBottom=".5px solid grey">
-      <Link href="/">
+    <Flex py={6} align="center">
+      <Link css={{':hover': {textDecoration: 'none'}}} href="/">
         <Text
           css={{position: 'relative', top: -3, cursor: 'pointer'}}
           color="cyan.300"
@@ -27,6 +28,7 @@ const Header: React.FC = () => (
         <IconButton isRound aria-label="user" icon={<Avatar />} />
       </Tooltip>
     </Flex>
+    <Divider />
   </header>
 );
 

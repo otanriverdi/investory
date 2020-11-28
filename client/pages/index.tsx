@@ -1,6 +1,12 @@
-import {Text} from '@chakra-ui/react';
 import React from 'react';
+import Summary from '../components/summary';
 
-const Home = () => <Text fontSize="2xl">Hello, World!</Text>;
+const Home = () => {
+  return (
+    <>
+      <Summary name="Ozgur" />
+    </>
+  );
+};
 
 export default Home;
