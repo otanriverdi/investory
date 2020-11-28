@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import cors from '@koa/cors';
 import {ApolloServer} from 'apollo-server-koa';
 import Koa from 'koa';

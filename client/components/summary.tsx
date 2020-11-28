@@ -30,7 +30,10 @@ const Summary: React.FC<Props> = ({
   total = {amount: 1250, percentage: 12.5},
   daily = {amount: -25, percentage: 1.2},
 }) => {
-  function renderSubStat(title, data: {amount: number; percentage: number}) {
+  function renderSubStat(
+    title: string,
+    data: {amount: number; percentage: number},
+  ) {
     return (
       <Stat
         _hover={{transform: 'translateY(-3px)', borderColor: 'cyan.300'}}
