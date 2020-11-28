@@ -1,4 +1,7 @@
-import {ApolloServer} from 'apollo-server';
+import cors from '@koa/cors';
+import {ApolloServer} from 'apollo-server-koa';
+import Koa from 'koa';
+import helmet from 'koa-helmet';
 import 'reflect-metadata'; // required for typeorm
 import {createConnection} from 'typeorm';
 import {resolvers} from './resolvers';
@@ -12,8 +15,20 @@ createConnection()
       context: {connection},
     });
 
-    server.listen().then(({url}) => {
-      console.log(`🚀 Apollo server ready at ${url}`);
+    const app = new Koa();
+
+    app.use(
+      helmet({
+        contentSecurityPolicy:
+          process.env.NODE_ENV === 'production' ? undefined : false,
+      }),
+    );
+    app.use(cors({origin: '*'}));
+
+    server.applyMiddleware({app});
+
+    app.listen(8000, () => {
+      console.log(`🚀 on ${8000}`);
     });
   })
   .catch(error => console.error(error));
