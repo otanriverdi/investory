@@ -32,7 +32,13 @@ const Summary: React.FC<Props> = ({
 }) => {
   function renderSubStat(title, data: {amount: number; percentage: number}) {
     return (
-      <Stat borderWidth="1px" borderRadius="md" px={4} py={2}>
+      <Stat
+        _hover={{transform: 'translateY(-3px)', borderColor: 'cyan.300'}}
+        borderWidth="1px"
+        borderRadius="md"
+        px={4}
+        py={2}
+      >
         <StatLabel>{title}</StatLabel>
         <StatNumber textColor={data.amount >= 0 ? 'green.400' : 'red.600'}>
           €{Math.abs(data.amount)}
@@ -47,11 +53,17 @@ const Summary: React.FC<Props> = ({
 
   return (
     <Box>
-      <Text fontWeight="200" fontSize="4xl">
+      <Text mb={6} fontWeight="200" fontSize="4xl">
         Welcome{name && ' ' + name},
       </Text>
-      <HStack align="flex-end" mt={4} spacing={2}>
-        <Stat borderWidth="1px" borderRadius="md" px={4} py={2}>
+      <HStack align="flex-end" spacing={2}>
+        <Stat
+          _hover={{transform: 'translateY(-3px)', borderColor: 'cyan.300'}}
+          borderWidth="1px"
+          borderRadius="md"
+          px={4}
+          py={2}
+        >
           <StatLabel fontSize="xl">Total Balance</StatLabel>
           <StatNumber fontSize="4xl">€{balance}</StatNumber>
           <StatHelpText>After P/L</StatHelpText>
