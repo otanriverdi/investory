@@ -15,6 +15,9 @@ export const typeDefs = gql`
   type Query {
     hello: String
     positions: [Position]
+    instruments: [Instrument]
+    instrument(symbol: String): Instrument
+    instrumentById(id: Int): Instrument
   }
   enum PositionState {
     open
