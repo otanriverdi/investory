@@ -1,17 +1,19 @@
+import {ApolloServer} from 'apollo-server';
 import 'reflect-metadata'; // required for typeorm
 import {createConnection} from 'typeorm';
-import {ApolloServer} from 'apollo-server';
-import {typeDefs} from './typeDefs';
 import {resolvers} from './resolvers';
+import {typeDefs} from './typeDefs';
 
 createConnection()
   .then(async connection => {
-    // TODO add connection to graphql context.
+    const server = new ApolloServer({
+      typeDefs,
+      resolvers,
+      context: {connection},
+    });
 
-    // SERVER LOGIC SHOULD BE HERE TO MAKE SURE IT RUNS AFTER THE CONNECTION
-    const server = new ApolloServer({typeDefs, resolvers});
     server.listen().then(({url}) => {
-      console.log(`🚀 Apollo server ready at ${url}`); // eslint-disable-line no-console
+      console.log(`🚀 Apollo server ready at ${url}`);
     });
   })
   .catch(error => console.error(error));

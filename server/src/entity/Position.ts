@@ -17,7 +17,7 @@ export class Position {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('decimal', {precision: 19, scale: 4})
+  @Column('decimal', {precision: 19, scale: 8})
   amount: number;
 
   @Column('decimal', {precision: 19, scale: 4})
