@@ -12,7 +12,7 @@ import React from 'react';
 
 const Header: React.FC = () => (
   <header>
-    <Flex py={10} align="center">
+    <Flex py={6} align="center">
       <Link css={{':hover': {textDecoration: 'none'}}} href="/">
         <Text
           css={{position: 'relative', top: -3, cursor: 'pointer'}}

@@ -64,9 +64,9 @@ const Summary: React.FC<Props> = ({
           px={4}
           py={2}
         >
-          <StatLabel fontSize="xl">Total Balance</StatLabel>
+          <StatLabel fontSize="xl">Current Balance</StatLabel>
           <StatNumber fontSize="4xl">€{balance}</StatNumber>
-          <StatHelpText>After P/L</StatHelpText>
+          <StatHelpText>After Profit/Loss</StatHelpText>
         </Stat>
         {renderSubStat('Daily Change', daily)}
         {renderSubStat('Total Change', total)}
