@@ -1,20 +1,21 @@
 import {useAuth0} from '@auth0/auth0-react';
 import {Skeleton} from '@chakra-ui/react';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import Landing from '../components/landing';
 import Summary from '../components/summary';
 
 const Home: React.FC = () => {
-  const {isAuthenticated, isLoading, user} = useAuth0();
+  const [loading, setLoading] = useState(true);
 
-  function renderHome() {
-    return isAuthenticated ? (
-      <Summary name={user.name} />
-    ) : (
-      <p>Log in to see your dashboard.</p>
-    );
-  }
+  const {isLoading, isAuthenticated, loginWithRedirect} = useAuth0();
 
-  function renderLoading() {
+  useEffect(() => {
+    if (!isLoading) {
+      setLoading(isLoading);
+    }
+  }, [isLoading]);
+
+  if (loading) {
     return (
       <Skeleton>
         <Summary />
@@ -22,7 +23,11 @@ const Home: React.FC = () => {
     );
   }
 
-  return isLoading ? renderLoading() : renderHome();
+  return isAuthenticated ? (
+    <Summary />
+  ) : (
+    <Landing onAction={() => loginWithRedirect()} />
+  );
 };
 
 export default Home;
