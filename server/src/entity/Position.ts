@@ -1,4 +1,11 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
+import {Field, ObjectType} from 'type-graphql';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import {Instrument} from './Instrument';
 
 export enum PositionState {
@@ -12,36 +19,46 @@ export enum PositionType {
   BUY = 'buy',
 }
 
+@ObjectType()
 @Entity()
-export class Position {
+export class Position extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Field()
   @Column('decimal', {precision: 19, scale: 8})
   amount: number;
 
+  @Field()
   @Column('decimal', {precision: 19, scale: 4})
   price: number;
 
   // 3 letter abbreviation
+  @Field()
   @Column('varchar', {length: 3, default: 'EUR'})
   currency: string;
 
+  @Field()
   @Column('decimal', {precision: 19, scale: 4, default: 0})
   commission: number;
 
+  @Field()
   @Column({type: 'enum', enum: PositionState, default: PositionState.OPEN})
   state: PositionState;
 
+  @Field()
   @Column('timestamp with time zone', {
     nullable: false,
     default: () => 'CURRENT_TIMESTAMP',
   })
   date: Date;
 
+  @Field()
   @Column({type: 'enum', enum: PositionType, default: PositionType.BUY})
   type: PositionType;
 
+  @Field(() => Instrument)
   @ManyToOne(() => Instrument)
   instrument: Instrument;
 }
