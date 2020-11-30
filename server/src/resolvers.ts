@@ -4,7 +4,7 @@ import {Position} from './entity/Position';
 
 export const resolvers = {
   Query: {
-    hello: async () => {
+    hello: async (_: any, __: any, ctx: any) => {
       return 'hi!';
     },
 
