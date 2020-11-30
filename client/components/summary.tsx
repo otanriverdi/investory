@@ -2,6 +2,7 @@ import {
   Box,
   Divider,
   HStack,
+  Flex,
   Stat,
   StatArrow,
   StatHelpText,
@@ -10,6 +11,8 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React from 'react';
+import Form from './posTable/form';
+import Header from './posTable/header';
 
 type Props = {
   name?: string;
@@ -74,7 +77,12 @@ const Summary: React.FC<Props> = ({
         {renderSubStat('Daily Change', daily)}
         {renderSubStat('Total Change', total)}
       </HStack>
-      <Divider mt={6} />
+      <Divider mt={6} mb={3} />
+      <Flex direction="column">
+        <Header />
+        <Divider mt={3} mb={3} />
+        <Form />
+      </Flex>
     </Box>
   );
 };
