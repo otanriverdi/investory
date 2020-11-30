@@ -1,4 +1,5 @@
 import {useAuth0} from '@auth0/auth0-react';
+import {UnlockIcon} from '@chakra-ui/icons';
 import {
   Avatar,
   Divider,
@@ -25,7 +26,7 @@ const Header: React.FC = () => {
       <Flex py={6} align="center">
         <Link css={{':hover': {textDecoration: 'none'}}} href="/">
           <Text
-            css={{position: 'relative', top: -3, cursor: 'pointer'}}
+            css={{position: 'relative', top: -5.5, cursor: 'pointer'}}
             color="cyan.300"
             fontWeight="700"
             fontSize="3xl"
@@ -45,12 +46,18 @@ const Header: React.FC = () => {
             }
             isRound
             aria-label="user"
+            size="lg"
             icon={
-              <Avatar
-                src={isAuthenticated && user.picture}
-                backgroundColor="cyan.300"
-                name={isAuthenticated && user.name}
-              />
+              isAuthenticated ? (
+                <Avatar
+                  size="md"
+                  src={user.picture}
+                  bgColor="gray.50"
+                  name={user.name}
+                />
+              ) : (
+                <UnlockIcon />
+              )
             }
           />
         </Tooltip>
