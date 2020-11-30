@@ -1,6 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import {ApolloServer} from 'apollo-server-express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import helmet from 'helmet';
 import 'reflect-metadata'; // required for typeorm
@@ -8,7 +10,6 @@ import {createConnection} from 'typeorm';
 import checkJwt from './middleware/check-jwt';
 import {resolvers} from './resolvers';
 import {typeDefs} from './typeDefs';
-dotenv.config();
 
 createConnection()
   .then(async connection => {
