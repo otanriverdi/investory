@@ -1,5 +1,6 @@
 import {Field, Int, ObjectType} from 'type-graphql';
 import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {Price} from './Price';
 
 export enum InstrumentType {
   CRYPTO = 'crypto',
@@ -25,4 +26,7 @@ export class Instrument extends BaseEntity {
   @Field()
   @Column({type: 'enum', enum: InstrumentType})
   type: InstrumentType;
+
+  @Field(() => Price, {nullable: true})
+  price: Price;
 }

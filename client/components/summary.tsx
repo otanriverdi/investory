@@ -27,9 +27,9 @@ type Props = {
 
 const Summary: React.FC<Props> = ({
   name = '',
-  balance = 53000,
-  total = {amount: 1250, percentage: 12.5},
-  daily = {amount: -25, percentage: 1.2},
+  balance = 0,
+  total = {amount: 0, percentage: 0},
+  daily = {amount: 0, percentage: 0},
 }) => {
   function renderSubStat(
     title: string,
@@ -130,7 +130,7 @@ const Summary: React.FC<Props> = ({
         {renderSubStat('Total Change', total)}
         <LineChart {...chartProp} />
       </HStack>
-      <Divider mt={6} />
+      <Divider my={6} />
     </Box>
   );
 };

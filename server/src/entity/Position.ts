@@ -1,4 +1,4 @@
-import {Field, ObjectType} from 'type-graphql';
+import {Field, ObjectType, registerEnumType} from 'type-graphql';
 import {
   BaseEntity,
   Column,
@@ -18,6 +18,14 @@ export enum PositionType {
   SELL = 'sell',
   BUY = 'buy',
 }
+
+registerEnumType(PositionState, {
+  name: 'PositionState',
+});
+
+registerEnumType(PositionType, {
+  name: 'PositionType',
+});
 
 @ObjectType()
 @Entity()
@@ -43,7 +51,7 @@ export class Position extends BaseEntity {
   @Column('decimal', {precision: 19, scale: 4, default: 0})
   commission: number;
 
-  @Field()
+  @Field(() => PositionState)
   @Column({type: 'enum', enum: PositionState, default: PositionState.OPEN})
   state: PositionState;
 
@@ -54,11 +62,14 @@ export class Position extends BaseEntity {
   })
   date: Date;
 
-  @Field()
+  @Field(() => PositionType)
   @Column({type: 'enum', enum: PositionType, default: PositionType.BUY})
   type: PositionType;
 
   @Field(() => Instrument)
-  @ManyToOne(() => Instrument)
+  @ManyToOne(() => Instrument, {onDelete: 'CASCADE', eager: true})
   instrument: Instrument;
+
+  @Column()
+  owner: string;
 }

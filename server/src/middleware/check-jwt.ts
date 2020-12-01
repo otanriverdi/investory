@@ -1,5 +1,5 @@
 import jwt from 'express-jwt';
-import jwtAuthz from 'express-jwt-authz';
+// import jwtAuthz from 'express-jwt-authz';
 import jwksRsa from 'jwks-rsa';
 
 const checkJwt = jwt({
