@@ -3,6 +3,7 @@ import {Skeleton} from '@chakra-ui/react';
 import React from 'react';
 import Landing from '../components/landing';
 import Summary from '../components/summary';
+// import Positions from '../components/positions';
 import useSummary from '../hooks/use-summary';
 
 const Home: React.FC = () => {

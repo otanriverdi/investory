@@ -74,7 +74,7 @@ const Summary: React.FC<Props> = ({
         {renderSubStat('Daily Change', daily)}
         {renderSubStat('Total Change', total)}
       </HStack>
-      <Divider mt={6} />
+      <Divider mt={6} mb={3} />
     </Box>
   );
 };
