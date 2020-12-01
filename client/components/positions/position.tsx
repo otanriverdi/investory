@@ -1,12 +1,13 @@
 import {Box, Flex} from '@chakra-ui/react';
 import React, {useMemo} from 'react';
+import {Position} from '../../graphql/generated/graphql';
 import Edit from './edit';
 
 type Props = {
-  position: any;
+  position: Position;
 };
 
-const Position: React.FC<Props> = ({position}) => {
+const SinglePosition: React.FC<Props> = ({position}) => {
   const change = useMemo(() => {
     return (
       position.amount * position.instrument.price.current -
@@ -31,14 +32,13 @@ const Position: React.FC<Props> = ({position}) => {
       <Box>{position.price}</Box>
       <Box>{position.amount}</Box>
       <Box>{position.date}</Box>
-      <Box>{currentBalance}</Box>
-      <Box textColor={change >= 0 ? 'green.400' : 'red.600'}>{change}</Box>
-      <Box textColor={percentage >= 0 ? 'green.400' : 'red.600'}>
-        {percentage}
-      </Box>
+      <Box>${position.price * position.amount}</Box>
+      <Box>${currentBalance}</Box>
+      <Box textColor={change >= 0 ? 'green.400' : 'red.600'}>${change}</Box>
+      <Box textColor={change >= 0 ? 'green.400' : 'red.600'}>{percentage}%</Box>
       <Edit />
     </Flex>
   );
 };
 
-export default Position;
+export default SinglePosition;

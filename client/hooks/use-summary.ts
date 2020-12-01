@@ -1,14 +1,13 @@
 import {useMemo} from 'react';
-import {useGetPositionsQuery} from '../graphql/generated/graphql';
+import {GetPositionsQuery} from '../graphql/generated/graphql';
 
-export default function useSummary(): {
+export default function useSummary(
+  data: GetPositionsQuery,
+): {
   balance: any;
   daily: any;
   total: any;
-  loading: boolean;
 } {
-  const {loading, data} = useGetPositionsQuery();
-
   const balance = useMemo(() => {
     let b = 0;
 
@@ -26,6 +25,8 @@ export default function useSummary(): {
     let percentage = 0;
 
     if (data) {
+      const percentages = [];
+
       data.getPositions.forEach(position => {
         const history = position.instrument.price.history;
         const current = position.instrument.price.current;
@@ -34,11 +35,16 @@ export default function useSummary(): {
         const change = +(current - yesterday).toFixed(2);
 
         amount = change * +position.amount;
-        percentage = Math.abs(+((change * 100) / current).toFixed(2));
-      });
-    }
 
-    console.log(amount);
+        // TODO fix
+        percentages.push(Math.abs(+((change * 100) / current).toFixed(2)));
+      });
+
+      percentage = +(
+        percentages.reduce((total, current) => total + current) /
+        percentages.length
+      ).toFixed(2);
+    }
 
     return {amount, percentage};
   }, [data]);
@@ -48,17 +54,24 @@ export default function useSummary(): {
     let percentage = 0;
 
     if (data) {
+      const percentages = [];
+
       data.getPositions.forEach(position => {
         const current = position.instrument.price.current;
         const change = current - position.price;
 
         amount = +(change * position.amount).toFixed(2);
-        percentage = Math.abs(+((change * 100) / current).toFixed(2));
+        percentages.push(Math.abs(+((change * 100) / current).toFixed(2)));
       });
+
+      percentage = +(
+        percentages.reduce((total, current) => total + current) /
+        percentages.length
+      ).toFixed(2);
     }
 
     return {amount, percentage};
   }, [data]);
 
-  return {balance, daily, total, loading};
+  return {balance, daily, total};
 }

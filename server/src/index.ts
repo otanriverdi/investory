@@ -31,10 +31,16 @@ createConnection()
 
     const server = new ApolloServer({
       schema,
-      context: ({req}) => ({
-        db: connection,
-        user: req.user ? req.user.sub : null,
-      }),
+      context: ({req}) => {
+        if (req.user) {
+          console.warn('User id =>', req.user.sub);
+        }
+
+        return {
+          db: connection,
+          user: req.user ? req.user.sub : null,
+        };
+      },
     });
 
     server.applyMiddleware({app});
