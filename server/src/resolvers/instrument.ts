@@ -27,6 +27,13 @@ export class InstrumentResolvers {
     return await Instrument.findOneOrFail({where: {id: id}});
   }
 
+  @Query(() => Instrument, {nullable: true})
+  async getInstrumentBySymbol(
+    @Arg('symbol') symbol: string,
+  ): Promise<Instrument | undefined> {
+    return await Instrument.findOneOrFail({where: {symbol}});
+  }
+
   @FieldResolver()
   price(): Price {
     // TODO this should fetch and return the actual data from the API
