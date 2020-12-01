@@ -1,30 +1,20 @@
 import {useAuth0} from '@auth0/auth0-react';
 import {Skeleton} from '@chakra-ui/react';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import Landing from '../components/landing';
 import Summary from '../components/summary';
+import useSummary from '../hooks/use-summary';
 
 const Home: React.FC = () => {
-  const [loading, setLoading] = useState(true);
+  const {isAuthenticated, loginWithRedirect, user} = useAuth0();
 
-  const {isLoading, isAuthenticated, loginWithRedirect, user} = useAuth0();
+  const {balance, daily, total, loading: summaryLoading} = useSummary();
 
-  useEffect(() => {
-    if (!isLoading) {
-      setLoading(isLoading);
-    }
-  }, [isLoading]);
-
-  if (loading) {
-    return (
-      <Skeleton>
-        <Summary />
-      </Skeleton>
-    );
-  }
-
+  // each component should be wrapped with a skeleton with isLoaded set to their data loading state
   return isAuthenticated ? (
-    <Summary name={user.name} />
+    <Skeleton isLoaded={!summaryLoading}>
+      <Summary balance={balance} daily={daily} total={total} name={user.name} />
+    </Skeleton>
   ) : (
     <Landing onAction={() => loginWithRedirect()} />
   );
