@@ -7,7 +7,7 @@ import Summary from '../components/summary';
 const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
-  const {isLoading, isAuthenticated, loginWithRedirect} = useAuth0();
+  const {isLoading, isAuthenticated, loginWithRedirect, user} = useAuth0();
 
   useEffect(() => {
     if (!isLoading) {
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
   }
 
   return isAuthenticated ? (
-    <Summary />
+    <Summary name={user.name} />
   ) : (
     <Landing onAction={() => loginWithRedirect()} />
   );
