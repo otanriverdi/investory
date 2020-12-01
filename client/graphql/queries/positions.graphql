@@ -1,0 +1,22 @@
+query getPositions {
+  getPositions {
+    id
+    amount
+    price
+    currency
+    commission
+    date
+    state
+    type
+    instrument {
+      id
+      symbol
+      name
+      type
+      price {
+        current
+        history
+      }
+    }
+  }
+}
