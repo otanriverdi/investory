@@ -1,29 +1,70 @@
-import {ChevronDownIcon, SettingsIcon} from '@chakra-ui/icons';
+import {CheckIcon} from '@chakra-ui/icons';
 import {
   Flex,
+  Input,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
   NumberIncrementStepper,
   NumberDecrementStepper,
+  Button,
+  FormControl,
 } from '@chakra-ui/react';
-import React from 'react';
-import Search from './search';
-import Edit from './edit';
+import React, {useState} from 'react';
 
 const Form: React.FC = () => {
+  const [price, setPrice] = useState(0);
+  const [invested, setInvested] = useState(0);
+  const [query, setQuery] = useState('');
+
+  function handleQuery(value) {
+    setQuery(value);
+  }
+  function handlePriceChange(value) {
+    setPrice(value);
+  }
+  function handleInvestedChange(value) {
+    setInvested(value);
+  }
+
   return (
-    <Flex justify="space-between">
-      <Search />
-      <NumberInput defaultValue={15} precision={2} step={0.2}>
-        <NumberInputField />
-        <NumberInputStepper>
-          <NumberIncrementStepper />
-          <NumberDecrementStepper />
-        </NumberInputStepper>
-      </NumberInput>
-      <Edit />
-    </Flex>
+    <FormControl>
+      <Flex>
+        <Input
+          placeholder="Search a ticker"
+          onChange={handleQuery}
+          value={query}
+        />
+        <NumberInput
+          defaultValue={15}
+          precision={2}
+          step={0.2}
+          value={price}
+          onChange={handlePriceChange}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+        <NumberInput
+          defaultValue={200}
+          step={10}
+          value={invested}
+          onChange={handleInvestedChange}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+        <Button leftIcon={<CheckIcon />} variant="solid" type="submit">
+          Save
+        </Button>
+      </Flex>
+    </FormControl>
   );
 };
 

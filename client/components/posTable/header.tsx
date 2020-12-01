@@ -9,9 +9,9 @@ const Header: React.FC = () => {
       <Box>Last Price</Box>
       <Box>Price Open</Box>
       <Box>Open Date</Box>
-      <Box>Invested</Box>
+      <Box>Invested($)</Box>
       <Box>Value</Box>
-      <Box>P/L(€)</Box>
+      <Box>P/L($)</Box>
       <Box>P/L(%)</Box>
     </Flex>
   );
