@@ -8,17 +8,26 @@ import {setContext} from '@apollo/client/link/context';
 import {Auth0Provider, useAuth0} from '@auth0/auth0-react';
 import {ChakraProvider, CSSReset} from '@chakra-ui/react';
 import type {AppProps} from 'next/app';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from '../components/layout';
 
 const Inner: React.FC<any> = ({Component, pageProps}) => {
-  const {isAuthenticated, getAccessTokenSilently} = useAuth0();
+  /* makes sure the auth state is checked before loading the app */
+  const [authLoading, setAuthLoading] = useState(true);
+  const {isAuthenticated, getAccessTokenSilently, isLoading} = useAuth0();
 
+  useEffect(() => {
+    if (!isLoading) {
+      setAuthLoading(isLoading);
+    }
+  }, [isLoading]);
+  /* end */
+
+  /* creates the apollo client and assigns the auth token to the header if it exists */
   const httpLink = createHttpLink({
     uri: 'http://localhost:8000/graphql',
   });
 
-  // sets the auth header if user is logged in
   const authLink = setContext(async (_, {headers}) => {
     if (isAuthenticated) {
       const token = await getAccessTokenSilently({
@@ -40,19 +49,20 @@ const Inner: React.FC<any> = ({Component, pageProps}) => {
     link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
   });
+  /* end */
 
   return (
     <ApolloProvider client={client}>
       <ChakraProvider>
         <CSSReset />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <Layout>{authLoading ? null : <Component {...pageProps} />}</Layout>
       </ChakraProvider>
     </ApolloProvider>
   );
 };
 
+// This wrapper is required because the auth logic can only be made
+// in a component wrapped with Auth0Provider
 const MyApp: React.FC<AppProps> = ({Component, pageProps}: AppProps) => {
   return (
     <Auth0Provider
@@ -60,6 +70,7 @@ const MyApp: React.FC<AppProps> = ({Component, pageProps}: AppProps) => {
       clientId="BnCEdfeUBI7sohvRpdygByQ0RSFJZBO4"
       redirectUri="http://localhost:3000"
       audience="https://investory-server.herokuapp.com/"
+      useRefreshTokens
     >
       <Inner Component={Component} pageProps={pageProps} />
     </Auth0Provider>
