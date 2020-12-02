@@ -1,8 +1,19 @@
+import fetch from 'node-fetch';
 import {Arg, FieldResolver, Query, Resolver, Root} from 'type-graphql';
 import {Like} from 'typeorm';
 import {Instrument} from '../entity/Instrument';
+import {InstrumentHistory} from '../entity/InstrumentHistory';
 import {Price} from '../entity/Price';
-import fetch from 'node-fetch';
+
+export enum Duration {
+  Y5 = '5y',
+  Y2 = '2y',
+  Y1 = '1y',
+  YTD = 'ytd',
+  M6 = '6m',
+  M3 = '3m',
+  M1 = '1m',
+}
 
 @Resolver(Instrument)
 export class InstrumentResolvers {
@@ -47,6 +58,30 @@ export class InstrumentResolvers {
     @Arg('symbol') symbol: string,
   ): Promise<Instrument> {
     return await Instrument.findOneOrFail({where: {symbol}});
+  }
+
+  @Query(() => [InstrumentHistory], {nullable: true})
+  async getInstrumentHistory(
+    @Arg('symbol') symbol: string,
+    @Arg('duration', {defaultValue: '1m'}) duration: Duration,
+  ): Promise<InstrumentHistory[] | null> {
+    const token = process.env.IEX_TOKEN;
+    let url = `https://sandbox.iexapis.com/stable/stock/${symbol}/chart/${duration}?token=${token}`;
+
+    if (process.env.ENABLE_IEX === 'true') {
+      console.warn('Using IEX to fetch real price data!');
+      url = `https://cloud-sse.iexapis.com/stable/stock/${symbol}/chart/${duration}?token=${token}`;
+    }
+
+    const res = await fetch(url);
+    const json = await res.json();
+    if (json) {
+      const history = json.map((d: unknown) =>
+        InstrumentHistory.parseFields(d),
+      );
+      return history;
+    }
+    return null;
   }
 
   @FieldResolver()
