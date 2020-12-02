@@ -1,6 +1,8 @@
 import {ChevronRightIcon} from '@chakra-ui/icons';
 import {Box, Button, Flex, Heading, Stack, Text} from '@chakra-ui/react';
-import Image from 'next/image';
+import animationData from '../public/charts.json';
+import Lottie from 'react-lottie';
+// import Image from 'next/image';
 import React from 'react';
 
 type Props = {
@@ -8,6 +10,15 @@ type Props = {
 };
 
 const Landing: React.FC<Props> = ({onAction}) => {
+  const lottieOptions = {
+    loop: true,
+    autoplay: true,
+    animationData,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
+
   return (
     <Box>
       <Flex
@@ -30,8 +41,7 @@ const Landing: React.FC<Props> = ({onAction}) => {
             color="primary.800"
             textAlign={['center', 'center', 'left', 'left']}
           >
-            Track your personal savings and investments with up-to-date rates
-            and prices
+            Track your personal investments with up-to-date rates and prices
           </Heading>
           <Heading
             as="h2"
@@ -66,8 +76,8 @@ const Landing: React.FC<Props> = ({onAction}) => {
             No credit card required.
           </Text>
         </Stack>
-        <Box w={{base: '80%', sm: '60%', md: '40%'}} mb={{base: 12, md: 0}}>
-          <Image src="/savings.svg" width="500" height="500" />
+        <Box w={{base: '80%', sm: '60%', md: '70%'}} mb={{base: 12, md: 0}}>
+          <Lottie options={lottieOptions} />
         </Box>
       </Flex>
     </Box>

@@ -70,7 +70,7 @@ const MyApp: React.FC<AppProps> = ({Component, pageProps}: AppProps) => {
       clientId="BnCEdfeUBI7sohvRpdygByQ0RSFJZBO4"
       redirectUri="http://localhost:3000"
       audience="https://investory-server.herokuapp.com/"
-      useRefreshTokens
+      useRefreshTokens={true}
     >
       <Inner Component={Component} pageProps={pageProps} />
     </Auth0Provider>

@@ -98,6 +98,7 @@ const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
         {
           gridLines: {
             display: true,
+            drawOnChartArea: false,
           },
           ticks: {
             display: false,
