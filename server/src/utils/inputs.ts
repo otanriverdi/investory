@@ -9,7 +9,7 @@ export class CreatePositionInput {
   @Field()
   price: number;
 
-  @Field({nullable: true, defaultValue: 'EUR'})
+  @Field({nullable: true, defaultValue: 'USD'})
   currency: string;
 
   @Field({nullable: true})

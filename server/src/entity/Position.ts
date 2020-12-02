@@ -44,7 +44,7 @@ export class Position extends BaseEntity {
 
   // 3 letter abbreviation
   @Field()
-  @Column('varchar', {length: 3, default: 'EUR'})
+  @Column('varchar', {length: 3, default: 'USD'})
   currency: string;
 
   @Field()
