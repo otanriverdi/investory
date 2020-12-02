@@ -22,27 +22,41 @@ export class InstrumentResolvers {
     @Arg('limit', {defaultValue: 10}) limit: number,
     @Arg('skip', {defaultValue: 0}) skip: number,
     @Arg('query', {defaultValue: ''}) query: string,
+    @Arg('sortBy', {defaultValue: 'id'}) sortBy: 'id' | 'name' | 'symbol',
+    @Arg('sortDirection', {defaultValue: 'ASC'}) sortDirection: 'ASC' | 'DESC',
   ): Promise<Instrument[]> {
+    let orderBy;
+    switch (sortBy) {
+      case 'name':
+        orderBy = {name: sortDirection};
+        break;
+      case 'symbol':
+        orderBy = {symbol: sortDirection};
+        break;
+      default:
+        orderBy = {id: sortDirection};
+        break;
+    }
+
     const instruments = await Instrument.find({
       take: limit,
       skip,
       where: {symbol: Like(`%${query}%`)},
+      order: orderBy,
     });
 
     return instruments;
   }
 
-  @Query(() => Instrument, {nullable: true})
-  async getInstrumentById(
-    @Arg('id') id: number,
-  ): Promise<Instrument | undefined> {
+  @Query(() => Instrument)
+  async getInstrumentById(@Arg('id') id: number): Promise<Instrument> {
     return await Instrument.findOneOrFail({where: {id: id}});
   }
 
-  @Query(() => Instrument, {nullable: true})
+  @Query(() => Instrument)
   async getInstrumentBySymbol(
     @Arg('symbol') symbol: string,
-  ): Promise<Instrument | undefined> {
+  ): Promise<Instrument> {
     return await Instrument.findOneOrFail({where: {symbol}});
   }
 
@@ -74,6 +88,7 @@ export class InstrumentResolvers {
   async price(@Root() instrument: Instrument): Promise<Price> {
     const token = process.env.IEX_TOKEN;
 
+    // Mock data in case we dont fetch
     let current = 150;
     let previous = 145;
 
