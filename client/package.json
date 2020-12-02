@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:next": "next dev",
-    "dev": "run-p dev:next generate",
+    "dev": "next dev",
+    "postdev": "npm run generate -- --watch",
     "build": "next build",
     "start": "next start",
     "check:types": "tsc --pretty --noEmit",
     "test": "jest --watch",
     "test:coverage": "jest --coverage --passWithNoTests",
-    "generate": "graphql-codegen --config codegen.yml --watch"
+    "generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@apollo/client": "^3.2.9",

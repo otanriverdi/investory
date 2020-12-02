@@ -1,7 +1,5 @@
 .DS_store
 .vscode
-crypto.sql
-stocks.sql
 
 .runtimeconfig.json
 
