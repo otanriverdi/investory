@@ -1,7 +1,8 @@
-import {Arg, FieldResolver, Query, Resolver} from 'type-graphql';
+import {Arg, FieldResolver, Query, Resolver, Root} from 'type-graphql';
 import {Like} from 'typeorm';
 import {Instrument} from '../entity/Instrument';
 import {Price} from '../entity/Price';
+import fetch from 'node-fetch';
 
 @Resolver(Instrument)
 export class InstrumentResolvers {
@@ -35,22 +36,39 @@ export class InstrumentResolvers {
   }
 
   @FieldResolver()
-  price(): Price {
-    // TODO this should fetch and return the actual data from the API
+  async price(@Root() instrument: Instrument): Promise<Price> {
+    const token = process.env.IEX_TOKEN;
+
+    let current = 150;
+    let previous = 145;
+
+    if (process.env.ENABLE_IEX === 'true') {
+      console.warn('Using IEX to fetch real price data!');
+
+      if (instrument.type === 'crypto') {
+        const res = await fetch(
+          `https://cloud-sse.iexapis.com/stable/crypto/${instrument.symbol}/quote?token=${token}`,
+        );
+
+        const json = await res.json();
+
+        current = json.latestPrice;
+        previous = json.previousClose;
+      } else if (instrument.type === 'stock') {
+        const res = await fetch(
+          `https://cloud-sse.iexapis.com/stable/stock/${instrument.symbol}/quote?token=${token}`,
+        );
+
+        const json = await res.json();
+
+        current = json.latestPrice;
+        previous = json.previousClose;
+      }
+    }
 
     return {
-      current: 106.59,
-      history: [
-        110.32,
-        115.43,
-        111.64,
-        113.52,
-        117.36,
-        118.64,
-        114.42,
-        109.12,
-        107.42,
-      ],
+      current,
+      previous,
     };
   }
 }

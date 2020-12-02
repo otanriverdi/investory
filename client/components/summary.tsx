@@ -45,7 +45,7 @@ const Summary: React.FC<Props> = ({
       >
         <StatLabel>{title}</StatLabel>
         <StatNumber textColor={data.amount >= 0 ? 'green.400' : 'red.600'}>
-          €{Math.abs(data.amount)}
+          ${Math.abs(data.amount)}
         </StatNumber>
         <StatHelpText>
           <StatArrow type={data.amount >= 0 ? 'increase' : 'decrease'} />%

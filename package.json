@@ -21,7 +21,7 @@
     "test": "run-p test:client test:server",
     "test:client": "cd client && npm run test:coverage",
     "test:server": "cd server && npm run test:coverage",
-    "dev": "run-p dev:client dev:server",
+    "dev": "run-p dev:server dev:client",
     "dev:client": "cd client && npm run dev",
     "dev:server": "cd server && npm run dev",
     "validate": "run-p check:format lint test build",

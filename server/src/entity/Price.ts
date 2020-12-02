@@ -6,6 +6,6 @@ export class Price {
   @Field()
   current: number;
 
-  @Field(() => [Number])
-  history: number[];
+  @Field()
+  previous: number;
 }

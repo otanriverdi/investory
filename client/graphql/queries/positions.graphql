@@ -15,7 +15,7 @@ query getPositions {
       type
       price {
         current
-        history
+        previous
       }
     }
   }
