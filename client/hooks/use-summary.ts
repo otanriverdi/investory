@@ -28,10 +28,8 @@ export default function useSummary(
       const percentages = [];
 
       data.getPositions.forEach(position => {
-        const history = position.instrument.price.history;
         const current = position.instrument.price.current;
-
-        const yesterday = history[history.length - 1];
+        const yesterday = position.instrument.price.previous;
         const change = +(current - yesterday).toFixed(2);
 
         amount = change * +position.amount;
@@ -41,7 +39,7 @@ export default function useSummary(
       });
 
       percentage = +(
-        percentages?.length &&
+        percentages.length &&
         percentages.reduce((total, current) => total + current) /
           percentages.length
       ).toFixed(2);
@@ -66,7 +64,7 @@ export default function useSummary(
       });
 
       percentage = +(
-        percentages?.length &&
+        percentages.length &&
         percentages.reduce((total, current) => total + current) /
           percentages.length
       ).toFixed(2);

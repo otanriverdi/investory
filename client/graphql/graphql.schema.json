@@ -96,6 +96,33 @@
             "deprecationReason": null
           },
           {
+            "name": "getInstrumentBySymbol",
+            "description": null,
+            "args": [
+              {
+                "name": "symbol",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Instrument",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "getPositions",
             "description": null,
             "args": [],
@@ -264,24 +291,16 @@
             "deprecationReason": null
           },
           {
-            "name": "history",
+            "name": "previous",
             "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Float",
-                    "ofType": null
-                  }
-                }
+                "kind": "SCALAR",
+                "name": "Float",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -639,7 +658,7 @@
               "name": "String",
               "ofType": null
             },
-            "defaultValue": "\"EUR\""
+            "defaultValue": "\"USD\""
           },
           {
             "name": "commission",

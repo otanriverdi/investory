@@ -21,6 +21,7 @@ export type Query = {
   __typename?: 'Query';
   getInstruments: Array<Instrument>;
   getInstrumentById?: Maybe<Instrument>;
+  getInstrumentBySymbol?: Maybe<Instrument>;
   getPositions: Array<Position>;
 };
 
@@ -32,6 +33,10 @@ export type QueryGetInstrumentsArgs = {
 
 export type QueryGetInstrumentByIdArgs = {
   id: Scalars['Float'];
+};
+
+export type QueryGetInstrumentBySymbolArgs = {
+  symbol: Scalars['String'];
 };
 
 export type Instrument = {
@@ -46,7 +51,7 @@ export type Instrument = {
 export type Price = {
   __typename?: 'Price';
   current: Scalars['Float'];
-  history: Array<Scalars['Float']>;
+  previous: Scalars['Float'];
 };
 
 export type Position = {
@@ -128,7 +133,7 @@ export type GetPositionsQuery = {__typename?: 'Query'} & {
           'id' | 'symbol' | 'name' | 'type'
         > & {
             price?: Maybe<
-              {__typename?: 'Price'} & Pick<Price, 'current' | 'history'>
+              {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
             >;
           };
       }
@@ -153,7 +158,7 @@ export const GetPositionsDocument = gql`
         type
         price {
           current
-          history
+          previous
         }
       }
     }
