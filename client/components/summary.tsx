@@ -10,7 +10,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React from 'react';
-import LineChart from './charts/lineChart';
+import LineChart from './charts/line-chart';
 
 type Props = {
   name?: string;
@@ -105,8 +105,7 @@ const Summary: React.FC<Props> = ({
     title: 'Portfolio performance this year',
     labels: dummyLabels,
     dataSets: dummyDataSets,
-    // width: 300,
-    height: 85,
+    height: 86,
   };
 
   return (
