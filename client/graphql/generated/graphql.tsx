@@ -21,6 +21,7 @@ export type Query = {
   __typename?: 'Query';
   getInstruments: Array<Instrument>;
   getInstrumentById?: Maybe<Instrument>;
+  getInstrumentBySymbol?: Maybe<Instrument>;
   getPositions: Array<Position>;
 };
 
@@ -32,6 +33,10 @@ export type QueryGetInstrumentsArgs = {
 
 export type QueryGetInstrumentByIdArgs = {
   id: Scalars['Float'];
+};
+
+export type QueryGetInstrumentBySymbolArgs = {
+  symbol: Scalars['String'];
 };
 
 export type Instrument = {
