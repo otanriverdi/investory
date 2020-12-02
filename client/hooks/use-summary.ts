@@ -41,8 +41,9 @@ export default function useSummary(
       });
 
       percentage = +(
+        percentages?.length &&
         percentages.reduce((total, current) => total + current) /
-        percentages.length
+          percentages.length
       ).toFixed(2);
     }
 
@@ -65,8 +66,9 @@ export default function useSummary(
       });
 
       percentage = +(
+        percentages?.length &&
         percentages.reduce((total, current) => total + current) /
-        percentages.length
+          percentages.length
       ).toFixed(2);
     }
 
