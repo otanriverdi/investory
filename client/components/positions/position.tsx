@@ -1,7 +1,8 @@
-import {Box, Flex} from '@chakra-ui/react';
+import {Box, SimpleGrid, Divider} from '@chakra-ui/react';
 import React, {useMemo} from 'react';
 import {Position} from '../../graphql/generated/graphql';
 import Edit from './edit';
+import dayjs from 'dayjs';
 
 type Props = {
   position: Position;
@@ -25,19 +26,24 @@ const SinglePosition: React.FC<Props> = ({position}) => {
   }, [position]);
 
   return (
-    <Flex justify="space-between">
-      <Box>{position.instrument.symbol}</Box>
-      <Box>{position.instrument.name}</Box>
-      <Box>{position.instrument.price.current}</Box>
-      <Box>{position.price}</Box>
-      <Box>{position.amount}</Box>
-      <Box>{position.date}</Box>
-      <Box>${position.price * position.amount}</Box>
-      <Box>${currentBalance}</Box>
-      <Box textColor={change >= 0 ? 'green.400' : 'red.600'}>${change}</Box>
-      <Box textColor={change >= 0 ? 'green.400' : 'red.600'}>{percentage}%</Box>
-      <Edit />
-    </Flex>
+    <Box>
+      <SimpleGrid columns={11}>
+        <Box>{position.instrument.symbol}</Box>
+        <Box>{position.instrument.name}</Box>
+        <Box>{position.instrument.price.current}</Box>
+        <Box>{position.price}</Box>
+        <Box>{position.amount}</Box>
+        <Box>{dayjs(position.date).format('ddd, MMM D YY, h:ma')}</Box>
+        <Box>${position.price * position.amount}</Box>
+        <Box>${currentBalance}</Box>
+        <Box textColor={change >= 0 ? 'green.400' : 'red.600'}>${change}</Box>
+        <Box textColor={change >= 0 ? 'green.400' : 'red.600'}>
+          {percentage.toFixed(2)}%
+        </Box>
+        <Edit />
+      </SimpleGrid>
+      <Divider mt={3} mb={3} />
+    </Box>
   );
 };
 

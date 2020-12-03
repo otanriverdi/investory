@@ -1,19 +1,20 @@
-import {Box, Flex} from '@chakra-ui/react';
+import {Box, SimpleGrid} from '@chakra-ui/react';
 import React from 'react';
 
 const Header: React.FC = () => {
   return (
-    <Flex justify="space-between">
+    <SimpleGrid columns={11}>
       <Box>Ticker</Box>
       <Box>Company</Box>
       <Box>Last Price</Box>
       <Box>Price Open</Box>
+      <Box>Quantity</Box>
       <Box>Open Date</Box>
       <Box>Invested($)</Box>
       <Box>Value</Box>
       <Box>P/L($)</Box>
       <Box>P/L(%)</Box>
-    </Flex>
+    </SimpleGrid>
   );
 };
 
