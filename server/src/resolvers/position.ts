@@ -38,7 +38,29 @@ export class PositionResolvers {
 
   @Query(() => [Position])
   @UseMiddleware(isAuth)
-  async getPositions(@Ctx() context: MyContext): Promise<Position[]> {
-    return await Position.find({where: {owner: context.user}});
+  async getPositions(
+    @Ctx() context: MyContext,
+    @Arg('sortBy', {defaultValue: 'date'}) sortBy: 'date' | 'id' | 'price',
+    @Arg('sortDirection', {defaultValue: 'ASC'}) sortDirection: 'ASC' | 'DESC',
+  ): Promise<Position[]> {
+    let orderBy;
+    switch (sortBy) {
+      case 'price':
+        orderBy = {price: sortDirection};
+        break;
+      case 'id':
+        orderBy = {id: sortDirection};
+        break;
+      default:
+        orderBy = {date: sortDirection};
+        break;
+    }
+
+    const positions = await Position.find({
+      where: {owner: context.user},
+      order: orderBy,
+    });
+
+    return positions;
   }
 }
