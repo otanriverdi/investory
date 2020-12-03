@@ -1,8 +1,8 @@
-import {Box, SimpleGrid, Divider} from '@chakra-ui/react';
-import React, {useMemo} from 'react';
-import {Position} from '../../graphql/generated/graphql';
-import Edit from './edit';
+import {Box, Divider, SimpleGrid} from '@chakra-ui/react';
 import dayjs from 'dayjs';
+import React, {useMemo} from 'react';
+import {Position, PositionState} from '../../graphql/generated/graphql';
+import Edit from './edit';
 
 type Props = {
   position: Position;
@@ -40,7 +40,7 @@ const SinglePosition: React.FC<Props> = ({position}) => {
         <Box textColor={change >= 0 ? 'green.400' : 'red.600'}>
           {percentage.toFixed(2)}%
         </Box>
-        <Edit />
+        <Edit id={position.id} open={position.state === PositionState.Open} />
       </SimpleGrid>
       <Divider mt={3} mb={3} />
     </Box>

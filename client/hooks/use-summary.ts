@@ -1,5 +1,5 @@
 import {useMemo} from 'react';
-import {GetPositionsQuery} from '../graphql/generated/graphql';
+import {GetPositionsQuery, PositionState} from '../graphql/generated/graphql';
 
 export default function useSummary(
   data: GetPositionsQuery,
@@ -13,7 +13,11 @@ export default function useSummary(
 
     if (data) {
       data.getPositions.forEach(position => {
-        b += position.amount * position.instrument.price.current;
+        if (position.state === PositionState.Closed) {
+          b += position.closePrice.price;
+        } else {
+          b += position.amount * position.instrument.price.current;
+        }
       });
     }
 
@@ -28,14 +32,15 @@ export default function useSummary(
       const percentages = [];
 
       data.getPositions.forEach(position => {
-        const current = position.instrument.price.current;
-        const yesterday = position.instrument.price.previous;
-        const change = +(current - yesterday).toFixed(2);
+        if (position.state !== PositionState.Closed) {
+          const current = position.instrument.price.current;
+          const yesterday = position.instrument.price.previous;
+          const change = +(current - yesterday).toFixed(2);
 
-        amount = change * +position.amount;
+          amount = change * +position.amount;
 
-        // TODO fix
-        percentages.push(Math.abs(+((change * 100) / current).toFixed(2)));
+          percentages.push(Math.abs(+((change * 100) / current).toFixed(2)));
+        }
       });
 
       percentage = +(
@@ -56,11 +61,13 @@ export default function useSummary(
       const percentages = [];
 
       data.getPositions.forEach(position => {
-        const current = position.instrument.price.current;
-        const change = current - position.price;
+        if (position.state !== PositionState.Closed) {
+          const current = position.instrument.price.current;
+          const change = current - position.price;
 
-        amount = +(change * position.amount).toFixed(2);
-        percentages.push(Math.abs(+((change * 100) / current).toFixed(2)));
+          amount = +(change * position.amount).toFixed(2);
+          percentages.push(Math.abs(+((change * 100) / current).toFixed(2)));
+        }
       });
 
       percentage = +(
