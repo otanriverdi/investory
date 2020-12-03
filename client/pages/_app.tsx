@@ -34,6 +34,8 @@ const Inner: React.FC<any> = ({Component, pageProps}) => {
         audience: `https://investory-server.herokuapp.com/`,
       });
 
+      console.log(token);
+
       return {
         headers: {
           ...headers,

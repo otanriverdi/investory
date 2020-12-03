@@ -1,9 +1,20 @@
-import {Arg, Ctx, Mutation, Query, Resolver, UseMiddleware} from 'type-graphql';
+import {ClosePrice} from '../entity/ClosePrice';
+import {
+  Arg,
+  Ctx,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+  UseMiddleware,
+} from 'type-graphql';
 import {Instrument} from '../entity/Instrument';
-import {Position} from '../entity/Position';
+import {Position, PositionState} from '../entity/Position';
 import {isAuth} from '../middleware/is-auth';
 import {MyContext} from '../utils/context';
 import {CreatePositionInput, UpdatePositionInput} from '../utils/inputs';
+import {getPrice} from '../utils/get-price';
 
 @Resolver(Position)
 export class PositionResolvers {
@@ -36,6 +47,28 @@ export class PositionResolvers {
     return Position.findOneOrFail(id);
   }
 
+  @Mutation(() => ClosePrice)
+  @UseMiddleware(isAuth)
+  async closePosition(@Arg('id') id: number): Promise<ClosePrice> {
+    const position = await Position.findOneOrFail(id);
+
+    if (position.state === PositionState.CLOSED) {
+      throw new Error('Position already closed.');
+    }
+
+    position.state = PositionState.CLOSED;
+    await position.save();
+
+    const price = await getPrice(position.instrument);
+
+    const close = ClosePrice.create({
+      position,
+      price: position.amount * price.current,
+    });
+
+    return close.save();
+  }
+
   @Query(() => [Position])
   @UseMiddleware(isAuth)
   async getPositions(
@@ -62,5 +95,14 @@ export class PositionResolvers {
     });
 
     return positions;
+  }
+
+  @FieldResolver()
+  async closePrice(@Root() position: Position): Promise<ClosePrice | null> {
+    if (position.state !== PositionState.CLOSED) {
+      return null;
+    }
+
+    return await ClosePrice.findOneOrFail({position});
   }
 }

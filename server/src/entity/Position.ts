@@ -6,6 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import {ClosePrice} from './ClosePrice';
 import {Instrument} from './Instrument';
 
 export enum PositionState {
@@ -72,4 +73,7 @@ export class Position extends BaseEntity {
 
   @Column()
   owner: string;
+
+  @Field(() => ClosePrice, {nullable: true})
+  closePrice?: ClosePrice;
 }
