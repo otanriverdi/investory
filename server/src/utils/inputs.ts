@@ -41,4 +41,7 @@ export class UpdatePositionInput {
 
   @Field(() => PositionType, {nullable: true})
   type: PositionType;
+
+  @Field(() => PositionState, {nullable: true})
+  state: PositionState;
 }

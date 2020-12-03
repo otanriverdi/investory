@@ -8,6 +8,9 @@ query getPositions {
     date
     state
     type
+    closePrice {
+      price
+    }
     instrument {
       id
       symbol

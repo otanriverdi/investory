@@ -1,4 +1,3 @@
-import {ClosePrice} from '../entity/ClosePrice';
 import {
   Arg,
   Ctx,
@@ -9,12 +8,14 @@ import {
   Root,
   UseMiddleware,
 } from 'type-graphql';
+import {Not} from 'typeorm';
+import {ClosePrice} from '../entity/ClosePrice';
 import {Instrument} from '../entity/Instrument';
 import {Position, PositionState} from '../entity/Position';
 import {isAuth} from '../middleware/is-auth';
 import {MyContext} from '../utils/context';
-import {CreatePositionInput, UpdatePositionInput} from '../utils/inputs';
 import {getPrice} from '../utils/get-price';
+import {CreatePositionInput, UpdatePositionInput} from '../utils/inputs';
 
 @Resolver(Position)
 export class PositionResolvers {
@@ -42,6 +43,12 @@ export class PositionResolvers {
     @Arg('id') id: number,
     @Arg('updates') updates: UpdatePositionInput,
   ): Promise<Position> {
+    if (updates.state === PositionState.CLOSED) {
+      throw new Error(
+        'Cant close positions. Use `closePositions` mutation instead.',
+      );
+    }
+
     await Position.update(id, updates);
 
     return Position.findOneOrFail(id);
@@ -90,7 +97,7 @@ export class PositionResolvers {
     }
 
     const positions = await Position.find({
-      where: {owner: context.user},
+      where: {owner: context.user, state: Not(PositionState.DELETED)},
       order: orderBy,
     });
 

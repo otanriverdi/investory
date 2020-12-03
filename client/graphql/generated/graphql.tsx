@@ -20,12 +20,15 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   getInstruments: Array<Instrument>;
-  getInstrumentById?: Maybe<Instrument>;
-  getInstrumentBySymbol?: Maybe<Instrument>;
+  getInstrumentById: Instrument;
+  getInstrumentBySymbol: Instrument;
+  getInstrumentHistory?: Maybe<Array<InstrumentHistory>>;
   getPositions: Array<Position>;
 };
 
 export type QueryGetInstrumentsArgs = {
+  sortDirection?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Scalars['String']>;
   query?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Float']>;
   limit?: Maybe<Scalars['Float']>;
@@ -37,6 +40,16 @@ export type QueryGetInstrumentByIdArgs = {
 
 export type QueryGetInstrumentBySymbolArgs = {
   symbol: Scalars['String'];
+};
+
+export type QueryGetInstrumentHistoryArgs = {
+  duration?: Maybe<Scalars['String']>;
+  symbol: Scalars['String'];
+};
+
+export type QueryGetPositionsArgs = {
+  sortDirection?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Scalars['String']>;
 };
 
 export type Instrument = {
@@ -54,6 +67,16 @@ export type Price = {
   previous: Scalars['Float'];
 };
 
+export type InstrumentHistory = {
+  __typename?: 'InstrumentHistory';
+  close: Scalars['Float'];
+  high: Scalars['Float'];
+  low: Scalars['Float'];
+  open: Scalars['Float'];
+  volume: Scalars['Float'];
+  date: Scalars['DateTime'];
+};
+
 export type Position = {
   __typename?: 'Position';
   id: Scalars['Float'];
@@ -65,6 +88,7 @@ export type Position = {
   date: Scalars['DateTime'];
   type: PositionType;
   instrument: Instrument;
+  closePrice?: Maybe<ClosePrice>;
 };
 
 export enum PositionState {
@@ -78,10 +102,17 @@ export enum PositionType {
   Buy = 'BUY',
 }
 
+export type ClosePrice = {
+  __typename?: 'ClosePrice';
+  price: Scalars['Float'];
+  closedAt: Scalars['DateTime'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createPosition: Position;
   updatePosition: Position;
+  closePosition: ClosePrice;
 };
 
 export type MutationCreatePositionArgs = {
@@ -93,6 +124,10 @@ export type MutationUpdatePositionArgs = {
   id: Scalars['Float'];
 };
 
+export type MutationClosePositionArgs = {
+  id: Scalars['Float'];
+};
+
 export type CreatePositionInput = {
   amount: Scalars['Float'];
   price: Scalars['Float'];
@@ -101,7 +136,6 @@ export type CreatePositionInput = {
   date?: Maybe<Scalars['DateTime']>;
   instrumentId: Scalars['Float'];
   type?: Maybe<PositionType>;
-  state?: Maybe<PositionState>;
 };
 
 export type UpdatePositionInput = {
@@ -111,6 +145,22 @@ export type UpdatePositionInput = {
   date?: Maybe<Scalars['DateTime']>;
   type?: Maybe<PositionType>;
   state?: Maybe<PositionState>;
+};
+
+export type ClosePositionMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type ClosePositionMutation = {__typename?: 'Mutation'} & {
+  closePosition: {__typename?: 'ClosePrice'} & Pick<ClosePrice, 'price'>;
+};
+
+export type DeletePositionMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type DeletePositionMutation = {__typename?: 'Mutation'} & {
+  updatePosition: {__typename?: 'Position'} & Pick<Position, 'state'>;
 };
 
 export type GetPositionsQueryVariables = Exact<{[key: string]: never}>;
@@ -136,10 +186,109 @@ export type GetPositionsQuery = {__typename?: 'Query'} & {
               {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
             >;
           };
+        closePrice?: Maybe<
+          {__typename?: 'ClosePrice'} & Pick<ClosePrice, 'price'>
+        >;
       }
   >;
 };
 
+export const ClosePositionDocument = gql`
+  mutation closePosition($id: Float!) {
+    closePosition(id: $id) {
+      price
+    }
+  }
+`;
+export type ClosePositionMutationFn = Apollo.MutationFunction<
+  ClosePositionMutation,
+  ClosePositionMutationVariables
+>;
+
+/**
+ * __useClosePositionMutation__
+ *
+ * To run a mutation, you first call `useClosePositionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useClosePositionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [closePositionMutation, { data, loading, error }] = useClosePositionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useClosePositionMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ClosePositionMutation,
+    ClosePositionMutationVariables
+  >,
+) {
+  return Apollo.useMutation<
+    ClosePositionMutation,
+    ClosePositionMutationVariables
+  >(ClosePositionDocument, baseOptions);
+}
+export type ClosePositionMutationHookResult = ReturnType<
+  typeof useClosePositionMutation
+>;
+export type ClosePositionMutationResult = Apollo.MutationResult<ClosePositionMutation>;
+export type ClosePositionMutationOptions = Apollo.BaseMutationOptions<
+  ClosePositionMutation,
+  ClosePositionMutationVariables
+>;
+export const DeletePositionDocument = gql`
+  mutation deletePosition($id: Float!) {
+    updatePosition(updates: {state: DELETED}, id: $id) {
+      state
+    }
+  }
+`;
+export type DeletePositionMutationFn = Apollo.MutationFunction<
+  DeletePositionMutation,
+  DeletePositionMutationVariables
+>;
+
+/**
+ * __useDeletePositionMutation__
+ *
+ * To run a mutation, you first call `useDeletePositionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePositionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePositionMutation, { data, loading, error }] = useDeletePositionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeletePositionMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeletePositionMutation,
+    DeletePositionMutationVariables
+  >,
+) {
+  return Apollo.useMutation<
+    DeletePositionMutation,
+    DeletePositionMutationVariables
+  >(DeletePositionDocument, baseOptions);
+}
+export type DeletePositionMutationHookResult = ReturnType<
+  typeof useDeletePositionMutation
+>;
+export type DeletePositionMutationResult = Apollo.MutationResult<DeletePositionMutation>;
+export type DeletePositionMutationOptions = Apollo.BaseMutationOptions<
+  DeletePositionMutation,
+  DeletePositionMutationVariables
+>;
 export const GetPositionsDocument = gql`
   query getPositions {
     getPositions {
@@ -160,6 +309,9 @@ export const GetPositionsDocument = gql`
           current
           previous
         }
+      }
+      closePrice {
+        price
       }
     }
   }

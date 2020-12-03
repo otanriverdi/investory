@@ -1,0 +1,5 @@
+mutation deletePosition($id: Float!) {
+  updatePosition(updates: {state: DELETED}, id: $id) {
+    state
+  }
+}

@@ -1,12 +1,11 @@
 import {Divider, Flex} from '@chakra-ui/react';
 import React from 'react';
-import {Position} from '../../graphql/generated/graphql';
 // import Form from './posTable/form';
 import Header from './header';
 import SinglePosition from './position';
 
 type Props = {
-  positions?: Position[];
+  positions?: any[];
 };
 
 const Positions: React.FC<Props> = ({positions = []}) => {
