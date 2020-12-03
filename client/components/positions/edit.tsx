@@ -1,11 +1,11 @@
-import {ChevronDownIcon, SettingsIcon} from '@chakra-ui/icons';
+import {ChevronDownIcon, EditIcon} from '@chakra-ui/icons';
 import {Menu, MenuButton, MenuList, MenuItem, Button} from '@chakra-ui/react';
 import React from 'react';
 
 const Edit: React.FC = () => (
   <Menu>
     <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-      <SettingsIcon />
+      <EditIcon />
     </MenuButton>
     <MenuList>
       <MenuItem>Edit</MenuItem>

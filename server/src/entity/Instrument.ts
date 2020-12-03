@@ -28,5 +28,5 @@ export class Instrument extends BaseEntity {
   type: InstrumentType;
 
   @Field(() => Price, {nullable: true})
-  price: Price;
+  price?: Price;
 }

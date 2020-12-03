@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import {Arg, FieldResolver, Query, Resolver, Root} from 'type-graphql';
 import {Like} from 'typeorm';
+import {getPrice} from '../utils/get-price';
 import {Instrument} from '../entity/Instrument';
 import {InstrumentHistory} from '../entity/InstrumentHistory';
 import {Price} from '../entity/Price';
@@ -86,39 +87,12 @@ export class InstrumentResolvers {
 
   @FieldResolver()
   async price(@Root() instrument: Instrument): Promise<Price> {
-    const token = process.env.IEX_TOKEN;
-
-    // Mock data in case we dont fetch
-    let current = 150;
-    let previous = 145;
-
     if (process.env.ENABLE_IEX === 'true') {
       console.warn('Using IEX to fetch real price data!');
 
-      if (instrument.type === 'crypto') {
-        const res = await fetch(
-          `https://cloud-sse.iexapis.com/stable/crypto/${instrument.symbol}/quote?token=${token}`,
-        );
-
-        const json = await res.json();
-
-        current = json.latestPrice;
-        previous = json.previousClose;
-      } else if (instrument.type === 'stock') {
-        const res = await fetch(
-          `https://cloud-sse.iexapis.com/stable/stock/${instrument.symbol}/quote?token=${token}`,
-        );
-
-        const json = await res.json();
-
-        current = json.latestPrice;
-        previous = json.previousClose;
-      }
+      return await getPrice(instrument);
+    } else {
+      return {current: 150, previous: 153};
     }
-
-    return {
-      current,
-      previous,
-    };
   }
 }

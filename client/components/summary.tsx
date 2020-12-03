@@ -10,7 +10,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React from 'react';
-import LineChart from './charts/line-chart';
 
 type Props = {
   name?: string;
@@ -55,59 +54,6 @@ const Summary: React.FC<Props> = ({
     );
   }
 
-  //TODO: Dummy data to be replaced with live data from service
-  const dummyLabels = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  const dummyData1 = [1, 1.2, 1.3, 1.7, 1.5, 1.3, 1.6, 1.7, 1.8, 1.5, 1.7, 2.0];
-  const dummyData2 = [
-    0.2,
-    1.2,
-    1.5,
-    1.4,
-    1.6,
-    1.7,
-    1.6,
-    1.8,
-    1.8,
-    1.7,
-    1.6,
-    2.2,
-  ];
-  const dummyDataSets = [
-    {
-      label: 'My Portfolio',
-      data: dummyData1,
-    },
-    {
-      fill: false,
-      label: 'S&P 500',
-      data: dummyData2,
-      backgroundColor: '#c04b4b',
-      borderColor: '#c04b4b',
-      pointBorderColor: 'c04b4b',
-      pointBackgroundColor: '#fff',
-    },
-  ];
-
-  const chartProp = {
-    title: 'Portfolio performance this year',
-    labels: dummyLabels,
-    dataSets: dummyDataSets,
-    height: 86,
-  };
-
   return (
     <Box>
       <Text mb={6} fontWeight="200" fontSize="4xl">
@@ -127,7 +73,6 @@ const Summary: React.FC<Props> = ({
         </Stat>
         {renderSubStat('Daily Change', daily)}
         {renderSubStat('Total Change', total)}
-        <LineChart {...chartProp} />
       </HStack>
       <Divider my={6} />
     </Box>
