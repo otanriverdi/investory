@@ -2,7 +2,7 @@ import {Divider, Flex, Box} from '@chakra-ui/react';
 import React from 'react';
 // import Form from './posTable/form';
 import Header from './header';
-import SinglePosition from './position';
+import OtherPosition from './other-position';
 import StockPosition from './stock-position';
 
 type Props = {
@@ -18,10 +18,7 @@ const Positions: React.FC<Props> = ({positions = []}) => {
         position.instrument.type === 'stock' ? (
           <StockPosition position={position} key={position.id} />
         ) : (
-          <Flex direction="row">
-            <SinglePosition position={position} key={position.id} />
-            <Box>No data found!</Box>
-          </Flex>
+          <OtherPosition position={position} key={position.id} />
         ),
       )}
       {/* <Form /> */}
