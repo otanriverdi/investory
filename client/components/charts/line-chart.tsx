@@ -119,14 +119,7 @@ const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
 
   return (
     <>
-      <Box
-        ref={boundingBox}
-        _hover={{borderColor: 'cyan.300'}}
-        borderWidth="1px"
-        borderRadius="md"
-        px={4}
-        py={2}
-      >
+      <Box ref={boundingBox}>
         <Line
           data={chartData}
           width={width}

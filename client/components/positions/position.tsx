@@ -27,9 +27,8 @@ const SinglePosition: React.FC<Props> = ({position}) => {
 
   return (
     <Box>
-      <SimpleGrid columns={11}>
+      <SimpleGrid columns={10}>
         <Box>{position.instrument.symbol}</Box>
-        <Box>{position.instrument.name}</Box>
         <Box>{position.instrument.price.current}</Box>
         <Box>{position.price}</Box>
         <Box>{position.amount}</Box>
