@@ -163,6 +163,22 @@ export type DeletePositionMutation = {__typename?: 'Mutation'} & {
   updatePosition: {__typename?: 'Position'} & Pick<Position, 'state'>;
 };
 
+export type GetInstrumentHistoryQueryVariables = Exact<{
+  symbol: Scalars['String'];
+  duration?: Maybe<Scalars['String']>;
+}>;
+
+export type GetInstrumentHistoryQuery = {__typename?: 'Query'} & {
+  getInstrumentHistory?: Maybe<
+    Array<
+      {__typename?: 'InstrumentHistory'} & Pick<
+        InstrumentHistory,
+        'open' | 'close' | 'high' | 'low' | 'volume' | 'date'
+      >
+    >
+  >;
+};
+
 export type GetPositionsQueryVariables = Exact<{[key: string]: never}>;
 
 export type GetPositionsQuery = {__typename?: 'Query'} & {
@@ -178,6 +194,9 @@ export type GetPositionsQuery = {__typename?: 'Query'} & {
       | 'state'
       | 'type'
     > & {
+        closePrice?: Maybe<
+          {__typename?: 'ClosePrice'} & Pick<ClosePrice, 'price'>
+        >;
         instrument: {__typename?: 'Instrument'} & Pick<
           Instrument,
           'id' | 'symbol' | 'name' | 'type'
@@ -186,9 +205,6 @@ export type GetPositionsQuery = {__typename?: 'Query'} & {
               {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
             >;
           };
-        closePrice?: Maybe<
-          {__typename?: 'ClosePrice'} & Pick<ClosePrice, 'price'>
-        >;
       }
   >;
 };
@@ -289,6 +305,68 @@ export type DeletePositionMutationOptions = Apollo.BaseMutationOptions<
   DeletePositionMutation,
   DeletePositionMutationVariables
 >;
+export const GetInstrumentHistoryDocument = gql`
+  query getInstrumentHistory($symbol: String!, $duration: String) {
+    getInstrumentHistory(symbol: $symbol, duration: $duration) {
+      open
+      close
+      high
+      low
+      volume
+      date
+    }
+  }
+`;
+
+/**
+ * __useGetInstrumentHistoryQuery__
+ *
+ * To run a query within a React component, call `useGetInstrumentHistoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInstrumentHistoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInstrumentHistoryQuery({
+ *   variables: {
+ *      symbol: // value for 'symbol'
+ *      duration: // value for 'duration'
+ *   },
+ * });
+ */
+export function useGetInstrumentHistoryQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetInstrumentHistoryQuery,
+    GetInstrumentHistoryQueryVariables
+  >,
+) {
+  return Apollo.useQuery<
+    GetInstrumentHistoryQuery,
+    GetInstrumentHistoryQueryVariables
+  >(GetInstrumentHistoryDocument, baseOptions);
+}
+export function useGetInstrumentHistoryLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetInstrumentHistoryQuery,
+    GetInstrumentHistoryQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<
+    GetInstrumentHistoryQuery,
+    GetInstrumentHistoryQueryVariables
+  >(GetInstrumentHistoryDocument, baseOptions);
+}
+export type GetInstrumentHistoryQueryHookResult = ReturnType<
+  typeof useGetInstrumentHistoryQuery
+>;
+export type GetInstrumentHistoryLazyQueryHookResult = ReturnType<
+  typeof useGetInstrumentHistoryLazyQuery
+>;
+export type GetInstrumentHistoryQueryResult = Apollo.QueryResult<
+  GetInstrumentHistoryQuery,
+  GetInstrumentHistoryQueryVariables
+>;
 export const GetPositionsDocument = gql`
   query getPositions {
     getPositions {
@@ -300,6 +378,9 @@ export const GetPositionsDocument = gql`
       date
       state
       type
+      closePrice {
+        price
+      }
       instrument {
         id
         symbol
@@ -309,9 +390,6 @@ export const GetPositionsDocument = gql`
           current
           previous
         }
-      }
-      closePrice {
-        price
       }
     }
   }

@@ -1,0 +1,5 @@
+query getInstrumentHistory($symbol:String!, $duration:String){
+  getInstrumentHistory(symbol:$symbol duration:$duration){
+    open close high low volume date 
+  }
+}
