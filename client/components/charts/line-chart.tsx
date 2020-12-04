@@ -83,6 +83,10 @@ const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
     title: {
       display: false,
     },
+    tooltips: {
+      enabled: false,
+    },
+    hover: {mode: null},
     scales: {
       xAxes: [
         {
@@ -97,7 +101,7 @@ const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
       yAxes: [
         {
           gridLines: {
-            display: true,
+            display: false,
             drawOnChartArea: false,
           },
           ticks: {
@@ -122,8 +126,8 @@ const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
       <Box ref={boundingBox}>
         <Line
           data={chartData}
-          width={width}
-          height={height}
+          width={100}
+          height={50}
           options={optionsDefault}
         />
       </Box>
