@@ -1,10 +1,10 @@
 import fetch from 'node-fetch';
 import {Arg, FieldResolver, Query, Resolver, Root} from 'type-graphql';
 import {Like} from 'typeorm';
-import {getPrice} from '../utils/get-price';
 import {Instrument} from '../entity/Instrument';
 import {InstrumentHistory} from '../entity/InstrumentHistory';
 import {Price} from '../entity/Price';
+import {getPrice} from '../utils/get-price';
 
 export enum Duration {
   Y5 = '5y',
@@ -71,7 +71,7 @@ export class InstrumentResolvers {
 
     if (process.env.ENABLE_IEX === 'true') {
       console.warn('Using IEX to fetch real price data!');
-      url = `https://cloud-sse.iexapis.com/stable/stock/${symbol}/chart/${duration}?token=${token}`;
+      url = `https://cloud.iexapis.com/stable/stock/${symbol}/chart/${duration}?token=${token}`;
     }
 
     const res = await fetch(url);
