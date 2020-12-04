@@ -1,4 +1,4 @@
-import {Divider, Flex, Box} from '@chakra-ui/react';
+import {Box, Divider, Flex} from '@chakra-ui/react';
 import React from 'react';
 // import Form from './posTable/form';
 import Header from './header';
@@ -11,7 +11,7 @@ type Props = {
 
 const Positions: React.FC<Props> = ({positions = []}) => {
   return (
-    <Flex direction="column">
+    <Flex borderRadius="md" borderWidth="1px" p={2} direction="column">
       <Header />
       <Divider mt={3} mb={3} />
       {positions.map(position =>

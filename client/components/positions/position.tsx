@@ -1,5 +1,6 @@
 import {Box, Divider, SimpleGrid} from '@chakra-ui/react';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 import React, {useMemo} from 'react';
 import {Position, PositionState} from '../../graphql/generated/graphql';
 import Edit from './edit';
@@ -28,14 +29,18 @@ const SinglePosition: React.FC<Props> = ({position}) => {
   return (
     <Box>
       <SimpleGrid columns={10}>
-        <Box>{position.instrument.symbol}</Box>
-        <Box>{position.instrument.price.current}</Box>
+        <Link href={`/instruments/${position.instrument.symbol}/1m`}>
+          {position.instrument.symbol}
+        </Link>
+        <Box>{position.instrument.price.current.toFixed(2)}</Box>
         <Box>{position.price}</Box>
         <Box>{position.amount}</Box>
         <Box>{dayjs(position.date).format('ddd, MMM D YY, h:ma')}</Box>
-        <Box>${position.price * position.amount}</Box>
-        <Box>${currentBalance}</Box>
-        <Box textColor={change >= 0 ? 'green.400' : 'red.600'}>${change}</Box>
+        <Box>${(position.price * position.amount).toFixed(2)}</Box>
+        <Box>${currentBalance.toFixed(2)}</Box>
+        <Box textColor={change >= 0 ? 'green.400' : 'red.600'}>
+          ${change.toFixed(2)}
+        </Box>
         <Box textColor={change >= 0 ? 'green.400' : 'red.600'}>
           {percentage.toFixed(2)}%
         </Box>
