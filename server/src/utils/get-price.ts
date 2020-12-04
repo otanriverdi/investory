@@ -10,13 +10,13 @@ export async function getPrice(instrument: Instrument): Promise<Price> {
 
   if (instrument.type === 'crypto') {
     const res = await fetch(
-      `https://cloud-sse.iexapis.com/stable/crypto/${instrument.symbol}/quote?token=${token}`,
+      `https://cloud.iexapis.com/stable/crypto/${instrument.symbol}/quote?token=${token}`,
     );
 
     const json = await res.json();
 
     current = json.latestPrice;
-    previous = json.previousClose;
+    previous = json.previousClose || json.latestPrice;
   } else if (instrument.type === 'stock') {
     const res = await fetch(
       `https://cloud-sse.iexapis.com/stable/stock/${instrument.symbol}/quote?token=${token}`,
@@ -25,7 +25,7 @@ export async function getPrice(instrument: Instrument): Promise<Price> {
     const json = await res.json();
 
     current = json.latestPrice;
-    previous = json.previousClose;
+    previous = json.previousClose || json.latestPrice;
   }
 
   return {current, previous};
