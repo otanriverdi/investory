@@ -1,5 +1,5 @@
 import {useAuth0} from '@auth0/auth0-react';
-import {UnlockIcon} from '@chakra-ui/icons';
+import {MoonIcon, SunIcon, UnlockIcon} from '@chakra-ui/icons';
 import {
   Avatar,
   Divider,
@@ -7,8 +7,10 @@ import {
   IconButton,
   Link,
   Spacer,
+  Switch,
   Text,
   Tooltip,
+  useColorMode,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -20,6 +22,8 @@ const Header: React.FC = () => {
     isLoading,
     logout,
   } = useAuth0();
+
+  const {colorMode, toggleColorMode} = useColorMode();
 
   return (
     <header>
@@ -35,6 +39,13 @@ const Header: React.FC = () => {
           </Text>
         </Link>
         <Spacer />
+        {colorMode === 'light' ? <MoonIcon mr={2} /> : <SunIcon mr={2} />}
+        <Switch
+          mr={4}
+          size="lg"
+          onChange={() => toggleColorMode()}
+          isChecked={colorMode === 'dark'}
+        />
         <Tooltip
           label={isAuthenticated ? 'Logout' : 'Login/Sign Up'}
           aria-label={isAuthenticated ? 'Logout' : 'Login/Sign Up'}
