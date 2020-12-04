@@ -19,7 +19,7 @@ export class CreatePositionInput {
   date: Date;
 
   @Field()
-  instrumentId: number;
+  symbol: string;
 
   @Field(() => PositionType, {nullable: true})
   type: PositionType;
