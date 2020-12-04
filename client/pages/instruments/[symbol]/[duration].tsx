@@ -52,7 +52,10 @@ const InstrumentHistory: React.FC = () => {
     });
 
     const zoomRange = volumeData.length && {
-      minDate: volumeData[Math.abs(volumeData.length - 100)][0],
+      minDate:
+        volumeData[
+          volumeData.length - 100 < 0 ? 0 : volumeData.length - 100
+        ][0],
       maxDate: volumeData[volumeData.length - 1][0],
     };
 
