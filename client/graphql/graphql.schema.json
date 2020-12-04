@@ -968,14 +968,14 @@
             "defaultValue": null
           },
           {
-            "name": "instrumentId",
+            "name": "symbol",
             "description": null,
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
                 "kind": "SCALAR",
-                "name": "Float",
+                "name": "String",
                 "ofType": null
               }
             },

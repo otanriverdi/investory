@@ -31,7 +31,7 @@ export class PositionResolvers {
     });
 
     position.instrument = await Instrument.findOneOrFail({
-      where: {id: fields.instrumentId},
+      where: {symbol: fields.symbol},
     });
 
     return position.save();

@@ -134,7 +134,7 @@ export type CreatePositionInput = {
   currency?: Maybe<Scalars['String']>;
   commission?: Maybe<Scalars['Float']>;
   date?: Maybe<Scalars['DateTime']>;
-  instrumentId: Scalars['Float'];
+  symbol: Scalars['String'];
   type?: Maybe<PositionType>;
 };
 
