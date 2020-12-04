@@ -5,7 +5,6 @@ const Header: React.FC = () => {
   return (
     <SimpleGrid columns={11}>
       <Box>Ticker</Box>
-      <Box>Company</Box>
       <Box>Last Price</Box>
       <Box>Price Open</Box>
       <Box>Quantity</Box>
