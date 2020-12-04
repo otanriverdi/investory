@@ -155,12 +155,37 @@ export type ClosePositionMutation = {__typename?: 'Mutation'} & {
   closePosition: {__typename?: 'ClosePrice'} & Pick<ClosePrice, 'price'>;
 };
 
+export type CreatePositionMutationVariables = Exact<{
+  fields: CreatePositionInput;
+}>;
+
+export type CreatePositionMutation = {__typename?: 'Mutation'} & {
+  createPosition: {__typename?: 'Position'} & Pick<Position, 'amount'>;
+};
+
 export type DeletePositionMutationVariables = Exact<{
   id: Scalars['Float'];
 }>;
 
 export type DeletePositionMutation = {__typename?: 'Mutation'} & {
   updatePosition: {__typename?: 'Position'} & Pick<Position, 'state'>;
+};
+
+export type GetInstrumentsQueryVariables = Exact<{
+  query?: Maybe<Scalars['String']>;
+}>;
+
+export type GetInstrumentsQuery = {__typename?: 'Query'} & {
+  getInstruments: Array<
+    {__typename?: 'Instrument'} & Pick<
+      Instrument,
+      'id' | 'symbol' | 'name' | 'type'
+    > & {
+        price?: Maybe<
+          {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
+        >;
+      }
+  >;
 };
 
 export type GetInstrumentHistoryQueryVariables = Exact<{
@@ -177,6 +202,21 @@ export type GetInstrumentHistoryQuery = {__typename?: 'Query'} & {
       >
     >
   >;
+};
+
+export type GetInstrumentBySymbolQueryVariables = Exact<{
+  symbol: Scalars['String'];
+}>;
+
+export type GetInstrumentBySymbolQuery = {__typename?: 'Query'} & {
+  getInstrumentBySymbol: {__typename?: 'Instrument'} & Pick<
+    Instrument,
+    'id' | 'symbol' | 'name' | 'type'
+  > & {
+      price?: Maybe<
+        {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
+      >;
+    };
 };
 
 export type GetPositionsQueryVariables = Exact<{[key: string]: never}>;
@@ -257,6 +297,54 @@ export type ClosePositionMutationOptions = Apollo.BaseMutationOptions<
   ClosePositionMutation,
   ClosePositionMutationVariables
 >;
+export const CreatePositionDocument = gql`
+  mutation createPosition($fields: CreatePositionInput!) {
+    createPosition(fields: $fields) {
+      amount
+    }
+  }
+`;
+export type CreatePositionMutationFn = Apollo.MutationFunction<
+  CreatePositionMutation,
+  CreatePositionMutationVariables
+>;
+
+/**
+ * __useCreatePositionMutation__
+ *
+ * To run a mutation, you first call `useCreatePositionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePositionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPositionMutation, { data, loading, error }] = useCreatePositionMutation({
+ *   variables: {
+ *      fields: // value for 'fields'
+ *   },
+ * });
+ */
+export function useCreatePositionMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreatePositionMutation,
+    CreatePositionMutationVariables
+  >,
+) {
+  return Apollo.useMutation<
+    CreatePositionMutation,
+    CreatePositionMutationVariables
+  >(CreatePositionDocument, baseOptions);
+}
+export type CreatePositionMutationHookResult = ReturnType<
+  typeof useCreatePositionMutation
+>;
+export type CreatePositionMutationResult = Apollo.MutationResult<CreatePositionMutation>;
+export type CreatePositionMutationOptions = Apollo.BaseMutationOptions<
+  CreatePositionMutation,
+  CreatePositionMutationVariables
+>;
 export const DeletePositionDocument = gql`
   mutation deletePosition($id: Float!) {
     updatePosition(updates: {state: DELETED}, id: $id) {
@@ -304,6 +392,69 @@ export type DeletePositionMutationResult = Apollo.MutationResult<DeletePositionM
 export type DeletePositionMutationOptions = Apollo.BaseMutationOptions<
   DeletePositionMutation,
   DeletePositionMutationVariables
+>;
+export const GetInstrumentsDocument = gql`
+  query getInstruments($query: String) {
+    getInstruments(query: $query) {
+      id
+      symbol
+      name
+      type
+      price {
+        current
+        previous
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetInstrumentsQuery__
+ *
+ * To run a query within a React component, call `useGetInstrumentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInstrumentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInstrumentsQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useGetInstrumentsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetInstrumentsQuery,
+    GetInstrumentsQueryVariables
+  >,
+) {
+  return Apollo.useQuery<GetInstrumentsQuery, GetInstrumentsQueryVariables>(
+    GetInstrumentsDocument,
+    baseOptions,
+  );
+}
+export function useGetInstrumentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetInstrumentsQuery,
+    GetInstrumentsQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<GetInstrumentsQuery, GetInstrumentsQueryVariables>(
+    GetInstrumentsDocument,
+    baseOptions,
+  );
+}
+export type GetInstrumentsQueryHookResult = ReturnType<
+  typeof useGetInstrumentsQuery
+>;
+export type GetInstrumentsLazyQueryHookResult = ReturnType<
+  typeof useGetInstrumentsLazyQuery
+>;
+export type GetInstrumentsQueryResult = Apollo.QueryResult<
+  GetInstrumentsQuery,
+  GetInstrumentsQueryVariables
 >;
 export const GetInstrumentHistoryDocument = gql`
   query getInstrumentHistory($symbol: String!, $duration: String) {
@@ -366,6 +517,69 @@ export type GetInstrumentHistoryLazyQueryHookResult = ReturnType<
 export type GetInstrumentHistoryQueryResult = Apollo.QueryResult<
   GetInstrumentHistoryQuery,
   GetInstrumentHistoryQueryVariables
+>;
+export const GetInstrumentBySymbolDocument = gql`
+  query getInstrumentBySymbol($symbol: String!) {
+    getInstrumentBySymbol(symbol: $symbol) {
+      id
+      symbol
+      name
+      type
+      price {
+        current
+        previous
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetInstrumentBySymbolQuery__
+ *
+ * To run a query within a React component, call `useGetInstrumentBySymbolQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInstrumentBySymbolQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInstrumentBySymbolQuery({
+ *   variables: {
+ *      symbol: // value for 'symbol'
+ *   },
+ * });
+ */
+export function useGetInstrumentBySymbolQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetInstrumentBySymbolQuery,
+    GetInstrumentBySymbolQueryVariables
+  >,
+) {
+  return Apollo.useQuery<
+    GetInstrumentBySymbolQuery,
+    GetInstrumentBySymbolQueryVariables
+  >(GetInstrumentBySymbolDocument, baseOptions);
+}
+export function useGetInstrumentBySymbolLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetInstrumentBySymbolQuery,
+    GetInstrumentBySymbolQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<
+    GetInstrumentBySymbolQuery,
+    GetInstrumentBySymbolQueryVariables
+  >(GetInstrumentBySymbolDocument, baseOptions);
+}
+export type GetInstrumentBySymbolQueryHookResult = ReturnType<
+  typeof useGetInstrumentBySymbolQuery
+>;
+export type GetInstrumentBySymbolLazyQueryHookResult = ReturnType<
+  typeof useGetInstrumentBySymbolLazyQuery
+>;
+export type GetInstrumentBySymbolQueryResult = Apollo.QueryResult<
+  GetInstrumentBySymbolQuery,
+  GetInstrumentBySymbolQueryVariables
 >;
 export const GetPositionsDocument = gql`
   query getPositions {
