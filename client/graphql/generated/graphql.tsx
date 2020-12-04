@@ -173,7 +173,7 @@ export type GetInstrumentHistoryQuery = {__typename?: 'Query'} & {
     Array<
       {__typename?: 'InstrumentHistory'} & Pick<
         InstrumentHistory,
-        'close' | 'high' | 'low' | 'open' | 'volume' | 'date'
+        'open' | 'close' | 'high' | 'low' | 'volume' | 'date'
       >
     >
   >;
@@ -308,10 +308,10 @@ export type DeletePositionMutationOptions = Apollo.BaseMutationOptions<
 export const GetInstrumentHistoryDocument = gql`
   query getInstrumentHistory($symbol: String!, $duration: String) {
     getInstrumentHistory(symbol: $symbol, duration: $duration) {
+      open
       close
       high
       low
-      open
       volume
       date
     }
