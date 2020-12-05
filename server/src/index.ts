@@ -1,8 +1,6 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
 import {ApolloServer} from 'apollo-server-express';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import express from 'express';
 import helmet from 'helmet';
 import 'reflect-metadata'; // required for typeorm
@@ -10,7 +8,9 @@ import {buildSchema} from 'type-graphql';
 import {createConnection} from 'typeorm';
 import checkJwt from './middleware/check-jwt';
 import {InstrumentResolvers} from './resolvers/instrument';
+import {NewsResolvers} from './resolvers/news';
 import {PositionResolvers} from './resolvers/position';
+dotenv.config();
 
 createConnection()
   .then(async connection => {
@@ -26,7 +26,7 @@ createConnection()
     app.use(checkJwt);
 
     const schema = await buildSchema({
-      resolvers: [InstrumentResolvers, PositionResolvers],
+      resolvers: [InstrumentResolvers, PositionResolvers, NewsResolvers],
     });
 
     const server = new ApolloServer({
