@@ -1,82 +1,49 @@
 import {CheckIcon} from '@chakra-ui/icons';
 import {
+  Button,
   Flex,
+  FormControl,
   Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Button,
-  FormControl,
 } from '@chakra-ui/react';
-import React, {useState, useEffect} from 'react';
-import {
-  useGetInstrumentsLazyQuery,
-  useCreatePositionMutation,
-} from '../../graphql/generated/graphql';
+import React, {useState} from 'react';
+import {useCreatePositionMutation} from '../../graphql/generated/graphql';
 
 const Form: React.FC = () => {
   const [price, setPrice] = useState(0);
-  const [invested, setInvested] = useState(0);
-  const [query, setQuery] = useState('');
-  const [
-    getInstruments,
-    {loading: insLoading, error: insError, data: insData},
-  ] = useGetInstrumentsLazyQuery();
-  const [
-    createPosition,
-    {loading: posLoading, error: posError, data: posData},
-  ] = useCreatePositionMutation();
+  const [amount, setAmount] = useState(0);
+  const [symbol, setSymbol] = useState('');
 
-  useEffect(() => {
-    if (query.length > 2) {
-      getInstruments({
-        variables: {
-          query: query,
-        },
-      });
-    }
-  }, [query]);
-
-  function handleQuery(e) {
-    setQuery(e.target.value);
-  }
-
-  function handlePriceChange(value) {
-    setPrice(value);
-  }
-
-  function handleInvestedChange(value) {
-    setInvested(value);
-  }
+  const [createPosition] = useCreatePositionMutation();
 
   async function handleSubmit() {
-    console.log(invested);
-    console.log(price);
-    console.log(query);
     await createPosition({
       variables: {
         fields: {
-          amount: invested,
-          price: price,
-          symbol: query,
+          amount,
+          price,
+          symbol,
         },
       },
       refetchQueries: ['getPositions'],
     });
-    setQuery('');
+
+    setSymbol('');
     setPrice(0);
-    setInvested(0);
+    setAmount(0);
   }
 
   return (
     <FormControl>
       <Flex mb={2} justify="space-between">
         <Input
-          placeholder="Search a ticker"
-          onChange={handleQuery}
-          value={query}
+          placeholder="Symbol"
+          onChange={e => setSymbol(e.target.value)}
+          value={symbol}
           width="200px"
         />
         <NumberInput
@@ -84,7 +51,7 @@ const Form: React.FC = () => {
           precision={2}
           step={0.2}
           value={price}
-          onChange={handlePriceChange}
+          onChange={(_, num) => setPrice(num)}
         >
           <NumberInputField />
           <NumberInputStepper>
@@ -95,8 +62,8 @@ const Form: React.FC = () => {
         <NumberInput
           defaultValue={200}
           step={10}
-          value={invested}
-          onChange={handleInvestedChange}
+          value={amount}
+          onChange={(_, num) => setAmount(num)}
         >
           <NumberInputField />
           <NumberInputStepper>
