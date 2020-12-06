@@ -1,9 +1,9 @@
-import {ExternalLinkIcon} from '@chakra-ui/icons';
+import {ExternalLinkIcon, Icon} from '@chakra-ui/icons';
 import {
   Box,
-  Button,
   Divider,
   Heading,
+  Image,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -18,6 +18,7 @@ import {
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import React, {useState} from 'react';
+import {IoReloadCircle} from 'react-icons/io5';
 import {NewsItem} from '../graphql/generated/graphql';
 import useNews from '../hooks/use-news';
 
@@ -28,21 +29,28 @@ type NewsFeedPropType = {
 
 const NewsFeed: React.FC<NewsFeedPropType> = props => {
   const [selectedNews, setSelectedNews] = useState({
-    newsId: '',
+    newsItem: {} as NewsItem,
     showNews: false,
   });
-  // const [queryRes, setQueryRes] = useState({data:null, loading:false})
+
+  const [newsCount, setNewsCount] = useState(3);
   const {symbols, last} = props;
 
-  function showSelectedNews(newsId: string) {
-    setSelectedNews({newsId, showNews: true});
+  function showSelectedNews(newsItem: NewsItem) {
+    setSelectedNews({newsItem, showNews: true});
   }
 
   function onCloseNewsModal() {
-    setSelectedNews({newsId: '', showNews: false});
+    setSelectedNews({newsItem: {} as NewsItem, showNews: false});
   }
 
-  const queryRes = useNews(symbols, last);
+  if (last) setNewsCount(last);
+  const symbolss = ['AAPL', 'TWTR', 'ROCK'];
+  const queryRes = useNews(symbolss, newsCount);
+
+  function loadMoreNews() {
+    setNewsCount(count => count + 1);
+  }
 
   function showSpinner(loading) {
     return (
@@ -58,54 +66,73 @@ const NewsFeed: React.FC<NewsFeedPropType> = props => {
     );
   }
 
+  function getNewsFooter(newsItem: NewsItem) {
+    return (
+      <Text fontSize="xs" color="gray.500">
+        {newsItem.source} | {dayjs(newsItem.datetime).format('MMMM DD YYYY')} |
+        <Link href={newsItem.url}>
+          <ExternalLinkIcon mx="3px" color="cyan.500" />
+        </Link>
+      </Text>
+    );
+  }
+
   return (
     <>
-      <Box
-        borderWidth="1px"
-        borderRadius="lg"
-        padding="15px"
-        overflow="scroll"
-        w="260px"
-        h="400px"
-      >
+      <Box borderWidth="1px" borderRadius="lg" padding="10px" w="250px">
         <Stack spacing="5px">
           <Heading as="h3" size="md">
-            <Text>News</Text>
+            <Stack direction="row" justify="space-between">
+              <Text>News</Text>
+              <Icon
+                as={IoReloadCircle}
+                color="cyan.500"
+                w={6}
+                h={6}
+                onClick={() => loadMoreNews()}
+                _hover={{color: 'blue.500', cursor: 'pointer'}}
+              ></Icon>
+            </Stack>
           </Heading>
           <Divider />
-          {showSpinner(queryRes ? queryRes.loading : true)}
-          {!queryRes?.loading &&
-            // <>
-            queryRes &&
-            queryRes.data?.map((newsItem: NewsItem, index) => (
-              <Box
-                key={index}
-                w="220px"
-                onClick={() => showSelectedNews(index)}
-                _hover={{backgroundColor: 'gray.100'}}
-              >
-                <Heading as="h5" size="sm">
-                  <Text isTruncated={true}>{newsItem.headline}</Text>
-                </Heading>
-                {/* <HStack> */}
-                <Box w="200px">
-                  <Text fontSize="sm" isTruncated={true}>
-                    {newsItem.summary}
-                  </Text>
-                  <Text fontSize="xs" color="gray.500">
-                    {newsItem.source} |{' '}
-                    {dayjs(newsItem.datetime).format('MMMM DD YYYY')} |
-                    <Link href={newsItem.url}>
-                      <>
-                        link <ExternalLinkIcon mx="2px" />{' '}
-                      </>
-                    </Link>
-                  </Text>
+          <Box overflow="auto" h="400px">
+            {showSpinner(queryRes ? queryRes.loading : true)}
+            {!queryRes?.loading &&
+              queryRes &&
+              queryRes.data?.map((newsItem: NewsItem, index) => (
+                <Box key={index} w="210px" pb={2} pt={2}>
+                  <Box
+                    _hover={{
+                      textDecoration: 'underline',
+                      color: 'cyan.500',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => showSelectedNews(newsItem)}
+                  >
+                    <Heading as="h5" size="sm">
+                      <Text
+                        isTruncated={true}
+                        _hover={{
+                          textDecoration: 'underline',
+                          color: 'cyan.500',
+                        }}
+                      >
+                        {newsItem.headline}
+                      </Text>
+                    </Heading>
+                    <Text
+                      fontSize="sm"
+                      isTruncated={true}
+                      _hover={{textDecoration: 'underline', color: 'cyan.500'}}
+                    >
+                      {newsItem.summary}
+                    </Text>
+                  </Box>
+                  {getNewsFooter(newsItem)}
+                  <Divider />
                 </Box>
-                {/* </HStack> */}
-                <Divider />
-              </Box>
-            ))}
+              ))}
+          </Box>
         </Stack>
       </Box>
       <Modal
@@ -115,19 +142,22 @@ const NewsFeed: React.FC<NewsFeedPropType> = props => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>News Details</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Image
+              boxSize="200px"
+              src={selectedNews.newsItem.url}
+              alt="Dan Abramov"
+            />
+            <Divider />
             <Text fontWeight="bold" mb="1rem">
-              You can scroll the content behind the modal
+              {selectedNews.newsItem.headline}
             </Text>
+            <Divider />
+            <Text fontSize="sm">{selectedNews.newsItem.summary}</Text>
           </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onCloseNewsModal}>
-              Close
-            </Button>
-            <Button variant="ghost">Secondary Action</Button>
-          </ModalFooter>
+          <ModalFooter>{getNewsFooter(selectedNews.newsItem)}</ModalFooter>
         </ModalContent>
       </Modal>
     </>

@@ -7,9 +7,6 @@ export default function useNews(
   data: any;
   loading: boolean;
 } | null {
-  // useMemo(() => {
-  symbols = symbols || ['AAPL', 'TWTR', 'ROCK'];
-  last = last || 2;
   const {data, loading, error} = useGetNewsForSymbolQuery({
     variables: {
       symbols,
