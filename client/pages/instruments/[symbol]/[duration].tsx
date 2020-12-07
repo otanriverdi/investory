@@ -1,16 +1,19 @@
 import {
   Box,
+  Divider,
   Spinner,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
+  useColorMode,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
 import {useRouter} from 'next/router';
 import React, {useMemo} from 'react';
+import Comments from '../../../components/comments';
 import {useGetInstrumentHistoryQuery} from '../../../graphql/generated/graphql';
 
 const Chart = dynamic(() => import('react-apexcharts'), {
@@ -20,6 +23,7 @@ const Chart = dynamic(() => import('react-apexcharts'), {
 const InstrumentHistory: React.FC = () => {
   const router = useRouter();
   const {symbol, duration} = router.query;
+  const {colorMode} = useColorMode();
 
   const {data, loading, error} = useGetInstrumentHistoryQuery({
     variables: {
@@ -75,18 +79,9 @@ const InstrumentHistory: React.FC = () => {
     },
     grid: {
       show: true,
-      borderColor: '#bbbbbb',
+      borderColor: '#263263',
       strokeDashArray: 2,
       position: 'back',
-    },
-    // TODO: Color
-    plotOptions: {
-      // candlestick: {
-      //   colors: {
-      //     upward: 'cyan',
-      //     downward: 'tomato'
-      //   }
-      // }
     },
     xaxis: {
       type: 'datetime',
@@ -213,17 +208,10 @@ const InstrumentHistory: React.FC = () => {
 
   return (
     <>
-      <Tabs
-        variant="soft-rounded"
-        colorScheme="cyan"
-        borderWidth="1px"
-        borderRadius="lg"
-        padding="6px"
-        _selected={{color: 'white', bg: 'cyan.300'}}
-      >
+      <Tabs variant="soft-rounded" colorScheme="cyan" borderRadius="md" py={4}>
         <TabList>
-          <Tab>Price & Volume</Tab>
-          <Tab>Candlestick </Tab>
+          <Tab textColor={colorMode === 'dark' && 'white'}>Price & Volume</Tab>
+          <Tab textColor={colorMode === 'dark' && 'white'}>Candlestick </Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -266,6 +254,8 @@ const InstrumentHistory: React.FC = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <Divider my={6} />
+      <Comments symbol={symbol as string} />
     </>
   );
 };

@@ -31,7 +31,7 @@ export class PositionResolvers {
     });
 
     position.instrument = await Instrument.findOneOrFail({
-      where: {symbol: fields.symbol},
+      where: {symbol: fields.symbol.toUpperCase()},
     });
 
     return position.save();
@@ -81,7 +81,7 @@ export class PositionResolvers {
   async getPositions(
     @Ctx() context: MyContext,
     @Arg('sortBy', {defaultValue: 'date'}) sortBy: 'date' | 'id' | 'price',
-    @Arg('sortDirection', {defaultValue: 'ASC'}) sortDirection: 'ASC' | 'DESC',
+    @Arg('sortDirection', {defaultValue: 'DESC'}) sortDirection: 'ASC' | 'DESC',
   ): Promise<Position[]> {
     let orderBy;
     switch (sortBy) {

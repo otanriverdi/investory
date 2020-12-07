@@ -42,7 +42,7 @@ export class InstrumentResolvers {
     const instruments = await Instrument.find({
       take: limit,
       skip,
-      where: {symbol: Like(`%${query}%`)},
+      where: {symbol: Like(`%${query.toUpperCase()}%`)},
       order: orderBy,
     });
 
@@ -58,7 +58,9 @@ export class InstrumentResolvers {
   async getInstrumentBySymbol(
     @Arg('symbol') symbol: string,
   ): Promise<Instrument> {
-    return await Instrument.findOneOrFail({where: {symbol}});
+    return await Instrument.findOneOrFail({
+      where: {symbol: symbol.toUpperCase()},
+    });
   }
 
   @Query(() => [InstrumentHistory], {nullable: true})
