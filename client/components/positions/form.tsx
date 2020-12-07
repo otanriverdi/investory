@@ -9,14 +9,23 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  Text,
+  FormLabel,
   Menu,
   MenuItem,
   MenuList,
+  MenuButton,
   Box,
+  Divider,
+  Radio,
+  RadioGroup,
+  Stack,
+  VStack,
 } from '@chakra-ui/react';
 import React, {useState, useEffect} from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import {
+  PositionType,
   useCreatePositionMutation,
   useGetInstrumentsLazyQuery,
 } from '../../graphql/generated/graphql';
@@ -25,31 +34,10 @@ const Form: React.FC = () => {
   const [price, setPrice] = useState(0);
   const [amount, setAmount] = useState(0);
   const [symbol, setSymbol] = useState('');
-  // const [queryList, setQueryList] = useState([]);
+  const [posDate, setPosDate] = useState(new Date());
+  const [posType, setPosType] = useState('');
   const [getInstruments, {loading, error, data}] = useGetInstrumentsLazyQuery();
   const [createPosition] = useCreatePositionMutation();
-  const mockData = [
-    {
-      id: 1565,
-      name: 'Amg Bank',
-      price: {
-        current: 150,
-        previous: 153,
-      },
-      symbol: 'AMAL',
-      type: 'stock',
-    },
-    {
-      id: 1566,
-      name: 'App Mat',
-      price: {
-        current: 69,
-        previous: 67,
-      },
-      symbol: 'AMAT',
-      type: 'stock',
-    },
-  ];
 
   useEffect(() => {
     if (symbol.length > 1) {
@@ -70,6 +58,7 @@ const Form: React.FC = () => {
           amount,
           price,
           symbol,
+          date: posDate,
         },
       },
       refetchQueries: ['getPositions'],
@@ -79,20 +68,41 @@ const Form: React.FC = () => {
     setAmount(0);
   }
 
+  // function handleMenu() {
+  //   setSymbol(instrument.symbol)
+  //   setPrice(instrument.price.current)
+  // }
+
   return (
     <FormControl>
-      <Flex mb={2} justify="space-between">
+      <Flex mb={2} justify="space-between" wrap="wrap" align="center">
         <Flex direction="column" justify="space-between">
-          <Text>Symbol</Text>
+          <FormLabel>Symbol</FormLabel>
           <Input
             placeholder="Symbol"
             onChange={e => setSymbol(e.target.value)}
             value={symbol}
             width="200px"
           />
+          <Box borderRadius="md" borderWidth="1px">
+            {data &&
+              data.getInstruments.map(instrument => (
+                <Box
+                  key={instrument.id}
+                  // TODO: need onClick={handleMenu()} to handle setting symbol and price
+                  _hover={{
+                    transform: 'translateY(-3px)',
+                    background: 'rgb(226,232,240)',
+                  }}
+                >
+                  {instrument.symbol}
+                </Box>
+              ))}
+          </Box>
         </Flex>
-        <Flex direction="column">
-          <Text>Price</Text>
+
+        <Flex direction="column" justify="space-between">
+          <FormLabel>Price</FormLabel>
           <NumberInput
             defaultValue={15}
             precision={2}
@@ -106,9 +116,15 @@ const Form: React.FC = () => {
               <NumberDecrementStepper />
             </NumberInputStepper>
           </NumberInput>
+          <Box>
+            <DatePicker
+              selected={posDate}
+              onChange={date => setPosDate(date)}
+            />
+          </Box>
         </Flex>
         <Flex direction="column">
-          <Text>Quantity</Text>
+          <FormLabel>Quantity</FormLabel>
           <NumberInput
             defaultValue={200}
             step={10}
@@ -123,6 +139,13 @@ const Form: React.FC = () => {
           </NumberInput>
         </Flex>
         <Flex direction="column-reverse">
+          {/* // TODO: need to handle position type */}
+          <RadioGroup value={posType} defaultValue={PositionType.Buy}>
+            <Stack direction="row">
+              <Radio value="Buy">Buy</Radio>
+              <Radio value="Sell">Sell</Radio>
+            </Stack>
+          </RadioGroup>
           <Button
             leftIcon={<CheckIcon />}
             variant="solid"
@@ -132,6 +155,7 @@ const Form: React.FC = () => {
           </Button>
         </Flex>
       </Flex>
+      <Divider mt={3} mb={3} />
     </FormControl>
   );
 };
