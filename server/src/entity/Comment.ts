@@ -13,6 +13,7 @@ import {Instrument} from './Instrument';
 @Entity()
 export class Comment extends BaseEntity {
   @PrimaryGeneratedColumn()
+  @Field()
   id: number;
 
   @Field(() => Instrument)

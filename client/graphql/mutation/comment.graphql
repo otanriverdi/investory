@@ -1,0 +1,5 @@
+mutation createComment($body: String!, $symbol: String!) {
+  createComment(body: $body, symbol: $symbol) {
+    id
+  }
+}

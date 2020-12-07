@@ -1,0 +1,8 @@
+query getComments($symbol: String!) {
+  getComments(symbol: $symbol) {
+    createdAt
+    owner
+    body
+    id
+  }
+}

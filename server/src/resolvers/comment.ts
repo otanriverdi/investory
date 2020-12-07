@@ -38,4 +38,19 @@ export class CommentResolvers {
 
     return Comment.find({where: {instrument}});
   }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
+  async deleteComment(
+    @Arg('id') id: number,
+    @Ctx() context: MyContext,
+  ): Promise<boolean> {
+    const comment = await Comment.findOneOrFail({
+      where: {id, owner: context.user},
+    });
+
+    await Comment.remove(comment);
+
+    return true;
+  }
 }
