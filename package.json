@@ -70,5 +70,8 @@
       "prettier --write",
       "npm run lint"
     ]
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
   }
 }
