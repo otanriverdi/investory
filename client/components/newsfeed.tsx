@@ -2,7 +2,9 @@ import {ExternalLinkIcon, Icon} from '@chakra-ui/icons';
 import {
   Box,
   Divider,
+  Flex,
   Heading,
+  IconButton,
   Image,
   Modal,
   ModalBody,
@@ -11,7 +13,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Spinner,
+  Skeleton,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -27,16 +29,22 @@ type NewsFeedPropType = {
   last?: number;
   height?: number;
   width?: number;
+  row?: boolean;
 };
 
-const NewsFeed: React.FC<NewsFeedPropType> = props => {
+const NewsFeed: React.FC<NewsFeedPropType> = ({
+  symbols,
+  last,
+  height,
+  width,
+  row = false,
+}) => {
   const [selectedNews, setSelectedNews] = useState({
     newsItem: {} as NewsItem,
     showNews: false,
   });
 
-  const [newsCount, setNewsCount] = useState(1);
-  const {symbols, last, height, width} = props;
+  const [newsCount, setNewsCount] = useState(5);
 
   function showSelectedNews(newsItem: NewsItem) {
     setSelectedNews({newsItem, showNews: true});
@@ -51,20 +59,6 @@ const NewsFeed: React.FC<NewsFeedPropType> = props => {
 
   function loadMoreNews() {
     setNewsCount(count => Math.ceil(count * 1.5));
-  }
-
-  function renderSpinner(loading) {
-    return (
-      loading && (
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="cyan.500"
-          size="xl"
-        />
-      )
-    );
   }
 
   function renderNewsFooter(newsItem: NewsItem) {
@@ -84,17 +78,13 @@ const NewsFeed: React.FC<NewsFeedPropType> = props => {
 
   return (
     <>
-      <Box
-        borderWidth="1px"
-        borderRadius="lg"
-        padding="10px"
-        w={250}
-        h={height}
-      >
-        <Stack spacing="5px">
-          <Heading as="h3" size="md">
+      <Box borderWidth="1px" borderRadius="md" w={width || null} h={height}>
+        <Stack>
+          <Box height={10} p={2} as="h3">
             <Stack direction="row" justify="space-between">
-              <Text>News</Text>
+              <Text fontWeight="700" size="md">
+                News
+              </Text>
               <Icon
                 as={IoReloadCircle}
                 color="cyan.500"
@@ -104,48 +94,60 @@ const NewsFeed: React.FC<NewsFeedPropType> = props => {
                 _hover={{color: 'blue.500', cursor: 'pointer'}}
               ></Icon>
             </Stack>
-          </Heading>
-          <Divider />
-          <Box overflow="auto" h={height - 60}>
-            {renderSpinner(queryRes ? queryRes.loading : true)}
-            {!queryRes?.loading &&
-              queryRes &&
-              queryRes.data?.map((newsItem: NewsItem, index) => (
-                <Box key={index} w={width - 40} pb={2} pt={2}>
+          </Box>
+          <Skeleton isLoaded={queryRes && !queryRes?.loading}>
+            {row && (!queryRes || queryRes?.loading) && (
+              <Skeleton height="97px" />
+            )}
+            <Flex
+              h={height - 50}
+              direction={row ? 'row' : 'column'}
+              overflow="auto"
+            >
+              {queryRes &&
+                queryRes.data?.map((newsItem: NewsItem, index) => (
                   <Box
-                    _hover={{
-                      textDecoration: 'underline',
-                      color: 'cyan.500',
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => showSelectedNews(newsItem)}
+                    borderWidth="1px"
+                    width={row ? '250px' : null}
+                    height={!row && '20%'}
+                    key={index}
+                    p={3}
                   >
-                    <Heading as="h5" size="sm">
+                    <Box
+                      _hover={{
+                        textDecoration: 'underline',
+                        color: 'cyan.500',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => showSelectedNews(newsItem)}
+                    >
+                      <Box as="h5">
+                        <Text
+                          fontWeight="700"
+                          isTruncated={true}
+                          _hover={{
+                            textDecoration: 'underline',
+                            color: 'cyan.500',
+                          }}
+                        >
+                          {newsItem.headline}
+                        </Text>
+                      </Box>
                       <Text
-                        isTruncated={true}
+                        fontSize="sm"
+                        noOfLines={2}
                         _hover={{
                           textDecoration: 'underline',
                           color: 'cyan.500',
                         }}
-                      >
-                        {newsItem.headline}
-                      </Text>
-                    </Heading>
-                    <Text
-                      fontSize="sm"
-                      isTruncated={true}
-                      _hover={{textDecoration: 'underline', color: 'cyan.500'}}
-                    >
-                      <div
                         dangerouslySetInnerHTML={createMarkup(newsItem.summary)}
-                      ></div>
-                    </Text>
+                      ></Text>
+                    </Box>
+                    {renderNewsFooter(newsItem)}
                   </Box>
-                  {renderNewsFooter(newsItem)}
-                  <Divider />
-                </Box>
-              ))}
-          </Box>
+                ))}
+            </Flex>
+          </Skeleton>
         </Stack>
       </Box>
       <Modal

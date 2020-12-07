@@ -1,10 +1,11 @@
 import {useAuth0} from '@auth0/auth0-react';
-import {Skeleton} from '@chakra-ui/react';
+import {Divider, Skeleton} from '@chakra-ui/react';
 import React from 'react';
 import Landing from '../components/landing';
+import NewsFeed from '../components/newsfeed';
 import Positions from '../components/positions';
 import Summary from '../components/summary';
-import {useGetPositionsQuery} from '../graphql/generated/graphql';
+import {PositionType, useGetPositionsQuery} from '../graphql/generated/graphql';
 import useSummary from '../hooks/use-summary';
 
 const Home: React.FC = () => {
@@ -25,6 +26,20 @@ const Home: React.FC = () => {
           name={user.name}
         />
       </Skeleton>
+      <Skeleton isLoaded={!loading}>
+        {data && (
+          <NewsFeed
+            symbols={
+              data &&
+              data.getPositions
+                .filter(p => p.instrument.type !== 'crypto')
+                .map(p => p.instrument.symbol)
+            }
+            row
+          />
+        )}
+      </Skeleton>
+      <Divider my={6} />
       <Skeleton isLoaded={!loading}>
         <Positions positions={data && data.getPositions} />
       </Skeleton>

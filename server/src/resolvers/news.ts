@@ -10,7 +10,9 @@ export class NewsResolvers {
     @Arg('last', {defaultValue: 1}) last: number,
   ): Promise<NewsItem[] | null> {
     const token = process.env.IEX_TOKEN;
+
     let retNewsItems: NewsItem[] = [];
+
     for (const symbol of symbols) {
       let url = `https://sandbox.iexapis.com/stable/stock/${symbol}/news/last/${last}?token=${token}`;
 
