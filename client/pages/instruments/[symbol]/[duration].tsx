@@ -3,6 +3,7 @@ import {useRouter} from 'next/router';
 import React from 'react';
 import InstrumentHistory from '../../../components/charts/instrument-history';
 import Comments from '../../../components/comments';
+import InstrumentSummary from '../../../components/instrument-summary';
 import NewsFeed from '../../../components/newsfeed';
 
 const InstrumentDetails: React.FC = () => {
@@ -10,6 +11,7 @@ const InstrumentDetails: React.FC = () => {
   const {symbol, duration} = router.query;
   return (
     <>
+      <InstrumentSummary symbol={symbol as string} />
       <Flex mb={2} justify="space-between" grow={1}>
         <Box
           flex={1}
