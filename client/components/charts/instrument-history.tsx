@@ -1,12 +1,12 @@
 import {
   Box,
-  Spinner,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
   useColorMode,
+  Skeleton,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
@@ -193,20 +193,6 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
     },
   };
 
-  function showSpinner() {
-    return (
-      loading && (
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="cyan.500"
-          size="xl"
-        />
-      )
-    );
-  }
-
   return (
     <>
       <Tabs variant="soft-rounded" colorScheme="cyan" borderRadius="md" py={4}>
@@ -218,7 +204,7 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
           <TabPanel>
             <Box>
               <div>
-                {showSpinner()}
+                {loading && <Skeleton height={575} />}
                 {data ? (
                   <>
                     <Chart
@@ -241,7 +227,7 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
             </Box>
           </TabPanel>
           <TabPanel>
-            {showSpinner()}
+            {loading && <Skeleton height={575} />}
             {data ? (
               <Chart
                 options={candleStickOptions}
