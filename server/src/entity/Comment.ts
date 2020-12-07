@@ -31,4 +31,12 @@ export class Comment extends BaseEntity {
   @Field()
   @Column()
   body: string;
+
+  @Field()
+  @Column()
+  username: string;
+
+  @Field()
+  @Column()
+  image: string;
 }

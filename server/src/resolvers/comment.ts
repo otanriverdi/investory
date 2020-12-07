@@ -12,6 +12,8 @@ export class CommentResolvers {
   async createComment(
     @Arg('symbol') symbol: string,
     @Arg('body') body: string,
+    @Arg('username') username: string,
+    @Arg('image') image: string,
     @Ctx() context: MyContext,
   ): Promise<Comment> {
     if (body.length < 8) {
@@ -24,7 +26,7 @@ export class CommentResolvers {
       where: {symbol: symbol.toUpperCase()},
     });
 
-    const comment = Comment.create({body, owner: user!});
+    const comment = Comment.create({body, owner: user!, username, image});
     comment.instrument = instrument;
 
     return comment.save();

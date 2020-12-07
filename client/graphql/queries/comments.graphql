@@ -4,5 +4,7 @@ query getComments($symbol: String!) {
     owner
     body
     id
+    image
+    username
   }
 }

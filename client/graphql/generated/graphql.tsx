@@ -64,6 +64,8 @@ export type Comment = {
   owner: Scalars['String'];
   createdAt: Scalars['DateTime'];
   body: Scalars['String'];
+  username: Scalars['String'];
+  image: Scalars['String'];
 };
 
 export type Instrument = {
@@ -132,6 +134,8 @@ export type Mutation = {
 };
 
 export type MutationCreateCommentArgs = {
+  image: Scalars['String'];
+  username: Scalars['String'];
   body: Scalars['String'];
   symbol: Scalars['String'];
 };
@@ -183,6 +187,8 @@ export type ClosePositionMutation = {__typename?: 'Mutation'} & {
 export type CreateCommentMutationVariables = Exact<{
   body: Scalars['String'];
   symbol: Scalars['String'];
+  username: Scalars['String'];
+  image: Scalars['String'];
 }>;
 
 export type CreateCommentMutation = {__typename?: 'Mutation'} & {
@@ -222,7 +228,7 @@ export type GetCommentsQuery = {__typename?: 'Query'} & {
   getComments: Array<
     {__typename?: 'Comment'} & Pick<
       Comment,
-      'createdAt' | 'owner' | 'body' | 'id'
+      'createdAt' | 'owner' | 'body' | 'id' | 'image' | 'username'
     >
   >;
 };
@@ -354,8 +360,18 @@ export type ClosePositionMutationOptions = Apollo.BaseMutationOptions<
   ClosePositionMutationVariables
 >;
 export const CreateCommentDocument = gql`
-  mutation createComment($body: String!, $symbol: String!) {
-    createComment(body: $body, symbol: $symbol) {
+  mutation createComment(
+    $body: String!
+    $symbol: String!
+    $username: String!
+    $image: String!
+  ) {
+    createComment(
+      body: $body
+      symbol: $symbol
+      username: $username
+      image: $image
+    ) {
       id
     }
   }
@@ -380,6 +396,8 @@ export type CreateCommentMutationFn = Apollo.MutationFunction<
  *   variables: {
  *      body: // value for 'body'
  *      symbol: // value for 'symbol'
+ *      username: // value for 'username'
+ *      image: // value for 'image'
  *   },
  * });
  */
@@ -551,6 +569,8 @@ export const GetCommentsDocument = gql`
       owner
       body
       id
+      image
+      username
     }
   }
 `;
