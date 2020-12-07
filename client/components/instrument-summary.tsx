@@ -50,7 +50,7 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
                 textColor={number >= 0 ? 'green.400' : 'red.600'}
                 fontSize="4xl"
               >
-                {(type === 'currency' ? '€' : '') +
+                {(type === 'currency' ? '€ ' : '') +
                   number +
                   (type === 'pcnt' ? '%' : '')}
                 {!helpText && (
@@ -90,7 +90,7 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
             'currency',
             'Last closing price',
           )}
-          {renderStat('Absolute Change', changeAmount, 'pcnt')}
+          {renderStat('Absolute Change', changeAmount, 'currency')}
           {renderStat('Percent Change', chagePercent, 'pcnt')}
         </Flex>
       )}
