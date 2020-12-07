@@ -25,6 +25,8 @@ import useNews from '../hooks/use-news';
 type NewsFeedPropType = {
   symbols: string[];
   last?: number;
+  height?: number;
+  width?: number;
 };
 
 const NewsFeed: React.FC<NewsFeedPropType> = props => {
@@ -33,8 +35,8 @@ const NewsFeed: React.FC<NewsFeedPropType> = props => {
     showNews: false,
   });
 
-  const [newsCount, setNewsCount] = useState(3);
-  const {symbols, last} = props;
+  const [newsCount, setNewsCount] = useState(1);
+  const {symbols, last, height, width} = props;
 
   function showSelectedNews(newsItem: NewsItem) {
     setSelectedNews({newsItem, showNews: true});
@@ -45,14 +47,13 @@ const NewsFeed: React.FC<NewsFeedPropType> = props => {
   }
 
   if (last) setNewsCount(last);
-  const symbolss = ['AAPL', 'TWTR', 'ROCK'];
-  const queryRes = useNews(symbolss, newsCount);
+  const queryRes = useNews(symbols, newsCount);
 
   function loadMoreNews() {
-    setNewsCount(count => count + 1);
+    setNewsCount(count => Math.ceil(count * 1.5));
   }
 
-  function showSpinner(loading) {
+  function renderSpinner(loading) {
     return (
       loading && (
         <Spinner
@@ -66,7 +67,7 @@ const NewsFeed: React.FC<NewsFeedPropType> = props => {
     );
   }
 
-  function getNewsFooter(newsItem: NewsItem) {
+  function renderNewsFooter(newsItem: NewsItem) {
     return (
       <Text fontSize="xs" color="gray.500">
         {newsItem.source} | {dayjs(newsItem.datetime).format('MMMM DD YYYY')} |
@@ -77,9 +78,19 @@ const NewsFeed: React.FC<NewsFeedPropType> = props => {
     );
   }
 
+  function createMarkup(content) {
+    return {__html: content};
+  }
+
   return (
     <>
-      <Box borderWidth="1px" borderRadius="lg" padding="10px" w="250px">
+      <Box
+        borderWidth="1px"
+        borderRadius="lg"
+        padding="10px"
+        w={250}
+        h={height}
+      >
         <Stack spacing="5px">
           <Heading as="h3" size="md">
             <Stack direction="row" justify="space-between">
@@ -87,20 +98,20 @@ const NewsFeed: React.FC<NewsFeedPropType> = props => {
               <Icon
                 as={IoReloadCircle}
                 color="cyan.500"
-                w={6}
-                h={6}
+                w={7}
+                h={7}
                 onClick={() => loadMoreNews()}
                 _hover={{color: 'blue.500', cursor: 'pointer'}}
               ></Icon>
             </Stack>
           </Heading>
           <Divider />
-          <Box overflow="auto" h="400px">
-            {showSpinner(queryRes ? queryRes.loading : true)}
+          <Box overflow="auto" h={height - 60}>
+            {renderSpinner(queryRes ? queryRes.loading : true)}
             {!queryRes?.loading &&
               queryRes &&
               queryRes.data?.map((newsItem: NewsItem, index) => (
-                <Box key={index} w="210px" pb={2} pt={2}>
+                <Box key={index} w={width - 40} pb={2} pt={2}>
                   <Box
                     _hover={{
                       textDecoration: 'underline',
@@ -125,10 +136,12 @@ const NewsFeed: React.FC<NewsFeedPropType> = props => {
                       isTruncated={true}
                       _hover={{textDecoration: 'underline', color: 'cyan.500'}}
                     >
-                      {newsItem.summary}
+                      <div
+                        dangerouslySetInnerHTML={createMarkup(newsItem.summary)}
+                      ></div>
                     </Text>
                   </Box>
-                  {getNewsFooter(newsItem)}
+                  {renderNewsFooter(newsItem)}
                   <Divider />
                 </Box>
               ))}
@@ -145,19 +158,24 @@ const NewsFeed: React.FC<NewsFeedPropType> = props => {
           <ModalHeader>News Details</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Image
-              boxSize="200px"
-              src={selectedNews.newsItem.url}
-              alt="Dan Abramov"
-            />
             <Divider />
+            {selectedNews.newsItem.image && (
+              <>
+                <Image
+                  boxSize="200px"
+                  src={selectedNews.newsItem.url}
+                  alt="Image"
+                />
+                <Divider />
+              </>
+            )}
             <Text fontWeight="bold" mb="1rem">
               {selectedNews.newsItem.headline}
             </Text>
             <Divider />
             <Text fontSize="sm">{selectedNews.newsItem.summary}</Text>
           </ModalBody>
-          <ModalFooter>{getNewsFooter(selectedNews.newsItem)}</ModalFooter>
+          <ModalFooter>{renderNewsFooter(selectedNews.newsItem)}</ModalFooter>
         </ModalContent>
       </Modal>
     </>
