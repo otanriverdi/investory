@@ -19,12 +19,17 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  getComments: Array<Comment>;
   getInstruments: Array<Instrument>;
   getInstrumentById: Instrument;
   getInstrumentBySymbol: Instrument;
   getInstrumentHistory?: Maybe<Array<InstrumentHistory>>;
   getNewsForSymbol: Array<NewsItem>;
   getPositions: Array<Position>;
+};
+
+export type QueryGetCommentsArgs = {
+  symbol: Scalars['String'];
 };
 
 export type QueryGetInstrumentsArgs = {
@@ -56,6 +61,17 @@ export type QueryGetNewsForSymbolArgs = {
 export type QueryGetPositionsArgs = {
   sortDirection?: Maybe<Scalars['String']>;
   sortBy?: Maybe<Scalars['String']>;
+};
+
+export type Comment = {
+  __typename?: 'Comment';
+  id: Scalars['Float'];
+  instrument: Instrument;
+  owner: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  body: Scalars['String'];
+  username: Scalars['String'];
+  image: Scalars['String'];
 };
 
 export type Instrument = {
@@ -126,9 +142,22 @@ export type ClosePrice = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createComment: Comment;
+  deleteComment: Scalars['Boolean'];
   createPosition: Position;
   updatePosition: Position;
   closePosition: ClosePrice;
+};
+
+export type MutationCreateCommentArgs = {
+  image: Scalars['String'];
+  username: Scalars['String'];
+  body: Scalars['String'];
+  symbol: Scalars['String'];
+};
+
+export type MutationDeleteCommentArgs = {
+  id: Scalars['Float'];
 };
 
 export type MutationCreatePositionArgs = {
@@ -171,12 +200,70 @@ export type ClosePositionMutation = {__typename?: 'Mutation'} & {
   closePosition: {__typename?: 'ClosePrice'} & Pick<ClosePrice, 'price'>;
 };
 
+export type CreateCommentMutationVariables = Exact<{
+  body: Scalars['String'];
+  symbol: Scalars['String'];
+  username: Scalars['String'];
+  image: Scalars['String'];
+}>;
+
+export type CreateCommentMutation = {__typename?: 'Mutation'} & {
+  createComment: {__typename?: 'Comment'} & Pick<Comment, 'id'>;
+};
+
+export type CreatePositionMutationVariables = Exact<{
+  fields: CreatePositionInput;
+}>;
+
+export type CreatePositionMutation = {__typename?: 'Mutation'} & {
+  createPosition: {__typename?: 'Position'} & Pick<Position, 'amount'>;
+};
+
+export type DeleteCommentMutationVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+export type DeleteCommentMutation = {__typename?: 'Mutation'} & Pick<
+  Mutation,
+  'deleteComment'
+>;
+
 export type DeletePositionMutationVariables = Exact<{
   id: Scalars['Float'];
 }>;
 
 export type DeletePositionMutation = {__typename?: 'Mutation'} & {
   updatePosition: {__typename?: 'Position'} & Pick<Position, 'state'>;
+};
+
+export type GetCommentsQueryVariables = Exact<{
+  symbol: Scalars['String'];
+}>;
+
+export type GetCommentsQuery = {__typename?: 'Query'} & {
+  getComments: Array<
+    {__typename?: 'Comment'} & Pick<
+      Comment,
+      'createdAt' | 'owner' | 'body' | 'id' | 'image' | 'username'
+    >
+  >;
+};
+
+export type GetInstrumentsQueryVariables = Exact<{
+  query?: Maybe<Scalars['String']>;
+}>;
+
+export type GetInstrumentsQuery = {__typename?: 'Query'} & {
+  getInstruments: Array<
+    {__typename?: 'Instrument'} & Pick<
+      Instrument,
+      'id' | 'symbol' | 'name' | 'type'
+    > & {
+        price?: Maybe<
+          {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
+        >;
+      }
+  >;
 };
 
 export type GetInstrumentHistoryQueryVariables = Exact<{
@@ -193,6 +280,21 @@ export type GetInstrumentHistoryQuery = {__typename?: 'Query'} & {
       >
     >
   >;
+};
+
+export type GetInstrumentBySymbolQueryVariables = Exact<{
+  symbol: Scalars['String'];
+}>;
+
+export type GetInstrumentBySymbolQuery = {__typename?: 'Query'} & {
+  getInstrumentBySymbol: {__typename?: 'Instrument'} & Pick<
+    Instrument,
+    'id' | 'symbol' | 'name' | 'type'
+  > & {
+      price?: Maybe<
+        {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
+      >;
+    };
 };
 
 export type GetNewsForSymbolQueryVariables = Exact<{
@@ -287,6 +389,161 @@ export type ClosePositionMutationOptions = Apollo.BaseMutationOptions<
   ClosePositionMutation,
   ClosePositionMutationVariables
 >;
+export const CreateCommentDocument = gql`
+  mutation createComment(
+    $body: String!
+    $symbol: String!
+    $username: String!
+    $image: String!
+  ) {
+    createComment(
+      body: $body
+      symbol: $symbol
+      username: $username
+      image: $image
+    ) {
+      id
+    }
+  }
+`;
+export type CreateCommentMutationFn = Apollo.MutationFunction<
+  CreateCommentMutation,
+  CreateCommentMutationVariables
+>;
+
+/**
+ * __useCreateCommentMutation__
+ *
+ * To run a mutation, you first call `useCreateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
+ *   variables: {
+ *      body: // value for 'body'
+ *      symbol: // value for 'symbol'
+ *      username: // value for 'username'
+ *      image: // value for 'image'
+ *   },
+ * });
+ */
+export function useCreateCommentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateCommentMutation,
+    CreateCommentMutationVariables
+  >,
+) {
+  return Apollo.useMutation<
+    CreateCommentMutation,
+    CreateCommentMutationVariables
+  >(CreateCommentDocument, baseOptions);
+}
+export type CreateCommentMutationHookResult = ReturnType<
+  typeof useCreateCommentMutation
+>;
+export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<
+  CreateCommentMutation,
+  CreateCommentMutationVariables
+>;
+export const CreatePositionDocument = gql`
+  mutation createPosition($fields: CreatePositionInput!) {
+    createPosition(fields: $fields) {
+      amount
+    }
+  }
+`;
+export type CreatePositionMutationFn = Apollo.MutationFunction<
+  CreatePositionMutation,
+  CreatePositionMutationVariables
+>;
+
+/**
+ * __useCreatePositionMutation__
+ *
+ * To run a mutation, you first call `useCreatePositionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePositionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPositionMutation, { data, loading, error }] = useCreatePositionMutation({
+ *   variables: {
+ *      fields: // value for 'fields'
+ *   },
+ * });
+ */
+export function useCreatePositionMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreatePositionMutation,
+    CreatePositionMutationVariables
+  >,
+) {
+  return Apollo.useMutation<
+    CreatePositionMutation,
+    CreatePositionMutationVariables
+  >(CreatePositionDocument, baseOptions);
+}
+export type CreatePositionMutationHookResult = ReturnType<
+  typeof useCreatePositionMutation
+>;
+export type CreatePositionMutationResult = Apollo.MutationResult<CreatePositionMutation>;
+export type CreatePositionMutationOptions = Apollo.BaseMutationOptions<
+  CreatePositionMutation,
+  CreatePositionMutationVariables
+>;
+export const DeleteCommentDocument = gql`
+  mutation deleteComment($id: Float!) {
+    deleteComment(id: $id)
+  }
+`;
+export type DeleteCommentMutationFn = Apollo.MutationFunction<
+  DeleteCommentMutation,
+  DeleteCommentMutationVariables
+>;
+
+/**
+ * __useDeleteCommentMutation__
+ *
+ * To run a mutation, you first call `useDeleteCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCommentMutation, { data, loading, error }] = useDeleteCommentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCommentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DeleteCommentMutation,
+    DeleteCommentMutationVariables
+  >,
+) {
+  return Apollo.useMutation<
+    DeleteCommentMutation,
+    DeleteCommentMutationVariables
+  >(DeleteCommentDocument, baseOptions);
+}
+export type DeleteCommentMutationHookResult = ReturnType<
+  typeof useDeleteCommentMutation
+>;
+export type DeleteCommentMutationResult = Apollo.MutationResult<DeleteCommentMutation>;
+export type DeleteCommentMutationOptions = Apollo.BaseMutationOptions<
+  DeleteCommentMutation,
+  DeleteCommentMutationVariables
+>;
 export const DeletePositionDocument = gql`
   mutation deletePosition($id: Float!) {
     updatePosition(updates: {state: DELETED}, id: $id) {
@@ -334,6 +591,128 @@ export type DeletePositionMutationResult = Apollo.MutationResult<DeletePositionM
 export type DeletePositionMutationOptions = Apollo.BaseMutationOptions<
   DeletePositionMutation,
   DeletePositionMutationVariables
+>;
+export const GetCommentsDocument = gql`
+  query getComments($symbol: String!) {
+    getComments(symbol: $symbol) {
+      createdAt
+      owner
+      body
+      id
+      image
+      username
+    }
+  }
+`;
+
+/**
+ * __useGetCommentsQuery__
+ *
+ * To run a query within a React component, call `useGetCommentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCommentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCommentsQuery({
+ *   variables: {
+ *      symbol: // value for 'symbol'
+ *   },
+ * });
+ */
+export function useGetCommentsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetCommentsQuery,
+    GetCommentsQueryVariables
+  >,
+) {
+  return Apollo.useQuery<GetCommentsQuery, GetCommentsQueryVariables>(
+    GetCommentsDocument,
+    baseOptions,
+  );
+}
+export function useGetCommentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetCommentsQuery,
+    GetCommentsQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<GetCommentsQuery, GetCommentsQueryVariables>(
+    GetCommentsDocument,
+    baseOptions,
+  );
+}
+export type GetCommentsQueryHookResult = ReturnType<typeof useGetCommentsQuery>;
+export type GetCommentsLazyQueryHookResult = ReturnType<
+  typeof useGetCommentsLazyQuery
+>;
+export type GetCommentsQueryResult = Apollo.QueryResult<
+  GetCommentsQuery,
+  GetCommentsQueryVariables
+>;
+export const GetInstrumentsDocument = gql`
+  query getInstruments($query: String) {
+    getInstruments(query: $query) {
+      id
+      symbol
+      name
+      type
+      price {
+        current
+        previous
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetInstrumentsQuery__
+ *
+ * To run a query within a React component, call `useGetInstrumentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInstrumentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInstrumentsQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useGetInstrumentsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetInstrumentsQuery,
+    GetInstrumentsQueryVariables
+  >,
+) {
+  return Apollo.useQuery<GetInstrumentsQuery, GetInstrumentsQueryVariables>(
+    GetInstrumentsDocument,
+    baseOptions,
+  );
+}
+export function useGetInstrumentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetInstrumentsQuery,
+    GetInstrumentsQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<GetInstrumentsQuery, GetInstrumentsQueryVariables>(
+    GetInstrumentsDocument,
+    baseOptions,
+  );
+}
+export type GetInstrumentsQueryHookResult = ReturnType<
+  typeof useGetInstrumentsQuery
+>;
+export type GetInstrumentsLazyQueryHookResult = ReturnType<
+  typeof useGetInstrumentsLazyQuery
+>;
+export type GetInstrumentsQueryResult = Apollo.QueryResult<
+  GetInstrumentsQuery,
+  GetInstrumentsQueryVariables
 >;
 export const GetInstrumentHistoryDocument = gql`
   query getInstrumentHistory($symbol: String!, $duration: String) {
@@ -396,6 +775,69 @@ export type GetInstrumentHistoryLazyQueryHookResult = ReturnType<
 export type GetInstrumentHistoryQueryResult = Apollo.QueryResult<
   GetInstrumentHistoryQuery,
   GetInstrumentHistoryQueryVariables
+>;
+export const GetInstrumentBySymbolDocument = gql`
+  query getInstrumentBySymbol($symbol: String!) {
+    getInstrumentBySymbol(symbol: $symbol) {
+      id
+      symbol
+      name
+      type
+      price {
+        current
+        previous
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetInstrumentBySymbolQuery__
+ *
+ * To run a query within a React component, call `useGetInstrumentBySymbolQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInstrumentBySymbolQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetInstrumentBySymbolQuery({
+ *   variables: {
+ *      symbol: // value for 'symbol'
+ *   },
+ * });
+ */
+export function useGetInstrumentBySymbolQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetInstrumentBySymbolQuery,
+    GetInstrumentBySymbolQueryVariables
+  >,
+) {
+  return Apollo.useQuery<
+    GetInstrumentBySymbolQuery,
+    GetInstrumentBySymbolQueryVariables
+  >(GetInstrumentBySymbolDocument, baseOptions);
+}
+export function useGetInstrumentBySymbolLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetInstrumentBySymbolQuery,
+    GetInstrumentBySymbolQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<
+    GetInstrumentBySymbolQuery,
+    GetInstrumentBySymbolQueryVariables
+  >(GetInstrumentBySymbolDocument, baseOptions);
+}
+export type GetInstrumentBySymbolQueryHookResult = ReturnType<
+  typeof useGetInstrumentBySymbolQuery
+>;
+export type GetInstrumentBySymbolLazyQueryHookResult = ReturnType<
+  typeof useGetInstrumentBySymbolLazyQuery
+>;
+export type GetInstrumentBySymbolQueryResult = Apollo.QueryResult<
+  GetInstrumentBySymbolQuery,
+  GetInstrumentBySymbolQueryVariables
 >;
 export const GetNewsForSymbolDocument = gql`
   query getNewsForSymbol($symbols: [String!]!, $last: Float) {

@@ -7,6 +7,7 @@ import 'reflect-metadata'; // required for typeorm
 import {buildSchema} from 'type-graphql';
 import {createConnection} from 'typeorm';
 import checkJwt from './middleware/check-jwt';
+import {CommentResolvers} from './resolvers/comment';
 import {InstrumentResolvers} from './resolvers/instrument';
 import {NewsResolvers} from './resolvers/news';
 import {PositionResolvers} from './resolvers/position';
@@ -26,7 +27,12 @@ createConnection()
     app.use(checkJwt);
 
     const schema = await buildSchema({
-      resolvers: [InstrumentResolvers, PositionResolvers, NewsResolvers],
+      resolvers: [
+        InstrumentResolvers,
+        PositionResolvers,
+        NewsResolvers,
+        CommentResolvers,
+      ],
     });
 
     const server = new ApolloServer({
