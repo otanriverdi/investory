@@ -1,0 +1,5 @@
+query getNewsForSymbol($symbols:[String!]!, $last:Float){
+  getNewsForSymbol(symbols:$symbols, last:$last) {
+    datetime, headline, source, url, summary, source
+  }
+}

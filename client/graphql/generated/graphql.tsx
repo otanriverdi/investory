@@ -24,6 +24,7 @@ export type Query = {
   getInstrumentById: Instrument;
   getInstrumentBySymbol: Instrument;
   getInstrumentHistory?: Maybe<Array<InstrumentHistory>>;
+  getNewsForSymbol: Array<NewsItem>;
   getPositions: Array<Position>;
 };
 
@@ -50,6 +51,11 @@ export type QueryGetInstrumentBySymbolArgs = {
 export type QueryGetInstrumentHistoryArgs = {
   duration?: Maybe<Scalars['String']>;
   symbol: Scalars['String'];
+};
+
+export type QueryGetNewsForSymbolArgs = {
+  last?: Maybe<Scalars['Float']>;
+  symbols: Array<Scalars['String']>;
 };
 
 export type QueryGetPositionsArgs = {
@@ -91,6 +97,16 @@ export type InstrumentHistory = {
   open: Scalars['Float'];
   volume: Scalars['Float'];
   date: Scalars['DateTime'];
+};
+
+export type NewsItem = {
+  __typename?: 'NewsItem';
+  datetime: Scalars['Float'];
+  headline: Scalars['String'];
+  source: Scalars['String'];
+  url: Scalars['String'];
+  summary: Scalars['String'];
+  image: Scalars['String'];
 };
 
 export type Position = {
@@ -279,6 +295,20 @@ export type GetInstrumentBySymbolQuery = {__typename?: 'Query'} & {
         {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
       >;
     };
+};
+
+export type GetNewsForSymbolQueryVariables = Exact<{
+  symbols: Array<Scalars['String']>;
+  last?: Maybe<Scalars['Float']>;
+}>;
+
+export type GetNewsForSymbolQuery = {__typename?: 'Query'} & {
+  getNewsForSymbol: Array<
+    {__typename?: 'NewsItem'} & Pick<
+      NewsItem,
+      'datetime' | 'headline' | 'source' | 'url' | 'summary'
+    >
+  >;
 };
 
 export type GetPositionsQueryVariables = Exact<{[key: string]: never}>;
@@ -808,6 +838,68 @@ export type GetInstrumentBySymbolLazyQueryHookResult = ReturnType<
 export type GetInstrumentBySymbolQueryResult = Apollo.QueryResult<
   GetInstrumentBySymbolQuery,
   GetInstrumentBySymbolQueryVariables
+>;
+export const GetNewsForSymbolDocument = gql`
+  query getNewsForSymbol($symbols: [String!]!, $last: Float) {
+    getNewsForSymbol(symbols: $symbols, last: $last) {
+      datetime
+      headline
+      source
+      url
+      summary
+      source
+    }
+  }
+`;
+
+/**
+ * __useGetNewsForSymbolQuery__
+ *
+ * To run a query within a React component, call `useGetNewsForSymbolQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNewsForSymbolQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNewsForSymbolQuery({
+ *   variables: {
+ *      symbols: // value for 'symbols'
+ *      last: // value for 'last'
+ *   },
+ * });
+ */
+export function useGetNewsForSymbolQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetNewsForSymbolQuery,
+    GetNewsForSymbolQueryVariables
+  >,
+) {
+  return Apollo.useQuery<GetNewsForSymbolQuery, GetNewsForSymbolQueryVariables>(
+    GetNewsForSymbolDocument,
+    baseOptions,
+  );
+}
+export function useGetNewsForSymbolLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetNewsForSymbolQuery,
+    GetNewsForSymbolQueryVariables
+  >,
+) {
+  return Apollo.useLazyQuery<
+    GetNewsForSymbolQuery,
+    GetNewsForSymbolQueryVariables
+  >(GetNewsForSymbolDocument, baseOptions);
+}
+export type GetNewsForSymbolQueryHookResult = ReturnType<
+  typeof useGetNewsForSymbolQuery
+>;
+export type GetNewsForSymbolLazyQueryHookResult = ReturnType<
+  typeof useGetNewsForSymbolLazyQuery
+>;
+export type GetNewsForSymbolQueryResult = Apollo.QueryResult<
+  GetNewsForSymbolQuery,
+  GetNewsForSymbolQueryVariables
 >;
 export const GetPositionsDocument = gql`
   query getPositions {
