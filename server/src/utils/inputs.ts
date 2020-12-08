@@ -49,9 +49,6 @@ export class UpdatePositionInput {
 @InputType()
 export class CreateCommentInput {
   @Field()
-  symbol: string;
-
-  @Field()
   body: string;
 
   @Field()

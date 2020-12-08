@@ -1,7 +1,8 @@
 import {Field, ObjectType} from 'type-graphql';
 
-// TODO convert to entity
-@ObjectType()
+@ObjectType({
+  description: 'Holds the current and the previous price of an instrument.',
+})
 export class Price {
   @Field()
   current: number;

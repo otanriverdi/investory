@@ -1,6 +1,6 @@
 import {Field, ObjectType} from 'type-graphql';
 
-@ObjectType()
+@ObjectType({description: 'Represents a single news article.'})
 export class NewsItem {
   @Field()
   datetime: number;

@@ -8,7 +8,9 @@ import {MyContext} from '../utils/context';
 
 @Resolver(Comment)
 export class CommentResolvers {
-  @Query(() => [Comment])
+  @Query(() => [Comment], {
+    description: 'Get all comments made on the provided symbol.',
+  })
   async getComments(@Arg('symbol') symbol: string): Promise<Comment[]> {
     const instrument = await Instrument.findOneOrFail({
       where: {symbol: symbol.toUpperCase()},
@@ -21,9 +23,10 @@ export class CommentResolvers {
   @UseMiddleware(isAuth)
   async createComment(
     @Arg('fields') fields: CreateCommentInput,
+    @Arg('symbol') symbol: string,
     @Ctx() context: MyContext,
   ): Promise<Comment> {
-    const {symbol, body} = fields;
+    const {body} = fields;
     const {user} = context;
 
     if (body.length < 5) {

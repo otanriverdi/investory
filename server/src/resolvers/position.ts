@@ -37,7 +37,9 @@ export class PositionResolvers {
     return position.save();
   }
 
-  @Mutation(() => Position)
+  @Mutation(() => Position, {
+    description: 'Updates a position. Cannot be used for closing positions',
+  })
   @UseMiddleware(isAuth)
   async updatePosition(
     @Arg('id') id: number,
@@ -85,7 +87,9 @@ export class PositionResolvers {
     return close.save();
   }
 
-  @Query(() => [Position])
+  @Query(() => [Position], {
+    description: 'Returns all positions that belongs to the logged in user.',
+  })
   @UseMiddleware(isAuth)
   async getPositions(
     @Ctx() context: MyContext,

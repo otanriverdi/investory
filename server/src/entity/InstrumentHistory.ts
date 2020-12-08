@@ -1,6 +1,6 @@
 import {Field, ObjectType} from 'type-graphql';
 
-@ObjectType()
+@ObjectType({description: 'Holds the price information per date.'})
 export class InstrumentHistory {
   @Field()
   close: number;

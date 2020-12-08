@@ -10,7 +10,9 @@ import {
 } from 'typeorm';
 import {Position} from './Position';
 
-@ObjectType()
+@ObjectType({
+  description: 'Holds the balance of the position at the closing time.',
+})
 @Entity()
 export class ClosePrice extends BaseEntity {
   @PrimaryGeneratedColumn()

@@ -19,9 +19,9 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  /** Get all comments made on the provided symbol. */
   getComments: Array<Comment>;
   getInstruments: Array<Instrument>;
-  getInstrumentById: Instrument;
   getInstrumentBySymbol: Instrument;
   getInstrumentHistory?: Maybe<Array<InstrumentHistory>>;
   getNewsForSymbol: Array<NewsItem>;
@@ -38,10 +38,6 @@ export type QueryGetInstrumentsArgs = {
   query?: Maybe<Scalars['String']>;
   skip?: Maybe<Scalars['Float']>;
   limit?: Maybe<Scalars['Float']>;
-};
-
-export type QueryGetInstrumentByIdArgs = {
-  id: Scalars['Float'];
 };
 
 export type QueryGetInstrumentBySymbolArgs = {
@@ -150,6 +146,7 @@ export type Mutation = {
 };
 
 export type MutationCreateCommentArgs = {
+  symbol: Scalars['String'];
   fields: CreateCommentInput;
 };
 
@@ -171,7 +168,6 @@ export type MutationClosePositionArgs = {
 };
 
 export type CreateCommentInput = {
-  symbol: Scalars['String'];
   body: Scalars['String'];
   username: Scalars['String'];
   image: Scalars['String'];
@@ -401,7 +397,8 @@ export const CreateCommentDocument = gql`
     $image: String!
   ) {
     createComment(
-      fields: {body: $body, symbol: $symbol, username: $username, image: $image}
+      fields: {body: $body, username: $username, image: $image}
+      symbol: $symbol
     ) {
       id
     }

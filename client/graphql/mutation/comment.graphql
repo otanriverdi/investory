@@ -5,7 +5,8 @@ mutation createComment(
   $image: String!
 ) {
   createComment(
-    fields: {body: $body, symbol: $symbol, username: $username, image: $image}
+    fields: {body: $body, username: $username, image: $image}
+    symbol: $symbol
   ) {
     id
   }

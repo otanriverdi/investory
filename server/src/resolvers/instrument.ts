@@ -18,7 +18,9 @@ export enum Duration {
 
 @Resolver(Instrument)
 export class InstrumentResolvers {
-  @Query(() => [Instrument])
+  @Query(() => [Instrument], {
+    description: 'Returns all instruments filtered by the optional arguments.',
+  })
   async getInstruments(
     @Arg('limit', {defaultValue: 10}) limit: number,
     @Arg('skip', {defaultValue: 0}) skip: number,

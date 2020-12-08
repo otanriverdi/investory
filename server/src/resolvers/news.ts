@@ -4,7 +4,9 @@ import {NewsItem} from '../entity/NewsItem';
 
 @Resolver()
 export class NewsResolvers {
-  @Query(() => [NewsItem])
+  @Query(() => [NewsItem], {
+    description: 'Returns latests news articles for the provided symbol.',
+  })
   async getNewsForSymbol(
     @Arg('symbols', type => [String]) symbols: string[],
     @Arg('last', {defaultValue: 1}) last: number,

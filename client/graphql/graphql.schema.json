@@ -15,7 +15,7 @@
         "fields": [
           {
             "name": "getComments",
-            "description": null,
+            "description": "Get all comments made on the provided symbol.",
             "args": [
               {
                 "name": "symbol",
@@ -64,7 +64,7 @@
                   "name": "String",
                   "ofType": null
                 },
-                "defaultValue": "\"ASC\""
+                "defaultValue": "\"DESC\""
               },
               {
                 "name": "sortBy",
@@ -74,7 +74,7 @@
                   "name": "String",
                   "ofType": null
                 },
-                "defaultValue": "\"id\""
+                "defaultValue": "\"symbol\""
               },
               {
                 "name": "query",
@@ -122,37 +122,6 @@
                     "ofType": null
                   }
                 }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "getInstrumentById",
-            "description": null,
-            "args": [
-              {
-                "name": "id",
-                "description": null,
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Float",
-                    "ofType": null
-                  }
-                },
-                "defaultValue": null
-              }
-            ],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "Instrument",
-                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -1121,6 +1090,20 @@
             "description": null,
             "args": [
               {
+                "name": "symbol",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
                 "name": "fields",
                 "description": null,
                 "type": {
@@ -1307,20 +1290,6 @@
         "description": null,
         "fields": null,
         "inputFields": [
-          {
-            "name": "symbol",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
           {
             "name": "body",
             "description": null,
