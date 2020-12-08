@@ -26,7 +26,7 @@ export class PositionResolvers {
     @Ctx() context: MyContext,
   ): Promise<Position> {
     const position = Position.create({
-      owner: context.user!,
+      owner: context.user as string | undefined,
       ...fields,
     });
 
@@ -65,6 +65,15 @@ export class PositionResolvers {
 
     position.state = PositionState.CLOSED;
     await position.save();
+
+    const existingClose = await ClosePrice.findOne({where: position});
+    if (existingClose) {
+      console.warn(
+        `Tried to close position ${id} which has an existing closing price. Using the old price.`,
+      );
+
+      return existingClose;
+    }
 
     const price = await getPrice(position.instrument);
 
@@ -107,6 +116,18 @@ export class PositionResolvers {
   @FieldResolver()
   async closePrice(@Root() position: Position): Promise<ClosePrice | null> {
     if (position.state !== PositionState.CLOSED) {
+      return null;
+    }
+
+    const close = await ClosePrice.findOne({position});
+    if (!close) {
+      console.warn(
+        `Failed to get the closing price of the closed position ${position.id}. Marking the position as deleted to prevent bugs.`,
+      );
+
+      position.state = PositionState.DELETED;
+      position.save();
+
       return null;
     }
 

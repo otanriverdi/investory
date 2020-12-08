@@ -64,6 +64,7 @@ export class InstrumentResolvers {
     @Arg('duration', {defaultValue: '1m'}) duration: Duration,
   ): Promise<InstrumentHistory[] | null> {
     const token = process.env.IEX_TOKEN;
+
     let url = `https://sandbox.iexapis.com/stable/stock/${symbol}/chart/${duration}?token=${token}`;
 
     if (process.env.ENABLE_IEX === 'true') {

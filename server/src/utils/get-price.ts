@@ -5,9 +5,6 @@ import {Price} from '../entity/Price';
 export async function getPrice(instrument: Instrument): Promise<Price> {
   const token = process.env.IEX_TOKEN;
 
-  let current;
-  let previous;
-
   let url = 'https://sandbox.iexapis.com/stable';
 
   if (process.env.ENABLE_IEX === 'true') {
@@ -23,18 +20,20 @@ export async function getPrice(instrument: Instrument): Promise<Price> {
 
     const json = await res.json();
 
-    current = json.latestPrice;
-    previous = json.previousClose || json.latestPrice;
-  } else if (instrument.type === 'stock') {
+    return {
+      current: json.latestPrice,
+      previous: json.previousClose || json.latestPrice,
+    };
+  } else {
     const res = await fetch(
       `${url}/stock/${instrument.symbol.toUpperCase()}/quote?token=${token}`,
     );
 
     const json = await res.json();
 
-    current = json.latestPrice;
-    previous = json.previousClose || json.latestPrice;
+    return {
+      current: json.latestPrice,
+      previous: json.previousClose || json.latestPrice,
+    };
   }
-
-  return {current, previous};
 }
