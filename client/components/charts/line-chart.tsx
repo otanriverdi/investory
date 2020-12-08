@@ -140,9 +140,6 @@ const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
           <ModalBody>
             <Line data={chartData} options={optionsDefaultModal} />
           </ModalBody>
-          <ModalFooter>
-            <Button onClick={onClose}>Close</Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

@@ -69,8 +69,7 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
 
   const candleStickOptions = {
     title: {
-      text: `Candlestick for 
-        ${(symbol as string).toUpperCase()}`,
+      text: (symbol as string).toUpperCase(),
       align: 'center',
       style: {
         fontSize: '16px',
@@ -109,7 +108,7 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
       },
     },
     title: {
-      text: `Historical daily closing price for 
+      text: `Daily close for 
         ${(symbol as string).toUpperCase()}`,
       align: 'center',
       style: {
