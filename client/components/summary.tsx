@@ -10,6 +10,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import React from 'react';
+import IntegrateChatbot from './chatbot';
 
 type Props = {
   name?: string;
@@ -75,6 +76,7 @@ const Summary: React.FC<Props> = ({
         {renderSubStat('Total Change', total)}
       </HStack>
       <Divider my={6} />
+      <IntegrateChatbot balance={daily.amount} />
     </Box>
   );
 };

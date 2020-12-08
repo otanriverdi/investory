@@ -70,5 +70,6 @@
       "prettier --write",
       "npm run lint"
     ]
-  }
+  },
+  "dependencies": {}
 }
