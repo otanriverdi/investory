@@ -18,24 +18,23 @@ export enum Duration {
 
 @Resolver(Instrument)
 export class InstrumentResolvers {
-  @Query(() => [Instrument])
+  @Query(() => [Instrument], {
+    description: 'Returns all instruments filtered by the optional arguments.',
+  })
   async getInstruments(
     @Arg('limit', {defaultValue: 10}) limit: number,
     @Arg('skip', {defaultValue: 0}) skip: number,
     @Arg('query', {defaultValue: ''}) query: string,
-    @Arg('sortBy', {defaultValue: 'id'}) sortBy: 'id' | 'name' | 'symbol',
-    @Arg('sortDirection', {defaultValue: 'ASC'}) sortDirection: 'ASC' | 'DESC',
+    @Arg('sortBy', {defaultValue: 'symbol'}) sortBy: 'name' | 'symbol',
+    @Arg('sortDirection', {defaultValue: 'DESC'}) sortDirection: 'ASC' | 'DESC',
   ): Promise<Instrument[]> {
     let orderBy;
     switch (sortBy) {
       case 'name':
         orderBy = {name: sortDirection};
         break;
-      case 'symbol':
-        orderBy = {symbol: sortDirection};
-        break;
       default:
-        orderBy = {id: sortDirection};
+        orderBy = {symbol: sortDirection};
         break;
     }
 
@@ -47,11 +46,6 @@ export class InstrumentResolvers {
     });
 
     return instruments;
-  }
-
-  @Query(() => Instrument)
-  async getInstrumentById(@Arg('id') id: number): Promise<Instrument> {
-    return await Instrument.findOneOrFail({where: {id: id}});
   }
 
   @Query(() => Instrument)
@@ -69,10 +63,12 @@ export class InstrumentResolvers {
     @Arg('duration', {defaultValue: '1m'}) duration: Duration,
   ): Promise<InstrumentHistory[] | null> {
     const token = process.env.IEX_TOKEN;
+
     let url = `https://sandbox.iexapis.com/stable/stock/${symbol}/chart/${duration}?token=${token}`;
 
     if (process.env.ENABLE_IEX === 'true') {
       console.warn('Using IEX to fetch real price data!');
+
       url = `https://cloud.iexapis.com/stable/stock/${symbol}/chart/${duration}?token=${token}`;
     }
 
@@ -82,19 +78,23 @@ export class InstrumentResolvers {
       const history = json.map((d: unknown) =>
         InstrumentHistory.parseFields(d),
       );
+
       return history;
     }
+
     return null;
   }
 
   @FieldResolver()
-  async price(@Root() instrument: Instrument): Promise<Price> {
-    if (process.env.ENABLE_IEX === 'true') {
-      console.warn('Using IEX to fetch real price data!');
+  async price(@Root() instrument: Instrument): Promise<Price | null> {
+    try {
+      const price = await getPrice(instrument);
 
-      return await getPrice(instrument);
-    } else {
-      return {current: 150, previous: 153};
+      return price;
+    } catch (error) {
+      console.error(error);
+
+      return null;
     }
   }
 }

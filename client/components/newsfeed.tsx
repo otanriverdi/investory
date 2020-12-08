@@ -107,7 +107,9 @@ const NewsFeed: React.FC<NewsFeedPropType> = ({
               {queryRes &&
                 queryRes.data?.map((newsItem: NewsItem, index) => (
                   <Box
-                    borderWidth="1px"
+                    borderTopWidth="1px"
+                    borderBottomWidth="1px"
+                    borderRightWidth="1px"
                     width={row ? '250px' : null}
                     height={!row && '20%'}
                     key={index}

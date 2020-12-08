@@ -5,28 +5,35 @@ import {Price} from '../entity/Price';
 export async function getPrice(instrument: Instrument): Promise<Price> {
   const token = process.env.IEX_TOKEN;
 
-  let current = 0;
-  let previous = 0;
+  let url = 'https://sandbox.iexapis.com/stable';
+
+  if (process.env.ENABLE_IEX === 'true') {
+    console.warn('Using IEX to fetch real price data!');
+
+    url = 'https://cloud.iexapis.com/stable';
+  }
 
   if (instrument.type === 'crypto') {
     const res = await fetch(
-      `https://cloud.iexapis.com/stable/crypto/${instrument.symbol}/quote?token=${token}`,
+      `${url}/crypto/${instrument.symbol.toUpperCase()}/quote?token=${token}`,
     );
 
     const json = await res.json();
 
-    current = json.latestPrice;
-    previous = json.previousClose || json.latestPrice;
-  } else if (instrument.type === 'stock') {
+    return {
+      current: json.latestPrice,
+      previous: json.previousClose || json.latestPrice,
+    };
+  } else {
     const res = await fetch(
-      `https://cloud-sse.iexapis.com/stable/stock/${instrument.symbol}/quote?token=${token}`,
+      `${url}/stock/${instrument.symbol.toUpperCase()}/quote?token=${token}`,
     );
 
     const json = await res.json();
 
-    current = json.latestPrice;
-    previous = json.previousClose || json.latestPrice;
+    return {
+      current: json.latestPrice,
+      previous: json.previousClose || json.latestPrice,
+    };
   }
-
-  return {current, previous};
 }

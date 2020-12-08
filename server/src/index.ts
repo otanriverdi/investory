@@ -1,6 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import {ApolloServer} from 'apollo-server-express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import helmet from 'helmet';
 import 'reflect-metadata'; // required for typeorm
@@ -11,7 +13,6 @@ import {CommentResolvers} from './resolvers/comment';
 import {InstrumentResolvers} from './resolvers/instrument';
 import {NewsResolvers} from './resolvers/news';
 import {PositionResolvers} from './resolvers/position';
-dotenv.config();
 
 createConnection()
   .then(async connection => {
@@ -23,7 +24,7 @@ createConnection()
           process.env.NODE_ENV === 'production' ? undefined : false,
       }),
     );
-    app.use(cors({origin: '*', credentials: true}));
+    app.use(cors({origin: process.env.FRONTEND_URL, credentials: true}));
     app.use(checkJwt);
 
     const schema = await buildSchema({
@@ -38,10 +39,6 @@ createConnection()
     const server = new ApolloServer({
       schema,
       context: ({req}) => {
-        if (req.user) {
-          console.warn('User id =>', req.user.sub);
-        }
-
         return {
           db: connection,
           user: req.user ? req.user.sub : null,
@@ -51,8 +48,10 @@ createConnection()
 
     server.applyMiddleware({app});
 
-    app.listen(8000, () => {
-      console.log(`🚀 on ${8000}`);
+    const port = process.env.PORT || 8000;
+
+    app.listen(port, () => {
+      console.log(`🚀 on ${port}`);
     });
   })
   .catch(error => console.error(error));
