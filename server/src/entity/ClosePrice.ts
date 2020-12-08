@@ -1,4 +1,4 @@
-import {Field, ObjectType} from 'type-graphql';
+import {Field, Float, ObjectType} from 'type-graphql';
 import {
   BaseEntity,
   Column,
@@ -22,8 +22,8 @@ export class ClosePrice extends BaseEntity {
   @JoinColumn()
   position: Position;
 
-  @Column()
-  @Field()
+  @Column('decimal', {precision: 19, scale: 4})
+  @Field(() => Float)
   price: number;
 
   @CreateDateColumn()

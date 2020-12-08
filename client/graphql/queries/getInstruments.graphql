@@ -1,6 +1,5 @@
-query getInstruments($query:String) {
-  getInstruments(query:$query) {
-    id
+query getInstruments($query: String) {
+  getInstruments(query: $query) {
     symbol
     name
     type

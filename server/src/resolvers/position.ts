@@ -65,24 +65,17 @@ export class PositionResolvers {
       throw new Error('Position already closed.');
     }
 
-    position.state = PositionState.CLOSED;
-    await position.save();
-
-    const existingClose = await ClosePrice.findOne({where: position});
-    if (existingClose) {
-      console.warn(
-        `Tried to close position ${id} which has an existing closing price. Using the old price.`,
-      );
-
-      return existingClose;
-    }
-
     const price = await getPrice(position.instrument);
+
+    console.log(position);
 
     const close = ClosePrice.create({
       position,
       price: position.amount * price.current,
     });
+
+    position.state = PositionState.CLOSED;
+    await position.save();
 
     return close.save();
   }
@@ -100,9 +93,6 @@ export class PositionResolvers {
     switch (sortBy) {
       case 'price':
         orderBy = {price: sortDirection};
-        break;
-      case 'id':
-        orderBy = {id: sortDirection};
         break;
       default:
         orderBy = {date: sortDirection};

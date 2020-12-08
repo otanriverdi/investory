@@ -35,7 +35,7 @@ const Form: React.FC = () => {
   const [posDate, setPosDate] = useState(new Date());
   const [posType, setPosType] = useState('');
   const [selectionDisplay, setSelectionDisplay] = useState('none');
-  const [getInstruments, {loading, error, data}] = useGetInstrumentsLazyQuery();
+  const [getInstruments, {data}] = useGetInstrumentsLazyQuery();
   const [createPosition] = useCreatePositionMutation();
 
   useEffect(() => {
@@ -46,8 +46,6 @@ const Form: React.FC = () => {
         },
       });
     }
-    console.log('data', data);
-    console.log(symbol);
   }, [symbol]);
 
   async function handleSubmit() {
@@ -71,18 +69,22 @@ const Form: React.FC = () => {
     setSymbol(instrument.symbol);
     setPrice(instrument.price.current);
     setSelectionDisplay('none');
-
-    console.log(event);
   }
 
   return (
     <FormControl>
-      <Flex mb={2} justify="space-between" wrap="wrap" align="center">
-        <Flex direction="column" justify="space-between">
+      <Flex
+        overflow="visible"
+        mb={2}
+        justify="space-between"
+        wrap="wrap"
+        align="center"
+      >
+        <Flex overflow="visible" direction="column" justify="space-between">
           <FormLabel fontWeight="bold" pl={4}>
             Symbol
           </FormLabel>
-          <Box position="relative" overflow="visible">
+          <Box overflow="visible" position="relative">
             <InputGroup>
               <InputLeftElement pointerEvents="none">
                 <Search2Icon color="cyan.500" />
@@ -98,18 +100,19 @@ const Form: React.FC = () => {
               />
             </InputGroup>
             <Box
+              overflow="visible"
               borderRadius="md"
               borderWidth="1px"
               display={selectionDisplay}
               position="absolute"
               w={200}
               h={200}
-              overflow="auto"
             >
               {data &&
                 data.getInstruments.map(instrument => (
                   <Box
-                    key={instrument.id}
+                    overflow="visible"
+                    key={instrument.symbol}
                     pl={4}
                     pr={2}
                     // TODO: need onClick={handleMenu()} to handle setting symbol and price

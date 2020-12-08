@@ -13,6 +13,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
+import {PositionState} from '../../graphql/generated/graphql';
 import Form from '../positions/form';
 import Header from './header';
 import OtherPosition from './other-position';
@@ -43,7 +44,7 @@ const Positions: React.FC<Props> = ({positions = []}) => {
           </Button>
           {/* <Text display='inline-block' bg='red'>Add New Positions </Text> */}
         </Flex>
-        <Collapse in={isOpen} animateOpacity endingHeight={325}>
+        <Collapse in={isOpen} animateOpacity>
           <Divider mb={2} />
           <Box>
             <Form />
@@ -65,20 +66,29 @@ const Positions: React.FC<Props> = ({positions = []}) => {
           <TabPanel>
             <Flex direction="column">
               <Header />
-              {/* TODO: need to edit this so only shows the open positions*/}
-              {positions.map(position =>
-                position.instrument.type === 'stock' ? (
-                  <StockPosition position={position} key={position.id} />
-                ) : (
-                  <OtherPosition position={position} key={position.id} />
-                ),
-              )}
+              {positions
+                .filter(p => p.state === PositionState.Open)
+                .map(position =>
+                  position.instrument.type === 'stock' ? (
+                    <StockPosition position={position} key={position.id} />
+                  ) : (
+                    <OtherPosition position={position} key={position.id} />
+                  ),
+                )}
             </Flex>
           </TabPanel>
           <TabPanel>
-            <Flex borderRadius="md" borderWidth="1px" p={2} direction="column">
+            <Flex direction="column">
               <Header />
-              {/* TODO: need to edit this so only shows the closed positions*/}
+              {positions
+                .filter(p => p.state === PositionState.Closed)
+                .map(position =>
+                  position.instrument.type === 'stock' ? (
+                    <StockPosition position={position} key={position.id} />
+                  ) : (
+                    <OtherPosition position={position} key={position.id} />
+                  ),
+                )}
             </Flex>
           </TabPanel>
         </TabPanels>
