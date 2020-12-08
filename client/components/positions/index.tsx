@@ -1,6 +1,5 @@
-import {AddIcon} from '@chakra-ui/icons';
+import {AddIcon, CloseIcon} from '@chakra-ui/icons';
 import {
-  Box,
   Button,
   Collapse,
   Divider,
@@ -10,7 +9,9 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Tooltip,
   useDisclosure,
+  chakra,
 } from '@chakra-ui/react';
 import React from 'react';
 import {PositionState} from '../../graphql/generated/graphql';
@@ -23,35 +24,19 @@ type Props = {
   positions?: any[];
 };
 
+const MyCollapse = chakra(Collapse);
+
 const Positions: React.FC<Props> = ({positions = []}) => {
   const {isOpen, onToggle} = useDisclosure();
 
   return (
     <>
-      <Box borderRadius="md" borderWidth="1px" p={4} mb={5}>
-        <Flex alignItems="center" direction="column">
-          <Button
-            onClick={onToggle}
-            w={50}
-            h={50}
-            borderRadius={50}
-            alignSelf="center"
-            mb={2}
-            bg="cyan.500"
-            color="white"
-          >
-            <AddIcon />
-          </Button>
-          {/* <Text display='inline-block' bg='red'>Add New Positions </Text> */}
-        </Flex>
-        <Collapse in={isOpen} animateOpacity>
-          <Divider mb={2} />
-          <Box>
-            <Form />
-          </Box>
-        </Collapse>
-      </Box>
+      <Divider my={4} />
+      <MyCollapse overflow="visible !important" in={isOpen} animateOpacity>
+        <Form onComplete={onToggle} />
+      </MyCollapse>
       <Tabs
+        mt={5}
         variant="soft-rounded"
         colorScheme="cyan"
         borderRadius="md"
@@ -61,6 +46,11 @@ const Positions: React.FC<Props> = ({positions = []}) => {
         <TabList>
           <Tab>Open</Tab>
           <Tab>Closed</Tab>
+          <Tooltip label="Add a new position" aria-label="Add a new position">
+            <Button onClick={onToggle} ml={2} bg="cyan.300" color="white">
+              {isOpen ? <CloseIcon /> : <AddIcon />}
+            </Button>
+          </Tooltip>
         </TabList>
         <TabPanels>
           <TabPanel>
