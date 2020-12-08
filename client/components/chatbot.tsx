@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import {Box} from '@chakra-ui/react';
+import {Box, useColorMode} from '@chakra-ui/react';
 import React from 'react';
 
 declare global {
@@ -21,6 +21,28 @@ const IntegrateChatbot: React.FC<Props> = ({balance}) => {
   else if (balance > 0) intent = 'Welcome-High';
   else if (balance === 0) intent = 'Welcome-0';
 
+  const {colorMode} = useColorMode();
+  let style: any;
+  colorMode === 'light'
+    ? (style = {
+        '--df-messenger-bot-message': '#48cae4',
+        '--df-messenger-button-titlebar-color': 'white',
+        '--df-messenger-button-titlebar-font-color': '#48cae4',
+        '--df-messenger-chat-background-color': 'white',
+        '--df-messenger-font-color': 'white',
+        '--df-messenger-send-icon': '#48cae4',
+        '--df-messenger-user-message': '#0077b6',
+      })
+    : (style = {
+        '--df-messenger-bot-message': '#7186a2',
+        '--df-messenger-button-titlebar-color': 'white',
+        '--df-messenger-button-titlebar-font-color': 'black',
+        '--df-messenger-chat-background-color': '#2d3748',
+        '--df-messenger-font-color': 'black',
+        '--df-messenger-send-icon': '#48cae4',
+        '--df-messenger-user-message': '#48cae4',
+      });
+
   return (
     <>
       <Head>
@@ -35,18 +57,9 @@ const IntegrateChatbot: React.FC<Props> = ({balance}) => {
           intent={intent}
           chat-title="AJÖN"
           chat-icon="https://thumbs.dreamstime.com/b/ai-robot-head-chat-bot-icon-isolated-white-background-ai-robot-head-chat-bot-icon-109860127.jpg"
-          // agent-id={process.env.AGENT_ID} --->> This needs to come from the .env file
-          agent-id="8fb3ca3f-7ef3-41fc-bb8f-0b984512a855"
+          agent-id={process.env.NEXT_PUBLIC_AGENT_ID}
           language-code="en"
-          style={{
-            '--df-messenger-bot-message': '#48cae4',
-            '--df-messenger-button-titlebar-color': 'white',
-            '--df-messenger-button-titlebar-font-color': '#48cae4',
-            '--df-messenger-chat-background-color': 'white',
-            '--df-messenger-font-color': 'white',
-            '--df-messenger-send-icon': '#48cae4',
-            '--df-messenger-user-message': '#0077b6',
-          }}
+          style={style}
         ></df-messenger>
       </Box>
     </>
