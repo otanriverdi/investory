@@ -45,3 +45,18 @@ export class UpdatePositionInput {
   @Field(() => PositionState, {nullable: true})
   state: PositionState;
 }
+
+@InputType()
+export class CreateCommentInput {
+  @Field()
+  symbol: string;
+
+  @Field()
+  body: string;
+
+  @Field()
+  username: string;
+
+  @Field()
+  image: string;
+}

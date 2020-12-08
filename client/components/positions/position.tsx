@@ -11,6 +11,10 @@ type Props = {
 
 const SinglePosition: React.FC<Props> = ({position}) => {
   const change = useMemo(() => {
+    if (!position.instrument.price) {
+      return 0;
+    }
+
     return (
       position.amount * position.instrument.price.current -
       position.amount * position.price
@@ -18,12 +22,16 @@ const SinglePosition: React.FC<Props> = ({position}) => {
   }, [position]);
 
   const currentBalance = useMemo(
-    () => position.amount * position.instrument.price.current,
+    () =>
+      position.amount *
+      (position.instrument.price
+        ? position.instrument.price.current
+        : position.price),
     [position],
   );
 
   const percentage = useMemo(() => {
-    return (currentBalance * 100) / (position.amount * position.price);
+    return (currentBalance * 100) / (position.amount * position.price) - 100;
   }, [position]);
 
   return (
@@ -32,7 +40,11 @@ const SinglePosition: React.FC<Props> = ({position}) => {
         <Link href={`/instruments/${position.instrument.symbol}/1m`}>
           {position.instrument.symbol}
         </Link>
-        <Box>{position.instrument.price.current.toFixed(2)}</Box>
+        <Box>
+          {position.instrument.price
+            ? position.instrument.price.current.toFixed(2)
+            : 0}
+        </Box>
         <Box>{position.price}</Box>
         <Box>{position.amount}</Box>
         <Box>{dayjs(position.date).format('ddd, MMM D YY, h:ma')}</Box>

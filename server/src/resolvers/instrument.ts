@@ -23,8 +23,8 @@ export class InstrumentResolvers {
     @Arg('limit', {defaultValue: 10}) limit: number,
     @Arg('skip', {defaultValue: 0}) skip: number,
     @Arg('query', {defaultValue: ''}) query: string,
-    @Arg('sortBy', {defaultValue: 'id'}) sortBy: 'id' | 'name' | 'symbol',
-    @Arg('sortDirection', {defaultValue: 'ASC'}) sortDirection: 'ASC' | 'DESC',
+    @Arg('sortBy', {defaultValue: 'symbol'}) sortBy: 'id' | 'name' | 'symbol',
+    @Arg('sortDirection', {defaultValue: 'DESC'}) sortDirection: 'ASC' | 'DESC',
   ): Promise<Instrument[]> {
     let orderBy;
     switch (sortBy) {
@@ -50,11 +50,6 @@ export class InstrumentResolvers {
   }
 
   @Query(() => Instrument)
-  async getInstrumentById(@Arg('id') id: number): Promise<Instrument> {
-    return await Instrument.findOneOrFail({where: {id: id}});
-  }
-
-  @Query(() => Instrument)
   async getInstrumentBySymbol(
     @Arg('symbol') symbol: string,
   ): Promise<Instrument> {
@@ -73,6 +68,7 @@ export class InstrumentResolvers {
 
     if (process.env.ENABLE_IEX === 'true') {
       console.warn('Using IEX to fetch real price data!');
+
       url = `https://cloud.iexapis.com/stable/stock/${symbol}/chart/${duration}?token=${token}`;
     }
 
@@ -82,19 +78,23 @@ export class InstrumentResolvers {
       const history = json.map((d: unknown) =>
         InstrumentHistory.parseFields(d),
       );
+
       return history;
     }
+
     return null;
   }
 
   @FieldResolver()
-  async price(@Root() instrument: Instrument): Promise<Price> {
-    if (process.env.ENABLE_IEX === 'true') {
-      console.warn('Using IEX to fetch real price data!');
+  async price(@Root() instrument: Instrument): Promise<Price | null> {
+    try {
+      const price = await getPrice(instrument);
 
-      return await getPrice(instrument);
-    } else {
-      return {current: 150, previous: 153};
+      return price;
+    } catch (error) {
+      console.error(error);
+
+      return null;
     }
   }
 }

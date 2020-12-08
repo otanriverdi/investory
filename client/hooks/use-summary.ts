@@ -16,7 +16,11 @@ export default function useSummary(
         if (position.state === PositionState.Closed) {
           b += position.closePrice.price;
         } else {
-          b += position.amount * position.instrument.price.current;
+          b +=
+            position.amount *
+            (position.instrument.price
+              ? position.instrument.price.current
+              : position.price);
         }
       });
     }
@@ -32,12 +36,15 @@ export default function useSummary(
       const percentages = [];
 
       data.getPositions.forEach(position => {
-        if (position.state !== PositionState.Closed) {
+        if (
+          position.state !== PositionState.Closed &&
+          position.instrument.price
+        ) {
           const current = position.instrument.price.current;
           const yesterday = position.instrument.price.previous;
           const change = +(current - yesterday).toFixed(2);
 
-          amount = change * +position.amount;
+          amount = +(change * +position.amount).toFixed(2);
 
           percentages.push(Math.abs(+((change * 100) / current).toFixed(2)));
         }
@@ -62,7 +69,9 @@ export default function useSummary(
 
       data.getPositions.forEach(position => {
         if (position.state !== PositionState.Closed) {
-          const current = position.instrument.price.current;
+          const current = position.instrument.price
+            ? position.instrument.price.current
+            : position.price;
           const change = current - position.price;
 
           amount = +(change * position.amount).toFixed(2);

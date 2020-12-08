@@ -150,10 +150,7 @@ export type Mutation = {
 };
 
 export type MutationCreateCommentArgs = {
-  image: Scalars['String'];
-  username: Scalars['String'];
-  body: Scalars['String'];
-  symbol: Scalars['String'];
+  fields: CreateCommentInput;
 };
 
 export type MutationDeleteCommentArgs = {
@@ -171,6 +168,13 @@ export type MutationUpdatePositionArgs = {
 
 export type MutationClosePositionArgs = {
   id: Scalars['Float'];
+};
+
+export type CreateCommentInput = {
+  symbol: Scalars['String'];
+  body: Scalars['String'];
+  username: Scalars['String'];
+  image: Scalars['String'];
 };
 
 export type CreatePositionInput = {
@@ -397,10 +401,7 @@ export const CreateCommentDocument = gql`
     $image: String!
   ) {
     createComment(
-      body: $body
-      symbol: $symbol
-      username: $username
-      image: $image
+      fields: {body: $body, symbol: $symbol, username: $username, image: $image}
     ) {
       id
     }
