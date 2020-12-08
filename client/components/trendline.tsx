@@ -32,15 +32,15 @@ const TrendLine: React.FC<Props> = ({position}) => {
   const date = [];
   data.getInstrumentHistory.forEach(item => {
     close.push(item.close);
-    date.push(dayjs(item.date).format('DD MMM YYYY'));
+    date.push(dayjs(item.date).format('DD MMM YY'));
   });
 
   const graphProp = {
-    title: 'Stock history in time',
+    title: position.instrument.name,
     labels: date,
     dataSets: [
       {
-        label: 'Stocks',
+        label: position.instrument.symbol,
         data: close,
       },
     ],
