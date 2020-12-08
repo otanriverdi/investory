@@ -1,21 +1,23 @@
-import {Flex, Heading, Skeleton} from '@chakra-ui/react';
-import React from 'react';
+import {Heading, Skeleton} from '@chakra-ui/react';
 import dayjs from 'dayjs';
+import React from 'react';
 import {
   Position,
   useGetInstrumentHistoryQuery,
-} from '../../graphql/generated/graphql';
-import LineChart from '../charts/line-chart';
-import SinglePosition from './position';
+} from '../graphql/generated/graphql';
+import LineChart from './charts/line-chart';
 
 type Props = {
   position: Position;
 };
 
-const StockPosition: React.FC<Props> = ({position}) => {
+const TrendLine: React.FC<Props> = ({position}) => {
   const symbol = position.instrument.symbol;
   const {loading, error, data} = useGetInstrumentHistoryQuery({
-    variables: {symbol},
+    variables: {
+      symbol: symbol,
+      duration: '1m',
+    },
   });
 
   if (loading)
@@ -42,15 +44,11 @@ const StockPosition: React.FC<Props> = ({position}) => {
         data: close,
       },
     ],
-    height: 100,
+    width: 100,
+    height: 0,
   };
 
-  return (
-    <Flex direction="row">
-      <SinglePosition position={position} />
-      <LineChart {...graphProp} />
-    </Flex>
-  );
+  return <LineChart {...graphProp} />;
 };
 
-export default StockPosition;
+export default TrendLine;
