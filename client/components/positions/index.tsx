@@ -1,6 +1,7 @@
 import {AddIcon, CloseIcon} from '@chakra-ui/icons';
 import {
   Button,
+  chakra,
   Collapse,
   Divider,
   Flex,
@@ -11,14 +12,12 @@ import {
   Tabs,
   Tooltip,
   useDisclosure,
-  chakra,
 } from '@chakra-ui/react';
 import React from 'react';
 import {PositionState} from '../../graphql/generated/graphql';
 import Form from '../positions/form';
 import Header from './header';
-import OtherPosition from './other-position';
-import StockPosition from './stock-position';
+import SinglePosition from './position';
 
 type Props = {
   positions?: any[];
@@ -58,13 +57,9 @@ const Positions: React.FC<Props> = ({positions = []}) => {
               <Header />
               {positions
                 .filter(p => p.state === PositionState.Open)
-                .map(position =>
-                  position.instrument.type === 'stock' ? (
-                    <StockPosition position={position} key={position.id} />
-                  ) : (
-                    <OtherPosition position={position} key={position.id} />
-                  ),
-                )}
+                .map(position => (
+                  <SinglePosition position={position} key={position.id} />
+                ))}
             </Flex>
           </TabPanel>
           <TabPanel>
@@ -72,13 +67,9 @@ const Positions: React.FC<Props> = ({positions = []}) => {
               <Header />
               {positions
                 .filter(p => p.state === PositionState.Closed)
-                .map(position =>
-                  position.instrument.type === 'stock' ? (
-                    <StockPosition position={position} key={position.id} />
-                  ) : (
-                    <OtherPosition position={position} key={position.id} />
-                  ),
-                )}
+                .map(position => (
+                  <SinglePosition position={position} key={position.id} />
+                ))}
             </Flex>
           </TabPanel>
         </TabPanels>

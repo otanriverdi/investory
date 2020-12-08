@@ -9,7 +9,7 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react';
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {Line} from 'react-chartjs-2';
 
 type DataSet = {
@@ -31,7 +31,6 @@ type ChartProp = {
 };
 
 const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
-  const boundingBox = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const onClose = () => {
@@ -41,7 +40,7 @@ const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
   const {title, labels, dataSets, width, height} = props;
 
   const dataSetDefaults = {
-    fill: true,
+    fill: false,
     lineTension: 0.1,
     backgroundColor: 'rgba(75,192,192,0.4)',
     borderColor: 'rgba(75,192,192,1)',
@@ -56,7 +55,7 @@ const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
     pointHoverBackgroundColor: 'rgba(75,192,192,1)',
     pointHoverBorderColor: 'rgba(220,220,220,1)',
     pointHoverBorderWidth: 2,
-    pointRadius: 1,
+    pointRadius: 0,
     pointHitRadius: 10,
   };
 
@@ -74,9 +73,6 @@ const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
   };
 
   const optionsDefault = {
-    onClick: () => {
-      setIsOpen(true);
-    },
     legend: {
       display: false,
     },
@@ -123,13 +119,14 @@ const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
 
   return (
     <>
-      <Box ref={boundingBox}>
-        <Line
-          data={chartData}
-          width={100}
-          height={50}
-          options={optionsDefault}
-        />
+      <Box
+        w={width}
+        h={height}
+        onClick={() =>
+          dataSets.length && dataSets[0].data.length && setIsOpen(true)
+        }
+      >
+        <Line data={chartData} options={optionsDefault} />
       </Box>
 
       <Modal onClose={onClose} isOpen={isOpen} size={'xl'}>

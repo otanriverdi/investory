@@ -1,9 +1,11 @@
 import {CheckIcon, CloseIcon, Search2Icon} from '@chakra-ui/icons';
 import {
   Box,
+  chakra,
   Flex,
   FormControl,
   FormLabel,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
@@ -15,10 +17,8 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  chakra,
-  useToast,
   useColorMode,
-  IconButton,
+  useToast,
 } from '@chakra-ui/react';
 import React, {useEffect, useState} from 'react';
 import DatePicker from 'react-datepicker';
@@ -134,7 +134,7 @@ const Form: React.FC<FormProps> = ({
                 />
               </InputGroup>
               <Box
-                overflow="scroll"
+                overflow="auto"
                 zIndex={2}
                 backgroundColor={colorMode === 'light' ? 'white' : 'gray.500'}
                 borderRadius="md"

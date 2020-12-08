@@ -13,6 +13,8 @@ const Header: React.FC = () => {
       <Box fontWeight="bold">Value</Box>
       <Box fontWeight="bold">P/L($)</Box>
       <Box fontWeight="bold">P/L(%)</Box>
+      <Box fontWeight="bold">Trend(1M)</Box>
+      <Box fontWeight="bold">Edit</Box>
     </SimpleGrid>
   );
 };
