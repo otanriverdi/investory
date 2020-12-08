@@ -54,7 +54,7 @@
           },
           {
             "name": "getInstruments",
-            "description": null,
+            "description": "Returns all instruments filtered by the optional arguments.",
             "args": [
               {
                 "name": "sortDirection",
@@ -205,7 +205,7 @@
           },
           {
             "name": "getNewsForSymbol",
-            "description": null,
+            "description": "Returns latests news articles for the provided symbol.",
             "args": [
               {
                 "name": "last",
@@ -262,7 +262,7 @@
           },
           {
             "name": "getPositions",
-            "description": null,
+            "description": "Returns all positions that belongs to the logged in user.",
             "args": [
               {
                 "name": "sortDirection",
@@ -460,22 +460,6 @@
         "description": null,
         "fields": [
           {
-            "name": "id",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "symbol",
             "description": null,
             "args": [],
@@ -542,19 +526,9 @@
         "possibleTypes": null
       },
       {
-        "kind": "SCALAR",
-        "name": "Int",
-        "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
         "name": "Price",
-        "description": null,
+        "description": "Holds the current and the previous price of an instrument.",
         "fields": [
           {
             "name": "current",
@@ -607,7 +581,7 @@
       {
         "kind": "OBJECT",
         "name": "InstrumentHistory",
-        "description": null,
+        "description": "Holds the price information per date.",
         "fields": [
           {
             "name": "close",
@@ -714,7 +688,7 @@
       {
         "kind": "OBJECT",
         "name": "NewsItem",
-        "description": null,
+        "description": "Represents a single news article.",
         "fields": [
           {
             "name": "datetime",
@@ -1040,7 +1014,7 @@
       {
         "kind": "OBJECT",
         "name": "ClosePrice",
-        "description": null,
+        "description": "Holds the balance of the position at the closing time.",
         "fields": [
           {
             "name": "price",
@@ -1194,7 +1168,7 @@
           },
           {
             "name": "updatePosition",
-            "description": null,
+            "description": "Updates a position. Cannot be used for closing positions",
             "args": [
               {
                 "name": "updates",

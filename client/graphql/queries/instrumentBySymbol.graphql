@@ -1,6 +1,5 @@
-query getInstrumentBySymbol($symbol:String!) {
-  getInstrumentBySymbol(symbol:$symbol) {
-    id
+query getInstrumentBySymbol($symbol: String!) {
+  getInstrumentBySymbol(symbol: $symbol) {
     symbol
     name
     type

@@ -21,10 +21,13 @@ export type Query = {
   __typename?: 'Query';
   /** Get all comments made on the provided symbol. */
   getComments: Array<Comment>;
+  /** Returns all instruments filtered by the optional arguments. */
   getInstruments: Array<Instrument>;
   getInstrumentBySymbol: Instrument;
   getInstrumentHistory?: Maybe<Array<InstrumentHistory>>;
+  /** Returns latests news articles for the provided symbol. */
   getNewsForSymbol: Array<NewsItem>;
+  /** Returns all positions that belongs to the logged in user. */
   getPositions: Array<Position>;
 };
 
@@ -72,19 +75,20 @@ export type Comment = {
 
 export type Instrument = {
   __typename?: 'Instrument';
-  id: Scalars['Int'];
   symbol: Scalars['String'];
   name: Scalars['String'];
   type: Scalars['String'];
   price?: Maybe<Price>;
 };
 
+/** Holds the current and the previous price of an instrument. */
 export type Price = {
   __typename?: 'Price';
   current: Scalars['Float'];
   previous: Scalars['Float'];
 };
 
+/** Holds the price information per date. */
 export type InstrumentHistory = {
   __typename?: 'InstrumentHistory';
   close: Scalars['Float'];
@@ -95,6 +99,7 @@ export type InstrumentHistory = {
   date: Scalars['DateTime'];
 };
 
+/** Represents a single news article. */
 export type NewsItem = {
   __typename?: 'NewsItem';
   datetime: Scalars['Float'];
@@ -130,6 +135,7 @@ export enum PositionType {
   Buy = 'BUY',
 }
 
+/** Holds the balance of the position at the closing time. */
 export type ClosePrice = {
   __typename?: 'ClosePrice';
   price: Scalars['Float'];
@@ -141,6 +147,7 @@ export type Mutation = {
   createComment: Comment;
   deleteComment: Scalars['Boolean'];
   createPosition: Position;
+  /** Updates a position. Cannot be used for closing positions */
   updatePosition: Position;
   closePosition: ClosePrice;
 };
@@ -257,7 +264,7 @@ export type GetInstrumentsQuery = {__typename?: 'Query'} & {
   getInstruments: Array<
     {__typename?: 'Instrument'} & Pick<
       Instrument,
-      'id' | 'symbol' | 'name' | 'type'
+      'symbol' | 'name' | 'type'
     > & {
         price?: Maybe<
           {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
@@ -289,7 +296,7 @@ export type GetInstrumentBySymbolQueryVariables = Exact<{
 export type GetInstrumentBySymbolQuery = {__typename?: 'Query'} & {
   getInstrumentBySymbol: {__typename?: 'Instrument'} & Pick<
     Instrument,
-    'id' | 'symbol' | 'name' | 'type'
+    'symbol' | 'name' | 'type'
   > & {
       price?: Maybe<
         {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
@@ -331,7 +338,7 @@ export type GetPositionsQuery = {__typename?: 'Query'} & {
         >;
         instrument: {__typename?: 'Instrument'} & Pick<
           Instrument,
-          'id' | 'symbol' | 'name' | 'type'
+          'symbol' | 'name' | 'type'
         > & {
             price?: Maybe<
               {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
@@ -652,7 +659,6 @@ export type GetCommentsQueryResult = Apollo.QueryResult<
 export const GetInstrumentsDocument = gql`
   query getInstruments($query: String) {
     getInstruments(query: $query) {
-      id
       symbol
       name
       type
@@ -777,7 +783,6 @@ export type GetInstrumentHistoryQueryResult = Apollo.QueryResult<
 export const GetInstrumentBySymbolDocument = gql`
   query getInstrumentBySymbol($symbol: String!) {
     getInstrumentBySymbol(symbol: $symbol) {
-      id
       symbol
       name
       type
@@ -914,7 +919,6 @@ export const GetPositionsDocument = gql`
         price
       }
       instrument {
-        id
         symbol
         name
         type

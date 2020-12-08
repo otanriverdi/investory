@@ -39,7 +39,6 @@ const Home: React.FC = () => {
           />
         )}
       </Skeleton>
-      {/* <Divider my={2} /> */}
       <Skeleton isLoaded={!loading} mt={5}>
         <Positions positions={data && data.getPositions} />
       </Skeleton>
