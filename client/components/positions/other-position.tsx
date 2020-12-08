@@ -14,30 +14,26 @@ const OtherPosition: React.FC<Props> = ({position}) => {
 
   const xAxis = new Array(21).fill(0);
   const yAxis = [
-    '01 Jan 2020',
-    '01 Feb 2020',
-    '01 Mar 2020',
-    '01 Apr 2020',
-    '01 May 2020',
-    '01 Jun 2020',
-    '01 Jul 2020',
-    '01 Aug 2020',
-    '01 Sep 2020',
-    '01 Oct 2020',
-    '01 Nov 2020',
-    '01 Dec 2020',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
 
-  const instrumentName =
-    position.instrument.type.charAt(0).toUpperCase() +
-    position.instrument.type.slice(1);
-
   const graphProp = {
-    title: instrumentName + ' history in time',
+    title: position.instrument.name,
     labels: yAxis,
     dataSets: [
       {
-        label: instrumentName,
+        label: position.instrument.name,
         data: xAxis,
       },
     ],
