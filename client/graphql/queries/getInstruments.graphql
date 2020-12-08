@@ -1,0 +1,12 @@
+query getInstruments($query:String) {
+  getInstruments(query:$query) {
+    id
+    symbol
+    name
+    type
+    price {
+      current
+      previous
+    }
+  }
+}

@@ -1,0 +1,5 @@
+mutation createPosition($fields: CreatePositionInput!) {
+  createPosition(fields:$fields) {
+    amount
+  }
+}
