@@ -1,5 +1,5 @@
-import {Field, Int, ObjectType} from 'type-graphql';
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {Field, ObjectType} from 'type-graphql';
+import {BaseEntity, Column, Entity, PrimaryColumn} from 'typeorm';
 import {Price} from './Price';
 
 export enum InstrumentType {
@@ -11,12 +11,8 @@ export enum InstrumentType {
 @ObjectType()
 @Entity()
 export class Instrument extends BaseEntity {
-  @Field(() => Int)
-  @PrimaryGeneratedColumn()
-  id: number;
-
   @Field()
-  @Column()
+  @PrimaryColumn()
   symbol: string;
 
   @Field()

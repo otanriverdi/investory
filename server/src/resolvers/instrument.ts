@@ -25,7 +25,7 @@ export class InstrumentResolvers {
     @Arg('limit', {defaultValue: 10}) limit: number,
     @Arg('skip', {defaultValue: 0}) skip: number,
     @Arg('query', {defaultValue: ''}) query: string,
-    @Arg('sortBy', {defaultValue: 'symbol'}) sortBy: 'id' | 'name' | 'symbol',
+    @Arg('sortBy', {defaultValue: 'symbol'}) sortBy: 'name' | 'symbol',
     @Arg('sortDirection', {defaultValue: 'DESC'}) sortDirection: 'ASC' | 'DESC',
   ): Promise<Instrument[]> {
     let orderBy;
@@ -33,11 +33,8 @@ export class InstrumentResolvers {
       case 'name':
         orderBy = {name: sortDirection};
         break;
-      case 'symbol':
-        orderBy = {symbol: sortDirection};
-        break;
       default:
-        orderBy = {id: sortDirection};
+        orderBy = {symbol: sortDirection};
         break;
     }
 
