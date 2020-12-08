@@ -36,6 +36,7 @@ const SinglePosition: React.FC<Props> = ({position}) => {
 
   return (
     <Box>
+      <Divider mt={3} mb={3} />
       <SimpleGrid columns={10}>
         <Link href={`/instruments/${position.instrument.symbol}/1m`}>
           {position.instrument.symbol}
@@ -58,7 +59,6 @@ const SinglePosition: React.FC<Props> = ({position}) => {
         </Box>
         <Edit id={position.id} open={position.state === PositionState.Open} />
       </SimpleGrid>
-      <Divider mt={3} mb={3} />
     </Box>
   );
 };

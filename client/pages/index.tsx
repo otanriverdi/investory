@@ -1,11 +1,11 @@
 import {useAuth0} from '@auth0/auth0-react';
-import {Divider, Skeleton} from '@chakra-ui/react';
+import {Skeleton} from '@chakra-ui/react';
 import React from 'react';
 import Landing from '../components/landing';
 import NewsFeed from '../components/newsfeed';
 import Positions from '../components/positions';
 import Summary from '../components/summary';
-import {PositionType, useGetPositionsQuery} from '../graphql/generated/graphql';
+import {useGetPositionsQuery} from '../graphql/generated/graphql';
 import useSummary from '../hooks/use-summary';
 
 const Home: React.FC = () => {
@@ -39,8 +39,8 @@ const Home: React.FC = () => {
           />
         )}
       </Skeleton>
-      <Divider my={6} />
-      <Skeleton isLoaded={!loading}>
+      {/* <Divider my={2} /> */}
+      <Skeleton isLoaded={!loading} mt={5}>
         <Positions positions={data && data.getPositions} />
       </Skeleton>
     </>

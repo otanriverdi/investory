@@ -4,15 +4,15 @@ import React from 'react';
 const Header: React.FC = () => {
   return (
     <SimpleGrid columns={11}>
-      <Box>Ticker</Box>
-      <Box>Last Price</Box>
-      <Box>Price Open</Box>
-      <Box>Quantity</Box>
-      <Box>Open Date</Box>
-      <Box>Invested($)</Box>
-      <Box>Value</Box>
-      <Box>P/L($)</Box>
-      <Box>P/L(%)</Box>
+      <Box fontWeight="bold">Ticker</Box>
+      <Box fontWeight="bold">Last Price</Box>
+      <Box fontWeight="bold">Price Open</Box>
+      <Box fontWeight="bold">Quantity</Box>
+      <Box fontWeight="bold">Open Date</Box>
+      <Box fontWeight="bold">Invested($)</Box>
+      <Box fontWeight="bold">Value</Box>
+      <Box fontWeight="bold">P/L($)</Box>
+      <Box fontWeight="bold">P/L(%)</Box>
     </SimpleGrid>
   );
 };

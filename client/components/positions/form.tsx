@@ -1,22 +1,29 @@
-import {CheckIcon} from '@chakra-ui/icons';
+import {CheckIcon, Search2Icon} from '@chakra-ui/icons';
 import {
+  Box,
   Button,
+  Divider,
   Flex,
   FormControl,
+  FormLabel,
   Input,
+  InputGroup,
+  InputLeftElement,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  Text,
-  Menu,
-  MenuItem,
-  MenuList,
-  Box,
+  Radio,
+  RadioGroup,
+  Stack,
 } from '@chakra-ui/react';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import {
+  Instrument,
+  PositionType,
   useCreatePositionMutation,
   useGetInstrumentsLazyQuery,
 } from '../../graphql/generated/graphql';
@@ -25,31 +32,11 @@ const Form: React.FC = () => {
   const [price, setPrice] = useState(0);
   const [amount, setAmount] = useState(0);
   const [symbol, setSymbol] = useState('');
-  // const [queryList, setQueryList] = useState([]);
+  const [posDate, setPosDate] = useState(new Date());
+  const [posType, setPosType] = useState('');
+  const [selectionDisplay, setSelectionDisplay] = useState('none');
   const [getInstruments, {loading, error, data}] = useGetInstrumentsLazyQuery();
   const [createPosition] = useCreatePositionMutation();
-  const mockData = [
-    {
-      id: 1565,
-      name: 'Amg Bank',
-      price: {
-        current: 150,
-        previous: 153,
-      },
-      symbol: 'AMAL',
-      type: 'stock',
-    },
-    {
-      id: 1566,
-      name: 'App Mat',
-      price: {
-        current: 69,
-        previous: 67,
-      },
-      symbol: 'AMAT',
-      type: 'stock',
-    },
-  ];
 
   useEffect(() => {
     if (symbol.length > 1) {
@@ -70,6 +57,7 @@ const Form: React.FC = () => {
           amount,
           price,
           symbol,
+          date: posDate,
         },
       },
       refetchQueries: ['getPositions'],
@@ -79,20 +67,69 @@ const Form: React.FC = () => {
     setAmount(0);
   }
 
+  function handleSymbolSelect(instrument: Instrument) {
+    setSymbol(instrument.symbol);
+    setPrice(instrument.price.current);
+    setSelectionDisplay('none');
+
+    console.log(event);
+  }
+
   return (
     <FormControl>
-      <Flex mb={2} justify="space-between">
+      <Flex mb={2} justify="space-between" wrap="wrap" align="center">
         <Flex direction="column" justify="space-between">
-          <Text>Symbol</Text>
-          <Input
-            placeholder="Symbol"
-            onChange={e => setSymbol(e.target.value)}
-            value={symbol}
-            width="200px"
-          />
+          <FormLabel fontWeight="bold" pl={4}>
+            Symbol
+          </FormLabel>
+          <Box position="relative" overflow="visible">
+            <InputGroup>
+              <InputLeftElement pointerEvents="none">
+                <Search2Icon color="cyan.500" />
+              </InputLeftElement>
+              <Input
+                placeholder="Symbol"
+                onChange={e => {
+                  setSymbol(e.target.value);
+                  setSelectionDisplay('block');
+                }}
+                value={symbol}
+                w={200}
+              />
+            </InputGroup>
+            <Box
+              borderRadius="md"
+              borderWidth="1px"
+              display={selectionDisplay}
+              position="absolute"
+              w={200}
+              h={200}
+              overflow="auto"
+            >
+              {data &&
+                data.getInstruments.map(instrument => (
+                  <Box
+                    key={instrument.id}
+                    pl={4}
+                    pr={2}
+                    // TODO: need onClick={handleMenu()} to handle setting symbol and price
+                    onClick={e => handleSymbolSelect(instrument)}
+                    _hover={{
+                      transform: 'translateY(-3px)',
+                      background: 'cyan.500',
+                    }}
+                  >
+                    {instrument.symbol}
+                  </Box>
+                ))}
+            </Box>
+          </Box>
         </Flex>
-        <Flex direction="column">
-          <Text>Price</Text>
+
+        <Flex direction="column" justify="space-between">
+          <FormLabel fontWeight="bold" pl={4}>
+            Price
+          </FormLabel>
           <NumberInput
             defaultValue={15}
             precision={2}
@@ -107,8 +144,22 @@ const Form: React.FC = () => {
             </NumberInputStepper>
           </NumberInput>
         </Flex>
+        <Flex direction="column" justify="space-between">
+          <FormLabel fontWeight="bold" pl={4}>
+            Date
+          </FormLabel>
+          <Box borderRadius="md" borderWidth="1px" h={41} p={2}>
+            <DatePicker
+              outLineStyle="none"
+              selected={posDate}
+              onChange={date => setPosDate(date)}
+            />
+          </Box>
+        </Flex>
         <Flex direction="column">
-          <Text>Quantity</Text>
+          <FormLabel fontWeight="bold" pl={4}>
+            Quantity
+          </FormLabel>
           <NumberInput
             defaultValue={200}
             step={10}
@@ -122,15 +173,35 @@ const Form: React.FC = () => {
             </NumberInputStepper>
           </NumberInput>
         </Flex>
-        <Flex direction="column-reverse">
-          <Button
-            leftIcon={<CheckIcon />}
-            variant="solid"
-            onClick={handleSubmit}
+        <Flex direction="column">
+          <FormLabel fontWeight="bold" pl={4}>
+            Position
+          </FormLabel>
+          {/* // TODO: need to handle position type */}
+          <RadioGroup
+            value={posType}
+            defaultValue={PositionType.Buy}
+            borderWidth={1}
+            p={2}
+            borderRadius="md"
           >
-            Save
-          </Button>
+            <Stack direction="row">
+              <Radio value="Buy">Buy</Radio>
+              <Radio value="Sell">Sell</Radio>
+            </Stack>
+          </RadioGroup>
         </Flex>
+      </Flex>
+      <Divider mt={3} mb={3} />
+      <Flex justify="flex-end">
+        <Button
+          bg="cyan.500"
+          leftIcon={<CheckIcon />}
+          variant="solid"
+          onClick={handleSubmit}
+        >
+          Save
+        </Button>
       </Flex>
     </FormControl>
   );
