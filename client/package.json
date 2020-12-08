@@ -22,7 +22,6 @@
     "apexcharts": "^3.22.2",
     "chart.js": "^2.9.4",
     "dayjs": "^1.9.6",
-    "dotenv": "^8.2.0",
     "framer-motion": "^2.9.4",
     "graphql": "^15.4.0",
     "next": "10.0.3",
