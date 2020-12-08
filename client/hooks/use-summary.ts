@@ -42,18 +42,17 @@ export default function useSummary(
         ) {
           const current = position.instrument.price.current;
           const yesterday = position.instrument.price.previous;
-          const change = +(current - yesterday).toFixed(2);
+          const change = +(current - yesterday);
 
           amount = +(change * +position.amount).toFixed(2);
 
-          percentages.push(Math.abs(+((change * 100) / current).toFixed(2)));
+          percentages.push(Math.abs(+((change * 100) / current)));
         }
       });
 
       percentage = +(
-        percentages.length &&
         percentages.reduce((total, current) => total + current) /
-          percentages.length
+        percentages.length
       ).toFixed(2);
     }
 
@@ -75,14 +74,13 @@ export default function useSummary(
           const change = current - position.price;
 
           amount = +(change * position.amount).toFixed(2);
-          percentages.push(Math.abs(+((change * 100) / current).toFixed(2)));
+          percentages.push(Math.abs(+((change * 100) / current)));
         }
       });
 
       percentage = +(
-        percentages.length &&
         percentages.reduce((total, current) => total + current) /
-          percentages.length
+        percentages.length
       ).toFixed(2);
     }
 
