@@ -1,0 +1,5 @@
+mutation closePosition($id: Float!) {
+  closePosition(id: $id) {
+    price
+  }
+}

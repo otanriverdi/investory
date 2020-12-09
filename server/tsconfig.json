@@ -10,7 +10,10 @@
     "outDir": "dist",
     "strict": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
-  },
-  "exclude": ["functions"]
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "lib": ["es2018", "esnext.asynciterable"]
+  }
 }

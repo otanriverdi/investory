@@ -1,0 +1,13 @@
+mutation createComment(
+  $body: String!
+  $symbol: String!
+  $username: String!
+  $image: String!
+) {
+  createComment(
+    fields: {body: $body, username: $username, image: $image}
+    symbol: $symbol
+  ) {
+    id
+  }
+}

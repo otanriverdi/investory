@@ -1,0 +1,11 @@
+query getInstrumentBySymbol($symbol: String!) {
+  getInstrumentBySymbol(symbol: $symbol) {
+    symbol
+    name
+    type
+    price {
+      current
+      previous
+    }
+  }
+}
