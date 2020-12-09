@@ -16,6 +16,7 @@ import {
   NumberInputStepper,
   Radio,
   RadioGroup,
+  Skeleton,
   Stack,
   useColorMode,
   useToast,
@@ -59,7 +60,7 @@ const Form: React.FC<FormProps> = ({
   const [symbol, setSymbol] = useState('');
   const [posDate, setPosDate] = useState(new Date());
   const [posType, setPosType] = useState<PositionType>(PositionType.Buy);
-  const [getInstruments, {data}] = useGetInstrumentsLazyQuery();
+  const [getInstruments, {data, loading}] = useGetInstrumentsLazyQuery();
   const [createPosition] = useCreatePositionMutation();
 
   const toast = useToast();
@@ -144,6 +145,7 @@ const Form: React.FC<FormProps> = ({
                 width="100%"
                 h={100}
               >
+                {loading && <Skeleton height="100%" />}
                 {data &&
                   data.getInstruments.map(instrument => (
                     <Box
@@ -226,12 +228,16 @@ const Form: React.FC<FormProps> = ({
             icon={<CloseIcon />}
             onClick={onComplete}
             mr={2}
+            size="sm"
+            color="white"
           />
           <IconButton
             aria-label="cancel position"
             bg="cyan.500"
             icon={<CheckIcon />}
             onClick={handleSubmit}
+            color="white"
+            size="sm"
             disabled={
               symbol.length < 3 || Number(price) <= 0 || Number(amount) <= 0
             }
