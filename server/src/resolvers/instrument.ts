@@ -1,5 +1,12 @@
 import fetch from 'node-fetch';
-import {Arg, FieldResolver, Query, Resolver, Root} from 'type-graphql';
+import {
+  Arg,
+  FieldResolver,
+  Query,
+  registerEnumType,
+  Resolver,
+  Root,
+} from 'type-graphql';
 import {Like} from 'typeorm';
 import {Instrument} from '../entity/Instrument';
 import {InstrumentHistory} from '../entity/InstrumentHistory';
@@ -16,6 +23,8 @@ export enum Duration {
   M3 = '3m',
   M1 = '1m',
 }
+
+registerEnumType(Duration, {name: 'Duration'});
 
 @Resolver(Instrument)
 export class InstrumentResolvers {

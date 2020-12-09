@@ -1,4 +1,4 @@
-import {Field, ObjectType} from 'type-graphql';
+import {Field, ObjectType, registerEnumType} from 'type-graphql';
 import {BaseEntity, Column, Entity, PrimaryColumn} from 'typeorm';
 import {Price} from './Price';
 
@@ -7,6 +7,8 @@ export enum InstrumentType {
   FX = 'fx',
   STOCK = 'stock',
 }
+
+registerEnumType(InstrumentType, {name: 'InstrumentType'});
 
 @ObjectType()
 @Entity()
