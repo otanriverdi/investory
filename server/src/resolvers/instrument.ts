@@ -5,6 +5,7 @@ import {Instrument} from '../entity/Instrument';
 import {InstrumentHistory} from '../entity/InstrumentHistory';
 import {Price} from '../entity/Price';
 import {getPrice} from '../utils/get-price';
+import config from '../config';
 
 export enum Duration {
   Y5 = '5y',
@@ -64,16 +65,14 @@ export class InstrumentResolvers {
   ): Promise<InstrumentHistory[] | null> {
     const token = process.env.IEX_TOKEN;
 
-    let url = `https://sandbox.iexapis.com/stable/stock/${symbol}/chart/${duration}?token=${token}`;
+    const {url} = config.iex;
 
-    if (process.env.ENABLE_IEX === 'true') {
-      console.warn('Using IEX to fetch real price data!');
+    const res = await fetch(
+      `${url}/stock/${symbol}/chart/${duration}?token=${token}`,
+    );
 
-      url = `https://cloud.iexapis.com/stable/stock/${symbol}/chart/${duration}?token=${token}`;
-    }
-
-    const res = await fetch(url);
     const json = await res.json();
+
     if (json) {
       const history = json.map((d: unknown) =>
         InstrumentHistory.parseFields(d),
