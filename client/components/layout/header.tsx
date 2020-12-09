@@ -28,7 +28,12 @@ const Header: React.FC = () => {
   return (
     <header>
       <Flex py={6} align="center">
-        <Link css={{':hover': {textDecoration: 'none'}}} href="/">
+        <Link
+          _focus={{outline: 'none'}}
+          _active={{outline: 'none'}}
+          css={{':hover': {textDecoration: 'none'}}}
+          href="/"
+        >
           <Text
             css={{position: 'relative', top: -5.5, cursor: 'pointer'}}
             color="cyan.400"
