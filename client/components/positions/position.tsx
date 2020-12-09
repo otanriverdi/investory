@@ -1,4 +1,12 @@
-import {Box, Divider, Link, SimpleGrid, Text, Tooltip} from '@chakra-ui/react';
+import {
+  Badge,
+  Box,
+  Divider,
+  Link,
+  SimpleGrid,
+  Text,
+  Tooltip,
+} from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import React, {useMemo} from 'react';
 import {Position, PositionState} from '../../graphql/generated/graphql';
@@ -43,6 +51,7 @@ const SinglePosition: React.FC<Props> = ({position}) => {
             href={`/instruments/${position.instrument.symbol}/1m`}
             color="cyan.500"
             fontWeight="bold"
+            _focus={{outline: 'none'}}
           >
             {position.instrument.symbol}
           </Link>
@@ -57,7 +66,17 @@ const SinglePosition: React.FC<Props> = ({position}) => {
             : 0}
         </Box>
         <Box>{position.price}</Box>
-        <Box>{position.amount}</Box>
+        <Box ml={1}>
+          <Badge
+            position="relative"
+            bottom={0.5}
+            mr={2}
+            colorScheme={position.type === 'BUY' ? 'green' : 'red'}
+          >
+            {position.type}
+          </Badge>
+          {position.amount}
+        </Box>
         <Box position="relative">
           <Tooltip
             position="absolute"

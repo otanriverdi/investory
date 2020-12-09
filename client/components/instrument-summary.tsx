@@ -8,7 +8,9 @@ import {
   StatHelpText,
   StatLabel,
   StatNumber,
+  Skeleton,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import React from 'react';
 import {useGetInstrumentsQuery} from '../graphql/generated/graphql';
@@ -25,9 +27,20 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
     },
   });
 
+  const toast = useToast();
+
   if (error) {
-    console.warn(error);
+    toast({
+      title: `Error getting instrument ${symbol}.`,
+      description: 'Please go back to your dashboard or reload the page.',
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+      position: 'top',
+    });
   }
+
+  if (loading) return <Skeleton height={150} mb={4} />;
 
   function renderStat(
     label: string,
@@ -89,7 +102,7 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
 
   return (
     <Box>
-      <Text mb={2} fontWeight="400" fontSize="4xl">
+      <Text ml={3} mb={2} fontWeight="400" fontSize="4xl">
         {stat.name} ({stat.symbol})
       </Text>
       {stat && (

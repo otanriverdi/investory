@@ -60,7 +60,6 @@ const NewsFeed: React.FC<NewsFeedPropType> = ({
   }
 
   function renderNewsFooter(newsItem: NewsItem) {
-    const isExternal = true;
     return (
       <Text fontSize="xs" color="gray.500">
         {newsItem.source} | {dayjs(newsItem.datetime).format('MMMM DD YYYY')} |
@@ -147,6 +146,13 @@ const NewsFeed: React.FC<NewsFeedPropType> = ({
                     {renderNewsFooter(newsItem)}
                   </Box>
                 ))}
+              {queryRes && !queryRes.data?.length && (
+                <Box width="100%">
+                  <Text textAlign="center" fontWeight="bold">
+                    There are no news to report.
+                  </Text>
+                </Box>
+              )}
             </Flex>
           </Skeleton>
         </Stack>
