@@ -37,7 +37,7 @@ const Summary: React.FC<Props> = ({
   ) {
     return (
       <Stat
-        _hover={{transform: 'translateY(-3px)', borderColor: 'cyan.300'}}
+        _hover={{transform: 'translateY(-3px)', borderColor: 'cyan.500'}}
         borderWidth="1px"
         borderRadius="md"
         px={4}
@@ -62,7 +62,7 @@ const Summary: React.FC<Props> = ({
       </Text>
       <HStack align="flex-end" spacing={2}>
         <Stat
-          _hover={{transform: 'translateY(-3px)', borderColor: 'cyan.300'}}
+          _hover={{transform: 'translateY(-3px)', borderColor: 'cyan.500'}}
           borderWidth="1px"
           borderRadius="md"
           px={4}

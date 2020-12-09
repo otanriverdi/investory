@@ -207,8 +207,8 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
 
   function getButtonBGColor(duration: string): string {
     if (colorMode === 'dark')
-      return currentDuration === duration ? 'cyan.700' : 'gray.700';
-    else return currentDuration === duration ? 'cyan.200' : 'gray.100';
+      return currentDuration === duration ? 'cyan.300' : 'gray.700';
+    else return currentDuration === duration ? 'cyan.300' : 'gray.100';
   }
 
   function renderDurationButton(duration: string) {
@@ -220,6 +220,8 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
         <Button
           onClick={() => setCurrentDuration(duration)}
           ml={2}
+          position="relative"
+          size="sm"
           bg={getButtonBGColor(duration)}
           color={colorMode === 'dark' && 'white'}
         >
@@ -231,10 +233,20 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
 
   return (
     <>
-      <Tabs variant="soft-rounded" colorScheme="cyan" borderRadius="md" py={4}>
+      <Tabs variant="enclosed" colorScheme="cyan" borderRadius="md" py={4}>
         <TabList>
-          <Tab textColor={colorMode === 'dark' && 'white'}>Price & Volume</Tab>
-          <Tab textColor={colorMode === 'dark' && 'white'}>Candlestick </Tab>
+          <Tab
+            _focus={{outline: 'none'}}
+            textColor={colorMode === 'dark' && 'white'}
+          >
+            Price & Volume
+          </Tab>
+          <Tab
+            _focus={{outline: 'none'}}
+            textColor={colorMode === 'dark' && 'white'}
+          >
+            Candlestick{' '}
+          </Tab>
           {renderDurationButton('1M')}
           {renderDurationButton('3M')}
           {renderDurationButton('6M')}

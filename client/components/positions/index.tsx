@@ -35,27 +35,32 @@ const Positions: React.FC<Props> = ({positions = []}) => {
 
   return (
     <>
-      <Divider my={4} />
+      <Divider my={2} />
       <Box borderWidth="1px" borderRadius="md">
-        <Text fontWeight="700" size="md" p={2}>
+        <Text fontWeight="700" size="lg" p={4}>
           My Positions
         </Text>
 
         <MyCollapse overflow="visible !important" in={isOpen} animateOpacity>
           <Form onComplete={onToggle} />
         </MyCollapse>
-        <Tabs
-          mt={2}
-          variant="soft-rounded"
-          colorScheme="cyan"
-          borderTopWidth="1px"
-          p={4}
-        >
-          <TabList>
-            <Tab disabled={!positions.length}>Open</Tab>
-            <Tab disabled={!positions.length}>Closed</Tab>
+        <Tabs variant="enclosed" colorScheme="cyan" borderTopWidth="1px" p={4}>
+          <TabList mx={8}>
+            <Tab _focus={{outline: 'none'}} disabled={!positions.length}>
+              Open
+            </Tab>
+            <Tab _focus={{outline: 'none'}} disabled={!positions.length}>
+              Closed
+            </Tab>
             <Tooltip label="Add a new position" aria-label="Add a new position">
-              <Button onClick={onToggle} ml={2} bg="cyan.300" color="white">
+              <Button
+                size="sm"
+                onClick={onToggle}
+                ml="auto"
+                mr="17.75px"
+                bg="cyan.500"
+                color="white"
+              >
                 {isOpen ? <CloseIcon /> : <AddIcon />}
               </Button>
             </Tooltip>

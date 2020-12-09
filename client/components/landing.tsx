@@ -54,7 +54,7 @@ const Landing: React.FC<Props> = ({onAction}) => {
             No clutter, just the necessary information
           </Heading>
           <Button
-            backgroundColor="cyan.300"
+            backgroundColor="cyan.500"
             borderRadius="8px"
             py="4"
             px="4"
