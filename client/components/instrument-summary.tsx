@@ -45,19 +45,24 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
               px={4}
               py={2}
             >
-              <StatLabel fontSize="xl">{label}</StatLabel>
+              <StatLabel fontSize="l" fontWeight="bold">
+                {label}
+              </StatLabel>
               <StatNumber
                 textColor={number >= 0 ? 'green.400' : 'red.600'}
-                fontSize="4xl"
+                fontSize="xl"
               >
                 {(type === 'currency' ? '€ ' : '') +
                   number +
-                  (type === 'pcnt' ? '%' : '')}
+                  (type === 'pcnt' ? '%' : '') +
+                  ' '}
                 {!helpText && (
                   <StatArrow type={number >= 0 ? 'increase' : 'decrease'} />
                 )}
               </StatNumber>
-              {helpText && <StatHelpText>{helpText}</StatHelpText>}
+              {helpText && (
+                <StatHelpText fontSize="sm">{helpText}</StatHelpText>
+              )}
             </Stat>
           </HStack>
         </>
@@ -94,7 +99,7 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
           {renderStat('Percent Change', chagePercent, 'pcnt')}
         </Flex>
       )}
-      <Divider my={6} />
+      <Divider my={2} />
     </Box>
   );
 };

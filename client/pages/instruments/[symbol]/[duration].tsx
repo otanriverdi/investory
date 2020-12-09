@@ -22,7 +22,7 @@ const InstrumentDetails: React.FC = () => {
         >
           <InstrumentHistory
             symbol={symbol as string}
-            duration={duration as string}
+            duration={(duration as string).toUpperCase()}
           />
         </Box>
         <Box w={5} />
