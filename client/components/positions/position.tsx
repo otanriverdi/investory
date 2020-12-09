@@ -9,7 +9,11 @@ import {
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import React, {useMemo} from 'react';
-import {Position, PositionState} from '../../graphql/generated/graphql';
+import {
+  Position,
+  PositionState,
+  PositionType,
+} from '../../graphql/generated/graphql';
 import TrendLine from '../trendline';
 import Edit from './edit';
 
@@ -23,10 +27,23 @@ const SinglePosition: React.FC<Props> = ({position}) => {
       return 0;
     }
 
-    return (
+    let c =
       position.amount * position.instrument.price.current -
-      position.amount * position.price
-    );
+      position.amount * position.price;
+
+    if (position.type === PositionType.Sell) {
+      c = -c;
+    }
+
+    const fixed = c.toFixed(2);
+
+    if (fixed.split('.')[1] !== '00') {
+      c = Number(fixed);
+    } else {
+      c = Math.round(c);
+    }
+
+    return c;
   }, [position]);
 
   const currentBalance = useMemo(
@@ -39,7 +56,7 @@ const SinglePosition: React.FC<Props> = ({position}) => {
   );
 
   const percentage = useMemo(() => {
-    return (currentBalance * 100) / (position.amount * position.price) - 100;
+    return (change * 100) / position.price;
   }, [position]);
 
   return (
