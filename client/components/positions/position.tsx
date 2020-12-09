@@ -1,6 +1,5 @@
-import {Box, Divider, SimpleGrid, Tooltip} from '@chakra-ui/react';
+import {Box, Divider, Link, SimpleGrid, Tooltip} from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import Link from 'next/link';
 import React, {useMemo} from 'react';
 import {Position, PositionState} from '../../graphql/generated/graphql';
 import TrendLine from '../trendline';
@@ -39,7 +38,11 @@ const SinglePosition: React.FC<Props> = ({position}) => {
     <Box>
       <Divider mt={3} mb={3} />
       <SimpleGrid columns={11}>
-        <Link href={`/instruments/${position.instrument.symbol}/1m`}>
+        <Link
+          href={`/instruments/${position.instrument.symbol}/1m`}
+          color="cyan.500"
+          fontWeight="bold"
+        >
           {position.instrument.symbol}
         </Link>
         <Box>
@@ -49,12 +52,17 @@ const SinglePosition: React.FC<Props> = ({position}) => {
         </Box>
         <Box>{position.price}</Box>
         <Box>{position.amount}</Box>
-        <Tooltip
-          label={dayjs(position.date).format('ddd, MMM D YY, h:ma')}
-          aria-label="A tooltip"
-        >
-          <Box>{dayjs(position.date).format('ddd, MMM YY')}</Box>
-        </Tooltip>
+        <Box position="relative">
+          <Tooltip
+            position="absolute"
+            top={-5}
+            left={-55}
+            label={dayjs(position.date).format('ddd, MMM D YYYY, h:ma')}
+            aria-label="A tooltip"
+          >
+            <Box h={10}>{dayjs(position.date).format('DD-MM-YY')}</Box>
+          </Tooltip>
+        </Box>
         <Box>${(position.price * position.amount).toFixed(2)}</Box>
         <Box>${currentBalance.toFixed(2)}</Box>
         <Box textColor={change >= 0 ? 'green.400' : 'red.600'}>

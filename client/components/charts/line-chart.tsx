@@ -124,6 +124,8 @@ const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
         onClick={() =>
           dataSets.length && dataSets[0].data.length && setIsOpen(true)
         }
+        cursor="pointer"
+        _hover={{transform: 'translateY(-3px)', borderColor: 'cyan.300'}}
       >
         <Line data={chartData} options={optionsDefault} />
       </Box>
