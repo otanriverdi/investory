@@ -1,6 +1,6 @@
 import {Heading, Skeleton} from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Position,
   useGetInstrumentHistoryQuery,
@@ -13,6 +13,7 @@ type Props = {
 
 const TrendLine: React.FC<Props> = ({position}) => {
   const symbol = position.instrument.symbol;
+
   const {loading, error, data} = useGetInstrumentHistoryQuery({
     variables: {
       symbol: symbol,
@@ -20,25 +21,21 @@ const TrendLine: React.FC<Props> = ({position}) => {
     },
   });
 
-  if (error)
-    console.warn('Unable to fetch instrument history with error: ', error);
+  if (error) {
+    return null;
+  }
 
-  if (loading) return <Skeleton />;
-
-  const close = [];
-  const date = [];
-  data.getInstrumentHistory.forEach(item => {
-    close.push(item.close);
-    date.push(dayjs(item.date).format('DD MMM YY'));
-  });
+  if (loading) return <Skeleton height="100%" />;
 
   const graphProp = {
     title: position.instrument.name,
-    labels: date,
+    labels:
+      data &&
+      data.getInstrumentHistory.map(i => dayjs(i.date).format('DD MMM YY')),
     dataSets: [
       {
         label: position.instrument.symbol,
-        data: close,
+        data: data && data.getInstrumentHistory.map(i => i.close),
       },
     ],
     width: 100,
