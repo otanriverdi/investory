@@ -69,7 +69,7 @@ const Summary: React.FC<Props> = ({
           py={2}
         >
           <StatLabel fontSize="xl">Current Balance</StatLabel>
-          <StatNumber fontSize="4xl">€{balance}</StatNumber>
+          <StatNumber fontSize="4xl">${balance}</StatNumber>
           <StatHelpText>After Profit/Loss</StatHelpText>
         </Stat>
         {renderSubStat('Daily Change', daily)}

@@ -2,7 +2,6 @@ import {ChevronRightIcon} from '@chakra-ui/icons';
 import {Box, Button, Flex, Heading, Stack, Text} from '@chakra-ui/react';
 import animationData from '../public/charts.json';
 import Lottie from 'react-lottie';
-// import Image from 'next/image';
 import React from 'react';
 
 type Props = {
