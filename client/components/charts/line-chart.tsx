@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -137,6 +136,7 @@ const LineChart: React.FC<ChartProp> = (props: ChartProp) => {
           <ModalBody>
             <Line data={chartData} options={optionsDefaultModal} />
           </ModalBody>
+          <ModalFooter>{''}</ModalFooter>
         </ModalContent>
       </Modal>
     </>

@@ -1,16 +1,18 @@
 import {
   Box,
+  Button,
+  Skeleton,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
+  Tooltip,
   useColorMode,
-  Skeleton,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import dynamic from 'next/dynamic';
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import {useGetInstrumentHistoryQuery} from '../../graphql/generated/graphql';
 
 const Chart = dynamic(() => import('react-apexcharts'), {
@@ -25,11 +27,12 @@ type HistoryProp = {
 const InstrumentHistory: React.FC<HistoryProp> = props => {
   const {symbol, duration} = props;
   const {colorMode} = useColorMode();
+  const [currentDuration, setCurrentDuration] = useState(duration);
 
   const {data, loading, error} = useGetInstrumentHistoryQuery({
     variables: {
       symbol: symbol as string,
-      duration: duration as string,
+      duration: currentDuration,
     },
   });
 
@@ -68,18 +71,20 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
   }, [data]);
 
   const candleStickOptions = {
+    theme: {
+      mode: colorMode,
+      palette: 'palette1',
+    },
     title: {
       text: (symbol as string).toUpperCase(),
       align: 'center',
       style: {
         fontSize: '16px',
         fontWeight: 'bold',
-        color: '#263263',
       },
     },
     grid: {
       show: true,
-      borderColor: '#263263',
       strokeDashArray: 2,
       position: 'back',
     },
@@ -98,11 +103,14 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
   };
 
   const priceChartOptions = {
+    theme: {
+      mode: colorMode,
+      palette: 'palette1',
+    },
     chart: {
       id: 'chart2',
       stacked: false,
       type: 'area',
-      foreColor: '#263263',
       toolbar: {
         autoSelected: 'pan',
       },
@@ -114,7 +122,6 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
       style: {
         fontSize: '16px',
         fontWeight: 'bold',
-        color: '#263263',
       },
     },
     dataLabels: {
@@ -125,7 +132,6 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
     },
     grid: {
       show: true,
-      borderColor: '#bbbbbb',
       strokeDashArray: 2,
       position: 'back',
     },
@@ -152,10 +158,13 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
   };
 
   const volumeChartOptions = {
+    theme: {
+      mode: colorMode,
+      palette: 'palette1',
+    },
     chart: {
       id: 'chart1',
       type: 'bar',
-      foreColor: '#263263',
       brush: {
         target: 'chart2',
         enabled: true,
@@ -163,7 +172,6 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
       selection: {
         enabled: true,
         fill: {
-          color: 'teal',
           opacity: 0.4,
         },
         xaxis: {
@@ -174,6 +182,11 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
     },
     stroke: {
       width: 2,
+    },
+    grid: {
+      show: true,
+      strokeDashArray: 2,
+      position: 'back',
     },
     markers: {
       size: 0,
@@ -192,12 +205,42 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
     },
   };
 
+  function getButtonBGColor(duration: string): string {
+    if (colorMode === 'dark')
+      return currentDuration === duration ? 'cyan.700' : 'gray.700';
+    else return currentDuration === duration ? 'cyan.200' : 'gray.100';
+  }
+
+  function renderDurationButton(duration: string) {
+    return (
+      <Tooltip
+        label={`Last ${duration} data`}
+        aria-label={`Last ${duration} data`}
+      >
+        <Button
+          onClick={() => setCurrentDuration(duration)}
+          ml={2}
+          bg={getButtonBGColor(duration)}
+          color={colorMode === 'dark' && 'white'}
+        >
+          {duration}
+        </Button>
+      </Tooltip>
+    );
+  }
+
   return (
     <>
       <Tabs variant="soft-rounded" colorScheme="cyan" borderRadius="md" py={4}>
         <TabList>
           <Tab textColor={colorMode === 'dark' && 'white'}>Price & Volume</Tab>
           <Tab textColor={colorMode === 'dark' && 'white'}>Candlestick </Tab>
+          {renderDurationButton('1M')}
+          {renderDurationButton('3M')}
+          {renderDurationButton('6M')}
+          {renderDurationButton('1Y')}
+          {renderDurationButton('2Y')}
+          {renderDurationButton('5Y')}
         </TabList>
         <TabPanels>
           <TabPanel>
