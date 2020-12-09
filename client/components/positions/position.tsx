@@ -60,7 +60,7 @@ const SinglePosition: React.FC<Props> = ({position}) => {
             : 0}
         </Box>
         <Box>{position.price}</Box>
-        <Box ml={2}>
+        <Box ml={1}>
           <Badge
             position="relative"
             bottom={0.5}
