@@ -256,21 +256,19 @@ export type GetCommentsQuery = {__typename?: 'Query'} & {
   >;
 };
 
-export type GetInstrumentsQueryVariables = Exact<{
-  query?: Maybe<Scalars['String']>;
+export type GetInstrumentBySymbolQueryVariables = Exact<{
+  symbol: Scalars['String'];
 }>;
 
-export type GetInstrumentsQuery = {__typename?: 'Query'} & {
-  getInstruments: Array<
-    {__typename?: 'Instrument'} & Pick<
-      Instrument,
-      'symbol' | 'name' | 'type'
-    > & {
-        price?: Maybe<
-          {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
-        >;
-      }
-  >;
+export type GetInstrumentBySymbolQuery = {__typename?: 'Query'} & {
+  getInstrumentBySymbol: {__typename?: 'Instrument'} & Pick<
+    Instrument,
+    'symbol' | 'name' | 'type'
+  > & {
+      price?: Maybe<
+        {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
+      >;
+    };
 };
 
 export type GetInstrumentHistoryQueryVariables = Exact<{
@@ -289,19 +287,21 @@ export type GetInstrumentHistoryQuery = {__typename?: 'Query'} & {
   >;
 };
 
-export type GetInstrumentBySymbolQueryVariables = Exact<{
-  symbol: Scalars['String'];
+export type GetInstrumentsQueryVariables = Exact<{
+  query?: Maybe<Scalars['String']>;
 }>;
 
-export type GetInstrumentBySymbolQuery = {__typename?: 'Query'} & {
-  getInstrumentBySymbol: {__typename?: 'Instrument'} & Pick<
-    Instrument,
-    'symbol' | 'name' | 'type'
-  > & {
-      price?: Maybe<
-        {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
-      >;
-    };
+export type GetInstrumentsQuery = {__typename?: 'Query'} & {
+  getInstruments: Array<
+    {__typename?: 'Instrument'} & Pick<
+      Instrument,
+      'symbol' | 'name' | 'type'
+    > & {
+        price?: Maybe<
+          {__typename?: 'Price'} & Pick<Price, 'current' | 'previous'>
+        >;
+      }
+  >;
 };
 
 export type GetNewsForSymbolQueryVariables = Exact<{
@@ -656,9 +656,9 @@ export type GetCommentsQueryResult = Apollo.QueryResult<
   GetCommentsQuery,
   GetCommentsQueryVariables
 >;
-export const GetInstrumentsDocument = gql`
-  query getInstruments($query: String) {
-    getInstruments(query: $query) {
+export const GetInstrumentBySymbolDocument = gql`
+  query getInstrumentBySymbol($symbol: String!) {
+    getInstrumentBySymbol(symbol: $symbol) {
       symbol
       name
       type
@@ -671,52 +671,52 @@ export const GetInstrumentsDocument = gql`
 `;
 
 /**
- * __useGetInstrumentsQuery__
+ * __useGetInstrumentBySymbolQuery__
  *
- * To run a query within a React component, call `useGetInstrumentsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetInstrumentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetInstrumentBySymbolQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInstrumentBySymbolQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetInstrumentsQuery({
+ * const { data, loading, error } = useGetInstrumentBySymbolQuery({
  *   variables: {
- *      query: // value for 'query'
+ *      symbol: // value for 'symbol'
  *   },
  * });
  */
-export function useGetInstrumentsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    GetInstrumentsQuery,
-    GetInstrumentsQueryVariables
+export function useGetInstrumentBySymbolQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetInstrumentBySymbolQuery,
+    GetInstrumentBySymbolQueryVariables
   >,
 ) {
-  return Apollo.useQuery<GetInstrumentsQuery, GetInstrumentsQueryVariables>(
-    GetInstrumentsDocument,
-    baseOptions,
-  );
+  return Apollo.useQuery<
+    GetInstrumentBySymbolQuery,
+    GetInstrumentBySymbolQueryVariables
+  >(GetInstrumentBySymbolDocument, baseOptions);
 }
-export function useGetInstrumentsLazyQuery(
+export function useGetInstrumentBySymbolLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    GetInstrumentsQuery,
-    GetInstrumentsQueryVariables
+    GetInstrumentBySymbolQuery,
+    GetInstrumentBySymbolQueryVariables
   >,
 ) {
-  return Apollo.useLazyQuery<GetInstrumentsQuery, GetInstrumentsQueryVariables>(
-    GetInstrumentsDocument,
-    baseOptions,
-  );
+  return Apollo.useLazyQuery<
+    GetInstrumentBySymbolQuery,
+    GetInstrumentBySymbolQueryVariables
+  >(GetInstrumentBySymbolDocument, baseOptions);
 }
-export type GetInstrumentsQueryHookResult = ReturnType<
-  typeof useGetInstrumentsQuery
+export type GetInstrumentBySymbolQueryHookResult = ReturnType<
+  typeof useGetInstrumentBySymbolQuery
 >;
-export type GetInstrumentsLazyQueryHookResult = ReturnType<
-  typeof useGetInstrumentsLazyQuery
+export type GetInstrumentBySymbolLazyQueryHookResult = ReturnType<
+  typeof useGetInstrumentBySymbolLazyQuery
 >;
-export type GetInstrumentsQueryResult = Apollo.QueryResult<
-  GetInstrumentsQuery,
-  GetInstrumentsQueryVariables
+export type GetInstrumentBySymbolQueryResult = Apollo.QueryResult<
+  GetInstrumentBySymbolQuery,
+  GetInstrumentBySymbolQueryVariables
 >;
 export const GetInstrumentHistoryDocument = gql`
   query getInstrumentHistory($symbol: String!, $duration: String) {
@@ -780,9 +780,9 @@ export type GetInstrumentHistoryQueryResult = Apollo.QueryResult<
   GetInstrumentHistoryQuery,
   GetInstrumentHistoryQueryVariables
 >;
-export const GetInstrumentBySymbolDocument = gql`
-  query getInstrumentBySymbol($symbol: String!) {
-    getInstrumentBySymbol(symbol: $symbol) {
+export const GetInstrumentsDocument = gql`
+  query getInstruments($query: String) {
+    getInstruments(query: $query) {
       symbol
       name
       type
@@ -795,52 +795,52 @@ export const GetInstrumentBySymbolDocument = gql`
 `;
 
 /**
- * __useGetInstrumentBySymbolQuery__
+ * __useGetInstrumentsQuery__
  *
- * To run a query within a React component, call `useGetInstrumentBySymbolQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetInstrumentBySymbolQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetInstrumentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetInstrumentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetInstrumentBySymbolQuery({
+ * const { data, loading, error } = useGetInstrumentsQuery({
  *   variables: {
- *      symbol: // value for 'symbol'
+ *      query: // value for 'query'
  *   },
  * });
  */
-export function useGetInstrumentBySymbolQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetInstrumentBySymbolQuery,
-    GetInstrumentBySymbolQueryVariables
+export function useGetInstrumentsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetInstrumentsQuery,
+    GetInstrumentsQueryVariables
   >,
 ) {
-  return Apollo.useQuery<
-    GetInstrumentBySymbolQuery,
-    GetInstrumentBySymbolQueryVariables
-  >(GetInstrumentBySymbolDocument, baseOptions);
+  return Apollo.useQuery<GetInstrumentsQuery, GetInstrumentsQueryVariables>(
+    GetInstrumentsDocument,
+    baseOptions,
+  );
 }
-export function useGetInstrumentBySymbolLazyQuery(
+export function useGetInstrumentsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    GetInstrumentBySymbolQuery,
-    GetInstrumentBySymbolQueryVariables
+    GetInstrumentsQuery,
+    GetInstrumentsQueryVariables
   >,
 ) {
-  return Apollo.useLazyQuery<
-    GetInstrumentBySymbolQuery,
-    GetInstrumentBySymbolQueryVariables
-  >(GetInstrumentBySymbolDocument, baseOptions);
+  return Apollo.useLazyQuery<GetInstrumentsQuery, GetInstrumentsQueryVariables>(
+    GetInstrumentsDocument,
+    baseOptions,
+  );
 }
-export type GetInstrumentBySymbolQueryHookResult = ReturnType<
-  typeof useGetInstrumentBySymbolQuery
+export type GetInstrumentsQueryHookResult = ReturnType<
+  typeof useGetInstrumentsQuery
 >;
-export type GetInstrumentBySymbolLazyQueryHookResult = ReturnType<
-  typeof useGetInstrumentBySymbolLazyQuery
+export type GetInstrumentsLazyQueryHookResult = ReturnType<
+  typeof useGetInstrumentsLazyQuery
 >;
-export type GetInstrumentBySymbolQueryResult = Apollo.QueryResult<
-  GetInstrumentBySymbolQuery,
-  GetInstrumentBySymbolQueryVariables
+export type GetInstrumentsQueryResult = Apollo.QueryResult<
+  GetInstrumentsQuery,
+  GetInstrumentsQueryVariables
 >;
 export const GetNewsForSymbolDocument = gql`
   query getNewsForSymbol($symbols: [String!]!, $last: Float) {
