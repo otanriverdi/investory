@@ -19,8 +19,8 @@ module.exports = {
   ...partial,
   synchronize: false,
   logging: process.env.NODE_ENV === 'production' ? false : true,
-  entities: ['src/entity/*.ts'],
-  migrations: ['src/migration/*.ts'],
+  entities: ['dist/entity/*.js'],
+  migrations: ['dist/migration/*.js'],
   migrationsRun: true,
   cli: {
     migrationsDir: 'src/migration',
