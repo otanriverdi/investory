@@ -3,9 +3,8 @@ import {
   Box,
   Divider,
   Flex,
-  Heading,
-  IconButton,
   Image,
+  Link,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -18,7 +17,6 @@ import {
   Text,
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
-import Link from 'next/link';
 import React, {useState} from 'react';
 import {IoReloadCircle} from 'react-icons/io5';
 import {NewsItem} from '../graphql/generated/graphql';
@@ -62,11 +60,12 @@ const NewsFeed: React.FC<NewsFeedPropType> = ({
   }
 
   function renderNewsFooter(newsItem: NewsItem) {
+    const isExternal = true;
     return (
       <Text fontSize="xs" color="gray.500">
         {newsItem.source} | {dayjs(newsItem.datetime).format('MMMM DD YYYY')} |
-        <Link href={newsItem.url}>
-          <ExternalLinkIcon mx="3px" color="cyan.500" />
+        <Link href={newsItem.url} isExternal>
+          <ExternalLinkIcon mx="4px" color="cyan.500" />
         </Link>
       </Text>
     );

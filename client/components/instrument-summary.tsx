@@ -8,6 +8,7 @@ import {
   StatHelpText,
   StatLabel,
   StatNumber,
+  Text,
 } from '@chakra-ui/react';
 import React from 'react';
 import {useGetInstrumentsQuery} from '../graphql/generated/graphql';
@@ -32,6 +33,7 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
     label: string,
     number: number,
     type: string,
+    textHighlight = false,
     helpText: string = null,
   ) {
     return (
@@ -49,7 +51,13 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
                 {label}
               </StatLabel>
               <StatNumber
-                textColor={number >= 0 ? 'green.400' : 'red.600'}
+                textColor={
+                  textHighlight
+                    ? number >= 0
+                      ? 'green.400'
+                      : 'red.600'
+                    : 'cyan.600'
+                }
                 fontSize="xl"
               >
                 {(type === 'currency' ? '$ ' : '') +
@@ -81,22 +89,27 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
 
   return (
     <Box>
+      <Text mb={2} fontWeight="400" fontSize="4xl">
+        {stat.name} ({stat.symbol})
+      </Text>
       {stat && (
         <Flex direction="row">
           {renderStat(
             'Current',
             stat.price.current,
             'currency',
+            false,
             'Current market price',
           )}
           {renderStat(
             'Previous',
             stat.price.previous,
             'currency',
+            false,
             'Last closing price',
           )}
-          {renderStat('Absolute Change', changeAmount, 'currency')}
-          {renderStat('Percent Change', chagePercent, 'pcnt')}
+          {renderStat('Absolute Change', changeAmount, 'currency', true)}
+          {renderStat('Percent Change', chagePercent, 'pcnt', true)}
         </Flex>
       )}
       <Divider my={2} />
