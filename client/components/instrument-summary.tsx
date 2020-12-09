@@ -8,6 +8,7 @@ import {
   StatHelpText,
   StatLabel,
   StatNumber,
+  Skeleton,
   Text,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -25,9 +26,10 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
     },
   });
 
-  if (error) {
-    console.warn(error);
-  }
+  if (error)
+    console.warn('Unable to fetch instruments query with error: ', error);
+
+  if (loading) return <Skeleton />;
 
   function renderStat(
     label: string,
