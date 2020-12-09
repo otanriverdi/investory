@@ -62,7 +62,7 @@ const SinglePosition: React.FC<Props> = ({position}) => {
   return (
     <Box textAlign="center">
       <Divider mt={3} mb={3} />
-      <SimpleGrid columns={11}>
+      <SimpleGrid alignItems="center" columns={11}>
         {position.instrument.type === 'stock' ? (
           <Link
             href={`/instruments/${position.instrument.symbol}/1m`}
@@ -78,11 +78,12 @@ const SinglePosition: React.FC<Props> = ({position}) => {
           </Text>
         )}
         <Box>
+          $
           {position.instrument.price
             ? position.instrument.price.current.toFixed(2)
             : 0}
         </Box>
-        <Box>{position.price}</Box>
+        <Box>${position.price}</Box>
         <Box ml={1}>
           <Badge
             position="relative"
@@ -97,12 +98,12 @@ const SinglePosition: React.FC<Props> = ({position}) => {
         <Box position="relative">
           <Tooltip
             position="absolute"
-            top={-5}
+            top={-2}
             left={-35}
             label={dayjs(position.date).format('ddd, MMM D YYYY, h:ma')}
-            aria-label="A tooltip"
+            aria-label="expanded date"
           >
-            <Box h={10}>{dayjs(position.date).format("MMM D, 'YY")}</Box>
+            <Box>{dayjs(position.date).format("MMM D, 'YY")}</Box>
           </Tooltip>
         </Box>
         <Box>${(position.price * position.amount).toFixed(2)}</Box>
