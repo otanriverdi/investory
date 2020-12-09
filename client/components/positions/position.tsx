@@ -27,6 +27,10 @@ const SinglePosition: React.FC<Props> = ({position}) => {
       return 0;
     }
 
+    if (position.state === PositionState.Closed) {
+      return 0;
+    }
+
     let c =
       position.amount * position.instrument.price.current -
       position.amount * position.price;

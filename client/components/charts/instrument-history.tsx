@@ -29,16 +29,12 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
   const {colorMode} = useColorMode();
   const [currentDuration, setCurrentDuration] = useState(duration);
 
-  const {data, loading, error} = useGetInstrumentHistoryQuery({
+  const {data, loading} = useGetInstrumentHistoryQuery({
     variables: {
       symbol: symbol as string,
       duration: currentDuration,
     },
   });
-
-  if (error) {
-    console.warn(`Error fetching history for symbol: ${symbol}: ${error}`);
-  }
 
   const {
     volumeData,

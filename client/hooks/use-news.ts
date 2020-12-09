@@ -1,3 +1,4 @@
+import {useToast} from '@chakra-ui/react';
 import {useGetNewsForSymbolQuery} from '../graphql/generated/graphql';
 
 export default function useNews(
@@ -7,6 +8,8 @@ export default function useNews(
   data: any;
   loading: boolean;
 } | null {
+  const toast = useToast();
+
   const {data, loading, error} = useGetNewsForSymbolQuery({
     variables: {
       symbols,
@@ -14,7 +17,15 @@ export default function useNews(
     },
   });
   if (error) {
-    console.warn('Error fetching news items');
+    toast({
+      title: `Error fetching news.`,
+      description: 'They will not be displayed.',
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+      position: 'top',
+    });
   }
+
   return {data: data?.getNewsForSymbol, loading};
 }
