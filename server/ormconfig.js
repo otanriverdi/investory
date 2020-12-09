@@ -3,8 +3,11 @@ let partial = {};
 if (process.env.DATABASE_URL) {
   partial = {
     url: process.env.DATABASE_URL,
+    ssl: true,
     extra: {
-      ssl: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   };
 } else {
