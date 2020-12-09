@@ -91,7 +91,7 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
 
   return (
     <Box>
-      <Text mb={2} fontWeight="400" fontSize="4xl">
+      <Text ml={3} mb={2} fontWeight="400" fontSize="4xl">
         {stat.name} ({stat.symbol})
       </Text>
       {stat && (
