@@ -21,4 +21,4 @@ Made by:
 - [Arindam](https://github.com/arindamaluni)
 - [Jack](https://github.com/Jackelus)
 - [Noemi](https://github.com/NomiDomi)
-- [Ozgur](
+- [Ozgur](https://github.com/otanriverdi)
