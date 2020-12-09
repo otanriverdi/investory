@@ -1,17 +1,12 @@
 import fetch from 'node-fetch';
 import {Instrument} from '../entity/Instrument';
 import {Price} from '../entity/Price';
+import config from '../config';
 
 export async function getPrice(instrument: Instrument): Promise<Price> {
   const token = process.env.IEX_TOKEN;
 
-  let url = 'https://sandbox.iexapis.com/stable';
-
-  if (process.env.ENABLE_IEX === 'true') {
-    console.warn('Using IEX to fetch real price data!');
-
-    url = 'https://cloud.iexapis.com/stable';
-  }
+  const {url} = config.iex;
 
   if (instrument.type === 'crypto') {
     const res = await fetch(
