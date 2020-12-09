@@ -151,7 +151,7 @@ const NewsFeed: React.FC<NewsFeedPropType> = ({
                 ))}
               {queryRes && !queryRes.data?.length && (
                 <Box width="100%">
-                  <Text textAlign="center" fontWeight="bold">
+                  <Text my={3} textAlign="center" fontWeight="bold">
                     There are no news to report.
                   </Text>
                 </Box>
