@@ -8,6 +8,7 @@ import {
   StatHelpText,
   StatLabel,
   StatNumber,
+  Skeleton,
 } from '@chakra-ui/react';
 import React from 'react';
 import {useGetInstrumentsQuery} from '../graphql/generated/graphql';
@@ -25,8 +26,10 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
   });
 
   if (error) {
-    console.warn(error);
+    console.warn('Unable to fetch instruments query with error: ', error);
   }
+
+  if (loading) return <Skeleton />;
 
   function renderStat(
     label: string,
