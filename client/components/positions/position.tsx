@@ -1,4 +1,4 @@
-import {Box, Divider, Link, SimpleGrid, Tooltip} from '@chakra-ui/react';
+import {Box, Divider, Link, SimpleGrid, Text, Tooltip} from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import React, {useMemo} from 'react';
 import {Position, PositionState} from '../../graphql/generated/graphql';
@@ -35,16 +35,22 @@ const SinglePosition: React.FC<Props> = ({position}) => {
   }, [position]);
 
   return (
-    <Box>
+    <Box textAlign="center">
       <Divider mt={3} mb={3} />
       <SimpleGrid columns={11}>
-        <Link
-          href={`/instruments/${position.instrument.symbol}/1m`}
-          color="cyan.500"
-          fontWeight="bold"
-        >
-          {position.instrument.symbol}
-        </Link>
+        {position.instrument.type === 'stock' ? (
+          <Link
+            href={`/instruments/${position.instrument.symbol}/1m`}
+            color="cyan.500"
+            fontWeight="bold"
+          >
+            {position.instrument.symbol}
+          </Link>
+        ) : (
+          <Text color="gray.500" fontWeight="bold">
+            {position.instrument.symbol}
+          </Text>
+        )}
         <Box>
           {position.instrument.price
             ? position.instrument.price.current.toFixed(2)
@@ -56,11 +62,11 @@ const SinglePosition: React.FC<Props> = ({position}) => {
           <Tooltip
             position="absolute"
             top={-5}
-            left={-55}
+            left={-35}
             label={dayjs(position.date).format('ddd, MMM D YYYY, h:ma')}
             aria-label="A tooltip"
           >
-            <Box h={10}>{dayjs(position.date).format('DD-MM-YY')}</Box>
+            <Box h={10}>{dayjs(position.date).format("MMM D, 'YY")}</Box>
           </Tooltip>
         </Box>
         <Box>${(position.price * position.amount).toFixed(2)}</Box>
@@ -74,7 +80,9 @@ const SinglePosition: React.FC<Props> = ({position}) => {
         <Box w={100} h={10}>
           <TrendLine position={position} />
         </Box>
-        <Edit id={position.id} open={position.state === PositionState.Open} />
+        <Box textAlign="center">
+          <Edit id={position.id} open={position.state === PositionState.Open} />
+        </Box>
       </SimpleGrid>
     </Box>
   );
