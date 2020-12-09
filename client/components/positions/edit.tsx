@@ -51,7 +51,7 @@ const Edit: React.FC<Props> = ({id, open}) => {
 
   return (
     <Menu>
-      <MenuButton w={20} as={Button} rightIcon={<ChevronDownIcon />}>
+      <MenuButton as={Button}>
         <EditIcon />
       </MenuButton>
       <MenuList>
