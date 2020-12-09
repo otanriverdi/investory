@@ -3,7 +3,7 @@ import React from 'react';
 
 const Header: React.FC = () => {
   return (
-    <SimpleGrid columns={11}>
+    <SimpleGrid columns={11} textAlign="center">
       <Box fontWeight="bold">Symbol</Box>
       <Box fontWeight="bold">Last Price</Box>
       <Box fontWeight="bold">Price Open</Box>
