@@ -34,8 +34,6 @@ const Inner: React.FC<any> = ({Component, pageProps}) => {
         audience: process.env.NEXT_PUBLIC_AUTH_AUDIENCE,
       });
 
-      console.log(token);
-
       return {
         headers: {
           ...headers,

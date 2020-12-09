@@ -67,8 +67,6 @@ export class PositionResolvers {
 
     const price = await getPrice(position.instrument);
 
-    console.log(position);
-
     const close = ClosePrice.create({
       position,
       price: position.amount * price.current,
