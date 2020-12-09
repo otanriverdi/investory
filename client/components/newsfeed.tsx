@@ -1,4 +1,4 @@
-import {AddIcon, ExternalLinkIcon} from '@chakra-ui/icons';
+import {ExternalLinkIcon, RepeatIcon} from '@chakra-ui/icons';
 import {
   Box,
   Divider,
@@ -85,11 +85,14 @@ const NewsFeed: React.FC<NewsFeedPropType> = ({
               </Text>
               <IconButton
                 onClick={() => loadMoreNews()}
-                backgroundColor="cyan.300"
                 _hover={{color: 'blue.500', cursor: 'pointer'}}
                 aria-label="more news"
-                icon={<AddIcon />}
-                size="xs"
+                icon={<RepeatIcon />}
+                size="sm"
+                bg="cyan.500"
+                color="white"
+                pos="relative"
+                bottom={1}
               />
             </Stack>
           </Box>
