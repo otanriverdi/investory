@@ -207,8 +207,8 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
 
   function getButtonBGColor(duration: string): string {
     if (colorMode === 'dark')
-      return currentDuration === duration ? 'cyan.300' : 'gray.700';
-    else return currentDuration === duration ? 'cyan.300' : 'gray.100';
+      return currentDuration === duration ? 'cyan.500' : 'gray.700';
+    else return currentDuration === duration ? 'cyan.500' : 'gray.100';
   }
 
   function renderDurationButton(duration: string) {
@@ -223,7 +223,7 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
           position="relative"
           size="sm"
           bg={getButtonBGColor(duration)}
-          color={colorMode === 'dark' && 'white'}
+          color={currentDuration === duration && 'white'}
         >
           {duration}
         </Button>
