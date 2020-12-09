@@ -99,6 +99,7 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
   };
 
   const priceChartOptions = {
+    colors: ['#00B5D8'],
     theme: {
       mode: colorMode,
       palette: 'palette1',
@@ -134,9 +135,10 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
     fill: {
       type: 'gradient',
       gradient: {
+        shade: colorMode,
         shadeIntensity: 1,
         opacityFrom: 0.2,
-        opacityTo: 0.7,
+        opacityTo: 0.5,
         stops: [0, 100],
       },
     },
@@ -154,6 +156,7 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
   };
 
   const volumeChartOptions = {
+    colors: ['#00B5D8'],
     theme: {
       mode: colorMode,
       palette: 'palette1',
@@ -168,7 +171,8 @@ const InstrumentHistory: React.FC<HistoryProp> = props => {
       selection: {
         enabled: true,
         fill: {
-          opacity: 0.4,
+          color: '#00B5D8',
+          opacity: 0.2,
         },
         xaxis: {
           min: zoomRange.minDate,
