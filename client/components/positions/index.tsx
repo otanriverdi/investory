@@ -30,6 +30,9 @@ const MyCollapse = chakra(Collapse);
 const Positions: React.FC<Props> = ({positions = []}) => {
   const {isOpen, onToggle} = useDisclosure();
 
+  const open = positions.filter(p => p.state === PositionState.Open);
+  const closed = positions.filter(p => p.state === PositionState.Closed);
+
   return (
     <>
       <Divider my={4} />
@@ -49,8 +52,8 @@ const Positions: React.FC<Props> = ({positions = []}) => {
           p={4}
         >
           <TabList>
-            <Tab>Open</Tab>
-            <Tab>Closed</Tab>
+            <Tab disabled={!positions.length}>Open</Tab>
+            <Tab disabled={!positions.length}>Closed</Tab>
             <Tooltip label="Add a new position" aria-label="Add a new position">
               <Button onClick={onToggle} ml={2} bg="cyan.300" color="white">
                 {isOpen ? <CloseIcon /> : <AddIcon />}
@@ -59,24 +62,33 @@ const Positions: React.FC<Props> = ({positions = []}) => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <Flex direction="column">
-                <Header />
-                {positions
-                  .filter(p => p.state === PositionState.Open)
-                  .map(position => (
+              {open.length ? (
+                <Flex direction="column">
+                  <Header />
+                  {open.map(position => (
                     <SinglePosition position={position} key={position.id} />
                   ))}
-              </Flex>
+                </Flex>
+              ) : (
+                <Text my={4} textAlign="center" fontWeight="bold">
+                  You don&apos;t have any open positions yet. Add some to get
+                  started!
+                </Text>
+              )}
             </TabPanel>
             <TabPanel>
-              <Flex direction="column">
-                <Header />
-                {positions
-                  .filter(p => p.state === PositionState.Closed)
-                  .map(position => (
+              {closed.length ? (
+                <Flex direction="column">
+                  <Header />
+                  {closed.map(position => (
                     <SinglePosition position={position} key={position.id} />
                   ))}
-              </Flex>
+                </Flex>
+              ) : (
+                <Text my={4} textAlign="center" fontWeight="bold">
+                  You don&apos;t have any closed positions.
+                </Text>
+              )}
             </TabPanel>
           </TabPanels>
         </Tabs>
