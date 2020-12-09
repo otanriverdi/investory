@@ -52,7 +52,7 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
                 textColor={number >= 0 ? 'green.400' : 'red.600'}
                 fontSize="xl"
               >
-                {(type === 'currency' ? '€ ' : '') +
+                {(type === 'currency' ? '$ ' : '') +
                   number +
                   (type === 'pcnt' ? '%' : '') +
                   ' '}

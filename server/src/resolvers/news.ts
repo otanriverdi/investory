@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import {Arg, Query, Resolver} from 'type-graphql';
 import {NewsItem} from '../entity/NewsItem';
+import config from '../config';
 
 @Resolver()
 export class NewsResolvers {
@@ -15,16 +16,12 @@ export class NewsResolvers {
 
     let news: NewsItem[] = [];
 
+    const {url} = config.iex;
+
     for (const symbol of symbols) {
-      let url = `https://sandbox.iexapis.com/stable/stock/${symbol}/news/last/${last}?token=${token}`;
-
-      if (process.env.ENABLE_IEX === 'true') {
-        console.warn('Using IEX to fetch real price data!');
-
-        url = `https://cloud.iexapis.com/stable/stock/${symbol}/news/last/${last}?token=${token}`;
-      }
-
-      const res = await fetch(url);
+      const res = await fetch(
+        `${url}/stock/${symbol}/news/last/${last}?token=${token}`,
+      );
       const json = await res.json();
       if (json) {
         const newsItems = json.map((d: any) => NewsItem.parseFields(d));

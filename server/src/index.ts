@@ -14,6 +14,16 @@ import {InstrumentResolvers} from './resolvers/instrument';
 import {NewsResolvers} from './resolvers/news';
 import {PositionResolvers} from './resolvers/position';
 
+if (
+  !process.env.IEX_TOKEN ||
+  !process.env.FRONTEND_URL ||
+  !process.env.AUTH_AUDIENCE ||
+  !process.env.AUTH_ISSUER ||
+  !process.env.AUTH_JWKS
+) {
+  throw new Error('Environment configuration is not valid.');
+}
+
 createConnection()
   .then(async connection => {
     const app = express();

@@ -6,7 +6,7 @@ import {
 } from '@apollo/client';
 import {setContext} from '@apollo/client/link/context';
 import {Auth0Provider, useAuth0} from '@auth0/auth0-react';
-import {ChakraProvider, CSSReset} from '@chakra-ui/react';
+import {Box, ChakraProvider, CSSReset, Flex, Spinner} from '@chakra-ui/react';
 import type {AppProps} from 'next/app';
 import React, {useEffect, useState} from 'react';
 import Layout from '../components/layout';
@@ -25,13 +25,13 @@ const Inner: React.FC<any> = ({Component, pageProps}) => {
 
   /* creates the apollo client and assigns the auth token to the header if it exists */
   const httpLink = createHttpLink({
-    uri: 'http://localhost:8000/graphql',
+    uri: `${process.env.NEXT_PUBLIC_BACKEND_URL}/graphql`,
   });
 
   const authLink = setContext(async (_, {headers}) => {
     if (isAuthenticated) {
       const token = await getAccessTokenSilently({
-        audience: `https://investory-server.herokuapp.com/`,
+        audience: process.env.NEXT_PUBLIC_AUTH_AUDIENCE,
       });
 
       console.log(token);
@@ -57,7 +57,15 @@ const Inner: React.FC<any> = ({Component, pageProps}) => {
     <ApolloProvider client={client}>
       <ChakraProvider>
         <CSSReset />
-        <Layout>{authLoading ? null : <Component {...pageProps} />}</Layout>
+        <Layout>
+          {authLoading ? (
+            <Flex height={200} align="center" justify="center">
+              <Spinner size="xl" />
+            </Flex>
+          ) : (
+            <Component {...pageProps} />
+          )}
+        </Layout>
       </ChakraProvider>
     </ApolloProvider>
   );
@@ -68,10 +76,10 @@ const Inner: React.FC<any> = ({Component, pageProps}) => {
 const MyApp: React.FC<AppProps> = ({Component, pageProps}: AppProps) => {
   return (
     <Auth0Provider
-      domain="investory.eu.auth0.com"
-      clientId="BnCEdfeUBI7sohvRpdygByQ0RSFJZBO4"
-      redirectUri="http://localhost:3000"
-      audience="https://investory-server.herokuapp.com/"
+      domain={process.env.NEXT_PUBLIC_AUTH_DOMAIN}
+      clientId={process.env.NEXT_PUBLIC_AUTH_ID}
+      redirectUri={process.env.NEXT_PUBLIC_AUTH_REDIRECT}
+      audience={process.env.NEXT_PUBLIC_AUTH_AUDIENCE}
       useRefreshTokens={true}
     >
       <Inner Component={Component} pageProps={pageProps} />
