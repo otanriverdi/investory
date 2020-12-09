@@ -10,6 +10,7 @@ import {
   StatNumber,
   Skeleton,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import React from 'react';
 import {useGetInstrumentsQuery} from '../graphql/generated/graphql';
@@ -26,10 +27,20 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
     },
   });
 
-  if (error)
-    console.warn('Unable to fetch instruments query with error: ', error);
+  const toast = useToast();
 
-  if (loading) return <Skeleton />;
+  if (error) {
+    toast({
+      title: `Error getting instrument ${symbol}.`,
+      description: 'Please go back to your dashboard or reload the page.',
+      status: 'error',
+      duration: 9000,
+      isClosable: true,
+      position: 'top',
+    });
+  }
+
+  if (loading) return <Skeleton height={150} mb={4} />;
 
   function renderStat(
     label: string,
