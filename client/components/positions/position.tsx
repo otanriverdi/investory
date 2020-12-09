@@ -1,4 +1,4 @@
-import {Box, Divider, Link, SimpleGrid, Tooltip} from '@chakra-ui/react';
+import {Box, Divider, Link, SimpleGrid, Tooltip, Badge} from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import React, {useMemo} from 'react';
 import {Position, PositionState} from '../../graphql/generated/graphql';
@@ -50,7 +50,12 @@ const SinglePosition: React.FC<Props> = ({position}) => {
             ? position.instrument.price.current.toFixed(2)
             : 0}
         </Box>
-        <Box>{position.price}</Box>
+        <Box>
+          {position.price}
+          <Badge colorScheme={position.type === 'BUY' ? 'green' : 'red'}>
+            {position.type}
+          </Badge>
+        </Box>
         <Box>{position.amount}</Box>
         <Box position="relative">
           <Tooltip
