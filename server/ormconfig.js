@@ -4,7 +4,9 @@ if (process.env.DATABASE_URL) {
   partial = {
     url: process.env.DATABASE_URL,
     extra: {
-      ssl: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
   };
 } else {
