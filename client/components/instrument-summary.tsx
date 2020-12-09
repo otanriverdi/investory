@@ -25,9 +25,8 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
     },
   });
 
-  if (error) {
+  if (error)
     console.warn('Unable to fetch instruments query with error: ', error);
-  }
 
   if (loading) return <Skeleton />;
 

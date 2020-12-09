@@ -20,13 +20,10 @@ const TrendLine: React.FC<Props> = ({position}) => {
     },
   });
 
-  if (loading)
-    return (
-      <Skeleton>
-        <Heading>Loading...</Heading>
-      </Skeleton>
-    );
-  if (error) return <p>Error</p>;
+  if (error)
+    console.warn('Unable to fetch instrument history with error: ', error);
+
+  if (loading) return <Skeleton />;
 
   const close = [];
   const date = [];
