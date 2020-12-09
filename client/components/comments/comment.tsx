@@ -18,7 +18,7 @@ type Props = {
 const SingleComment: React.FC<Props> = ({comment, onDelete, currentUser}) => {
   return (
     <Box
-      _hover={{borderColor: 'cyan.300'}}
+      _hover={{borderColor: 'cyan.500'}}
       mt={4}
       borderWidth="1px"
       borderRadius="md"

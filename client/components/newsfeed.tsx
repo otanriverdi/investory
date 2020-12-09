@@ -1,8 +1,9 @@
-import {ExternalLinkIcon, Icon} from '@chakra-ui/icons';
+import {AddIcon, ExternalLinkIcon} from '@chakra-ui/icons';
 import {
   Box,
   Divider,
   Flex,
+  IconButton,
   Image,
   Link,
   Modal,
@@ -18,7 +19,6 @@ import {
 } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import React, {useState} from 'react';
-import {IoReloadCircle} from 'react-icons/io5';
 import {NewsItem} from '../graphql/generated/graphql';
 import useNews from '../hooks/use-news';
 
@@ -78,19 +78,19 @@ const NewsFeed: React.FC<NewsFeedPropType> = ({
     <>
       <Box borderWidth="1px" borderRadius="md" w={width || null} h={height}>
         <Stack>
-          <Box height={10} p={2} as="h3">
+          <Box height={10} mb={2} p={4}>
             <Stack direction="row" justify="space-between">
-              <Text fontWeight="700" size="md">
+              <Text fontWeight="700" size="lg">
                 News
               </Text>
-              <Icon
-                as={IoReloadCircle}
-                color="cyan.500"
-                w={7}
-                h={7}
+              <IconButton
                 onClick={() => loadMoreNews()}
+                backgroundColor="cyan.300"
                 _hover={{color: 'blue.500', cursor: 'pointer'}}
-              ></Icon>
+                aria-label="more news"
+                icon={<AddIcon />}
+                size="xs"
+              />
             </Stack>
           </Box>
           <Skeleton isLoaded={queryRes && !queryRes?.loading}>

@@ -54,7 +54,7 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
         <>
           <HStack align="flex-end" m={2} spacing={2} flex={1}>
             <Stat
-              _hover={{transform: 'translateY(-3px)', borderColor: 'cyan.300'}}
+              _hover={{transform: 'translateY(-3px)', borderColor: 'cyan.500'}}
               borderWidth="1px"
               borderRadius="md"
               px={4}
@@ -69,7 +69,7 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
                     ? number >= 0
                       ? 'green.400'
                       : 'red.600'
-                    : 'cyan.600'
+                    : 'cyan.500'
                 }
                 fontSize="xl"
               >
@@ -121,8 +121,8 @@ const InstrumentSummary: React.FC<InstrumentSummaryProps> = props => {
             false,
             'Last closing price',
           )}
-          {renderStat('Absolute Change', changeAmount, 'currency', true)}
-          {renderStat('Percent Change', chagePercent, 'pcnt', true)}
+          {renderStat('Daily Change ($)', changeAmount, 'currency', true)}
+          {renderStat('Daily Change (%)', chagePercent, 'pcnt', true)}
         </Flex>
       )}
       <Divider my={2} />

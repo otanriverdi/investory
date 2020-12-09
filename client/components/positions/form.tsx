@@ -111,14 +111,14 @@ const Form: React.FC<FormProps> = ({
   }
 
   return (
-    <Box p={4} borderWidth="1px" borderRadius="md">
+    <Box p={4} px={12}>
       <FormControl>
         <Flex justify="space-between" align="center">
           <FormInput label="Symbol">
             <Box position="relative">
               <InputGroup>
                 <InputLeftElement pointerEvents="none">
-                  <Search2Icon color="cyan.300" />
+                  <Search2Icon color="cyan.500" />
                 </InputLeftElement>
                 <Input
                   placeholder="Symbol"
@@ -152,7 +152,7 @@ const Form: React.FC<FormProps> = ({
                       pr={2}
                       onClick={() => handleSymbolSelect(instrument)}
                       _hover={{
-                        background: 'cyan.300',
+                        background: 'cyan.500',
                         color: 'black',
                       }}
                     >
@@ -229,7 +229,7 @@ const Form: React.FC<FormProps> = ({
           />
           <IconButton
             aria-label="cancel position"
-            bg="cyan.300"
+            bg="cyan.500"
             icon={<CheckIcon />}
             onClick={handleSubmit}
             disabled={

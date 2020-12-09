@@ -36,7 +36,7 @@ const Header: React.FC = () => {
         >
           <Text
             css={{position: 'relative', top: -5.5, cursor: 'pointer'}}
-            color="cyan.400"
+            color="cyan.500"
             fontWeight="700"
             fontSize={{base: '2xl', md: '3xl'}}
           >
@@ -44,7 +44,7 @@ const Header: React.FC = () => {
           </Text>
         </Link>
         <Spacer />
-        {colorMode === 'light' ? <MoonIcon mr={2} /> : <SunIcon mr={2} />}
+        {colorMode === 'light' ? <SunIcon mr={2} /> : <MoonIcon mr={2} />}
         <Switch
           mr={4}
           size="lg"
