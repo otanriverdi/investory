@@ -15,6 +15,8 @@ export async function getPrice(instrument: Instrument): Promise<Price> {
 
     const json = await res.json();
 
+    console.log(json);
+
     return {
       current: json.latestPrice,
       previous: json.previousClose || json.latestPrice,
@@ -25,6 +27,8 @@ export async function getPrice(instrument: Instrument): Promise<Price> {
     );
 
     const json = await res.json();
+
+    console.log(json);
 
     return {
       current: json.latestPrice,
