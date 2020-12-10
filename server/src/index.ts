@@ -7,12 +7,16 @@ import express from 'express';
 import helmet from 'helmet';
 import 'reflect-metadata'; // required for typeorm
 import {buildSchema} from 'type-graphql';
-import {createConnection} from 'typeorm';
+import {createConnection, getConnectionOptions} from 'typeorm';
 import checkJwt from './middleware/check-jwt';
 import {CommentResolvers} from './resolvers/comment';
 import {InstrumentResolvers} from './resolvers/instrument';
 import {NewsResolvers} from './resolvers/news';
 import {PositionResolvers} from './resolvers/position';
+import {ClosePrice} from './entity/ClosePrice';
+import {Comment} from './entity/Comment';
+import {Instrument} from './entity/Instrument';
+import {Position} from './entity/Position';
 
 if (
   !process.env.IEX_TOKEN ||
@@ -24,47 +28,53 @@ if (
   throw new Error('Environment configuration is not valid.');
 }
 
-createConnection()
-  .then(async connection => {
-    const app = express();
+getConnectionOptions().then(options => {
+  Object.assign(options, {
+    entities: [ClosePrice, Comment, Instrument, Position],
+  });
 
-    app.use(
-      helmet({
-        contentSecurityPolicy:
-          process.env.NODE_ENV === 'production' ? undefined : false,
-      }),
-    );
-    app.use(cors({origin: process.env.FRONTEND_URL, credentials: true}));
-    app.use(checkJwt);
+  createConnection(options)
+    .then(async connection => {
+      const app = express();
 
-    const schema = await buildSchema({
-      resolvers: [
-        InstrumentResolvers,
-        PositionResolvers,
-        NewsResolvers,
-        CommentResolvers,
-      ],
-    });
+      app.use(
+        helmet({
+          contentSecurityPolicy:
+            process.env.NODE_ENV === 'production' ? undefined : false,
+        }),
+      );
+      app.use(cors({origin: process.env.FRONTEND_URL, credentials: true}));
+      app.use(checkJwt);
 
-    const server = new ApolloServer({
-      schema,
-      context: ({req}) => {
-        return {
-          db: connection,
-          user: req.user ? req.user.sub : null,
-        };
-      },
-    });
+      const schema = await buildSchema({
+        resolvers: [
+          InstrumentResolvers,
+          PositionResolvers,
+          NewsResolvers,
+          CommentResolvers,
+        ],
+      });
 
-    server.applyMiddleware({app});
+      const server = new ApolloServer({
+        schema,
+        context: ({req}) => {
+          return {
+            db: connection,
+            user: req.user ? req.user.sub : null,
+          };
+        },
+      });
 
-    const port = process.env.PORT || 8000;
+      server.applyMiddleware({app});
 
-    app.listen(port, () => {
-      console.log(`🚀 on ${port}`);
-    });
-  })
-  .catch(error => console.error(error));
+      const port = process.env.PORT || 8000;
+
+      app.listen(port, () => {
+        console.log(`🚀 on ${port}`);
+      });
+    })
+    .catch(error => console.error(error));
+});
 
 // This is for extending the express `req` object.
 declare global {

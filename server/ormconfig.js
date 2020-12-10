@@ -1,6 +1,3 @@
-// eslint-disable-next-line
-const path = require('path');
-
 let partial = {};
 
 if (process.env.DATABASE_URL) {
@@ -28,10 +25,10 @@ module.exports = {
   ...partial,
   synchronize: false,
   logging: process.env.NODE_ENV === 'production' ? false : true,
-  entities: [__dirname + 'dist/entity/**/*.js'],
-  migrations: ['dist/migration/*.js'],
+  entities: [__dirname + 'src/entity/**/*{.js,.ts}'],
+  migrations: [__dirname + 'src/migration/*{.js,.ts}'],
   migrationsRun: true,
   cli: {
-    migrationsDir: 'dist/migration',
+    migrationsDir: 'src/migration',
   },
 };

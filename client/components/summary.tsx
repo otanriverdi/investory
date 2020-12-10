@@ -49,7 +49,7 @@ const Summary: React.FC<Props> = ({
         </StatNumber>
         <StatHelpText>
           <StatArrow type={data.amount >= 0 ? 'increase' : 'decrease'} />%
-          {data.percentage}
+          {!isNaN(data.percentage) ? data.percentage : 0}
         </StatHelpText>
       </Stat>
     );
