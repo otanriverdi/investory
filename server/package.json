@@ -10,8 +10,7 @@
     "test": "jest src --watch",
     "dev": "ts-node-dev --respawn --transpile-only src",
     "start": "node dist/index.js",
-    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
-    "postbuild": "npm run typeorm migration:run"
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
   },
   "author": "",
   "devDependencies": {
