@@ -1,12 +1,14 @@
-<p align="center">[![logo](https://raw.githubusercontent.com/otanriverdi/ismetjs/master/assets/logo.png)](https://github.com/otanriverdi/investory)</p>
+<p align="center">
+  <img width="200" height="200" src="https://raw.githubusercontent.com/otanriverdi/investory/main/assets/logo.png">
+</p>
 
 <p align="center"><b>>_ A clutter free personal investment portfolio tracker.</b></p>
 
 <p align="center">📒 Investory can keep track of your investment portfolio across a range of financial instruments. You can clearly see your gains or losses on each position as well as see news associated with your open instruments. You can also interact with other users through commenting on specific instruments.</p>
 
-![landing](https://raw.githubusercontent.com/otanriverdi/ismetjs/master/assets/landing-mock.png)
-![dashboard](https://raw.githubusercontent.com/otanriverdi/ismetjs/master/assets/dash-mock.png)
-![instrument](https://raw.githubusercontent.com/otanriverdi/ismetjs/master/assets/inst-mock.png)
+![](https://raw.githubusercontent.com/otanriverdi/investory/main/assets/landing-mock.png)
+![](https://raw.githubusercontent.com/otanriverdi/investory/main/assets/dash-mock.png)
+![](https://raw.githubusercontent.com/otanriverdi/investory/main/assets/inst-mock.png)
 
 # Getting Started
 
