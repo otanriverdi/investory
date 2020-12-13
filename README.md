@@ -32,15 +32,6 @@
 * Graphql Codegen
 * many more...
 
-# Contributors 
-
-Made by:
-
-- [Arindam Aluni](https://github.com/arindamaluni)
-- [Jack Doyle](https://github.com/Jackelus)
-- [Noemi Gali](https://github.com/NomiDomi)
-- [Ozgur Tanriverdi](https://github.com/otanriverdi)
-
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -51,6 +42,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/Jackelus"><img src="https://avatars2.githubusercontent.com/u/50172362?v=4" width="100px;" alt=""/><br /><sub><b>Jack Doyle</b></sub></a><br /><a href="https://github.com/otanriverdi/investory/commits?author=Jackelus" title="Code">💻</a></td>
+    <td align="center"><a href="https://www.linkedin.com/in/aaluni/"><img src="https://avatars3.githubusercontent.com/u/35041760?v=4" width="100px;" alt=""/><br /><sub><b>Arindam Aluni</b></sub></a><br /><a href="https://github.com/otanriverdi/investory/commits?author=arindamaluni" title="Code">💻</a></td>
   </tr>
 </table>
 
