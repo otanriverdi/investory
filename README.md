@@ -28,12 +28,3 @@
 * type-graphql
 * Graphql Codegen
 * many more...
-
-# Contributors 
-
-Made by:
-
-- [Arindam Aluni](https://github.com/arindamaluni)
-- [Jack Doyle](https://github.com/Jackelus)
-- [Noemi Gali](https://github.com/NomiDomi)
-- [Ozgur Tanriverdi](https://github.com/otanriverdi)
