@@ -6,6 +6,15 @@
   "commit": false,
   "contributors": [
     {
+      "login": "NomiDomi",
+      "name": "Krisztina-Noemi Gali",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/33206367?v=4",
+      "profile": "https://github.com/NomiDomi",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "Jackelus",
       "name": "Jack Doyle",
       "avatar_url": "https://avatars2.githubusercontent.com/u/50172362?v=4",
