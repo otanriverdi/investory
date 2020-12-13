@@ -6,6 +6,15 @@
   "commit": false,
   "contributors": [
     {
+      "login": "Jackelus",
+      "name": "Jack Doyle",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/50172362?v=4",
+      "profile": "https://github.com/Jackelus",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "arindamaluni",
       "name": "Arindam Aluni",
       "avatar_url": "https://avatars3.githubusercontent.com/u/35041760?v=4",
